@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  apache:
+    environment:
+      - APACHE_RUN_USER=#1000
+    build:
+      context: ./docker/apache
+    ports:
+      - "80:80"
+    links:
+      - db
+    volumes:
+      - ./zombie:/var/www/html
+      - ./docker/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./docker/apache/php.ini:/usr/local/etc/php/php.ini
+  db:
+    image: postgres:9.6.24
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    user: "999:999"
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ./docker/postgres/pg_hba.conf:/etc/postgresql/15/pg_hba.conf
+      - ./docker/postgres/postgresql.conf:/etc/postgresql/15/postgresql.conf
+volumes:
+  postgres:
+    driver: local
