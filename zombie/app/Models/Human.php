@@ -19,7 +19,8 @@ class Human extends Model
 
     public function isImmuneToBite(): boolean
     {
-        return $this->health === 'immune';
+        $immuneChance = 10; // TODO: from db
+        return rand(0, 99) < $immuneChance;
     }
 
     public function killZombie(Zombie $zombie): bool
@@ -27,7 +28,7 @@ class Human extends Model
         return $zombie->update(['health' => 'dead']);
     }
 
-    public function eatResource(): void
+    public function eatFood(): void
     {
         $food = Resource::where('type', 'food')->first();
         $food->quantity = --$food->quantity;

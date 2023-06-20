@@ -12,5 +12,13 @@ class HumanBite extends Model
     protected $fillable = [
         'human_id',
         'zombie_id',
+        'turn_id'
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function (HumanBite $humanBite) {
+            $humanBite->update(['turn_id' => SimulationTurn::latest()->first()->id]);
+        });
+    }
 }

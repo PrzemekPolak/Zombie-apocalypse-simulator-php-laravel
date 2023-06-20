@@ -20,11 +20,17 @@ class Zombie extends Model
     public function bite(Human $human): bool
     {
         if ($human->isImmuneToBite()) {
-            $human->update(['health' => 'injured']);
-            $injury = new HumanInjury();
-            $injury->cause = 'bite';
-            $injury->human_id = $this->id;
-            $injury->save();
+            // die if it's second bite
+            if ($human->health === 'injured') {
+                $human->update(['health' => 'dead']);
+                // gets injured if it's first bite
+            } else {
+                $human->update(['health' => 'injured']);
+                $injury = new HumanInjury();
+                $injury->cause = 'bite';
+                $injury->human_id = $this->id;
+                $injury->save();
+            }
         } else {
             $human->update(['health' => 'infected']);
         }
