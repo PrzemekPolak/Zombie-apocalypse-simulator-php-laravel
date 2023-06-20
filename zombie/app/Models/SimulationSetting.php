@@ -12,5 +12,6 @@ class SimulationSetting extends Model
     protected $fillable = [
         'event',
         'chance',
+        'description',
     ];
 }

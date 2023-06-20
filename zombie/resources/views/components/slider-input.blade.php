@@ -1,7 +1,7 @@
 <div class="slider-container">
-    <div id="value-display">z db</div>
+    <div id="value-display">{{$initialValue}}%</div>
     <input type="range" id="{{$name}}" name="{{$name}}"
-           min="0" max="100" value="90" step="1" oninput="updateValueDisplay(this.value)">
+           min="0" max="100" value="{{$initialValue}}" step="1" oninput="updateValueDisplay(this.value)">
     <label for="{{$name}}">{{$label}}</label>
 </div>
 

@@ -1,6 +1,7 @@
-<h1>Działam</h1>
-<form method="POST" action="{{route('turn.create')}}">
-    @csrf
-    <button type="submit">następna tura</button>
-</form>
+<x-main-layout title="Dashboard">
+    <form method="POST" action="{{route('turn.create')}}">
+        @csrf
+        <x-standard-button label="Następna tura"/>
+    </form>
+</x-main-layout>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SimulationSetting;
 use Illuminate\Http\Request;
 
 class SimulationSettingController extends Controller
@@ -13,6 +14,7 @@ class SimulationSettingController extends Controller
 
     public function index(Request $request)
     {
-        return view('simulation.settings');
+        $settings = SimulationSetting::all();
+        return view('simulation.settings', ['settings' => $settings]);
     }
 }

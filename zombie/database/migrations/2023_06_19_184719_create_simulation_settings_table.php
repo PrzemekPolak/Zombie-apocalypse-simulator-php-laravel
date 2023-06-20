@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('simulation_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('event'); // KilledByBite, KilledByWeapon
+            $table->string('event');
             $table->integer('chance');
+            $table->string('description');
             $table->timestamps();
         });
     }

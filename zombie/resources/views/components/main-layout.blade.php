@@ -26,5 +26,6 @@
         border: solid 1px #9ca3af;
         border-radius: 10px;
         padding: 16px;
+        min-width: 600px;
     }
 </style>

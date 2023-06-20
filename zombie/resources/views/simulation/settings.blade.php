@@ -2,7 +2,10 @@
     <div clsass="container">
         <form method="POST" action="{{route('settings.update')}}">
             @csrf
-            <x-slider-input name="injuryChance" label="Szansa na przypadkowe zranienie się przez człowieka"/>
+            @foreach($settings as $data)
+                <x-slider-input name="{{$data->event}}" label="{{$data->description}}"
+                                initialValue="{{$data->chance}}"/>
+            @endforeach
             <x-standard-button label="Przejdź do symulacji"/>
         </form>
     </div>
@@ -10,6 +13,6 @@
 
 <style>
     .container {
-        min-width: 600px;
+        max-width: 800px;
     }
 </style>
