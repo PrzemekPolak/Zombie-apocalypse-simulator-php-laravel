@@ -19,7 +19,7 @@ class Human extends Model
 
     public function isImmuneToBite(): boolean
     {
-        $immuneChance = 10; // TODO: from db
+        $immuneChance = SimulationSetting::where('event', 'immuneChance')->first();
         return rand(0, 99) < $immuneChance;
     }
 

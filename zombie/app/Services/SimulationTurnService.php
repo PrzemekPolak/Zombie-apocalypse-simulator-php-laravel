@@ -6,6 +6,7 @@ use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
 use App\Models\Resource;
+use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
 
@@ -104,8 +105,8 @@ class SimulationTurnService
 
     public function zombieEncounters(): void
     {
-        $encounterChance = 20; // TODO: later will be taken from settings table
-        $defaultChanceForBite = 40;
+        $encounterChance = SimulationSetting::where('event', 'encounterChance')->first();
+        $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first();
 
         $humans = Human::all();
         $weapon = Resource::where('type', 'weapon')->first()->quantity;
@@ -134,7 +135,7 @@ class SimulationTurnService
     // generates injuries not caused by zombies
     public function humanNonBiteInjuries(): void
     {
-        $injuryChance = 1; // TODO: should be from db
+        $injuryChance = SimulationSetting::where('event', 'injuryChance')->first();
 
         $humans = Human::all();
         foreach ($humans as $human) {

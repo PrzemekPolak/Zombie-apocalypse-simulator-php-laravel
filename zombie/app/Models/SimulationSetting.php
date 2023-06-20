@@ -10,7 +10,7 @@ class SimulationSetting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'event', // encounterChance, defaultChanceForBite, injuryChance, immuneChance
+        'event',
         'chance',
     ];
 }

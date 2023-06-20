@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SimulationSettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SimulationTurnController;
 
@@ -20,3 +21,5 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [SimulationTurnController::class, 'index']);
 Route::post('/simulation_turn', [SimulationTurnController::class, 'store'])->name('turn.create');
+Route::get('/settings', [SimulationSettingController::class, 'index']);
+Route::post('/send_settings', [SimulationSettingController::class, 'store'])->name('settings.update');
