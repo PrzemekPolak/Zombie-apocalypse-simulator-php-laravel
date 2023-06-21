@@ -49,4 +49,16 @@ class SimulationSettingService
         return response()->json(['message' => 'ok'], 200);
     }
 
+    public function clearSimulationTables(): JsonResponse
+    {
+        DB::table('human_bites')->truncate();
+        DB::table('human_injuries')->truncate();
+        DB::table('zombies')->truncate();
+        DB::table('humans')->truncate();
+        DB::table('resources')->truncate();
+        DB::table('simulation_turns')->truncate();
+
+        return response()->json(['message' => 'ok'], 200);
+    }
+
 }

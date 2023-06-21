@@ -27,8 +27,6 @@ class SimulationTurnController extends Controller
         $this->service->zombieEncounters();
         $this->service->humanNonBiteInjuries();
 
-        // TODO: Add conditions for simulation to end
-
         if ($this->service->checkIfSimulationShouldEnd()) {
             $this->service->endSimulation();
         } else {

@@ -17,20 +17,12 @@
 
     document.getElementById(`{{ $name }}-input`).onblur =
         function (e) {
-            console.log('blur', this.value)
-            if (e.target.value > '{{$maxValue}}') {
-                e.target.value = '{{$maxValue}}'
+            let maxValue = parseInt('{{$maxValue}}')
+            if (e.target.value > maxValue) {
+                e.target.value = maxValue
             } else if (e.target.value < 1) {
                 e.target.value = 1
             }
         }
 </script>
 
-<style>
-    .number-input {
-        width: 180px;
-        padding: 4px 4px 4px 16px;
-        border: solid 1px #9ca3af;
-        border-radius: 8px;
-    }
-</style>

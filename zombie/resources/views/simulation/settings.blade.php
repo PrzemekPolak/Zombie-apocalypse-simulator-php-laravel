@@ -1,5 +1,5 @@
 <x-main-layout title="Ustawienia">
-    <div clsass="container">
+    <div>
         <form method="POST" action="{{route('settings.update')}}">
             @csrf
             @foreach($settings as $data)
@@ -10,16 +10,10 @@
                             maxValue="10000"/>
             <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="10"
                             maxValue="1000"/>
-            <x-standard-button label="Przejdź do symulacji"/>
+            <x-standard-button label="Zapisz ustawienia i przejdź do symulacji"/>
         </form>
-        <form method="POST" action="{{route('simulation.delete')}}">
+        <form method="POST" action="{{route('simulation.delete')}}" {{$simulationOngoing ? '' : 'class=hidden'}}>
             <x-standard-button label="Resetuj symulacje"/>
         </form>
     </div>
 </x-main-layout>
-
-<style>
-    .container {
-        max-width: 800px;
-    }
-</style>

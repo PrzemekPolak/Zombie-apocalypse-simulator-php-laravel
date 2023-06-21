@@ -1,31 +1,12 @@
 <html>
 <head>
     <title>Symulacja apokalipsy zombie</title>
+    <link href='{{asset('app.css')}}' type="text/css" rel="stylesheet"/>
 </head>
 <body>
-<div class="content">
+<div class="main-layout-content">
     <h1>{{$title}}</h1>
     {{ $slot }}
 </div>
 </body>
 </html>
-
-<style>
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    h1 {
-        text-align: center;
-    }
-
-    .content {
-        background-color: #e5e7eb;
-        border: solid 1px #9ca3af;
-        border-radius: 10px;
-        padding: 16px;
-        min-width: 600px;
-    }
-</style>

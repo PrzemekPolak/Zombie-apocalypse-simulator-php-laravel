@@ -14,5 +14,8 @@
         @csrf
         <x-standard-button label="Następna tura"/>
     </form>
+    <a href="{{  asset ('/settings')}}">
+        <button>Ustawienia</button>
+    </a>
 </x-main-layout>
 
