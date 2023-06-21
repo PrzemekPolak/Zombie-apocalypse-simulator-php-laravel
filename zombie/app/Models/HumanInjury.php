@@ -15,10 +15,4 @@ class HumanInjury extends Model
         'human_id',
     ];
 
-    protected static function booted(): void
-    {
-        static::saved(function (HumanInjury $humanInjury) {
-            $humanInjury->update(['injured_at' => SimulationTurn::latest()->first()->id]);
-        });
-    }
 }

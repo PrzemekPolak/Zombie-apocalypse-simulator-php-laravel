@@ -17,8 +17,9 @@ class Zombie extends Model
         'health',
     ];
 
-    public function bite(Human $human): bool
+    public function bite(Human $human): void
     {
+        $currentTurn = SimulationTurn::latest()->first()->id;
         if ($human->isImmuneToBite()) {
             // die if it's second bite
             if ($human->health === 'injured') {
@@ -27,17 +28,24 @@ class Zombie extends Model
             } else {
                 $human->update(['health' => 'injured']);
                 $injury = new HumanInjury();
-                $injury->cause = 'bite';
-                $injury->human_id = $this->id;
+                $injury->injury_cause = 'bite';
+                $injury->human_id = $human->id;
+                $injury->injured_at = $currentTurn;
                 $injury->save();
             }
         } else {
             $human->update(['health' => 'infected']);
+            $humanBite = new HumanBite;
+            $humanBite->human_id = $human->id;
+            $humanBite->zombie_id = $this->id;
+            $humanBite->turn_id = $currentTurn;
+            $humanBite->save();
         }
-        $humanBite = new HumanBite;
-        $humanBite->human_id = $human->id;
-        $humanBite->zombie_id = $this->id;
-        $humanBite->save();
+    }
+
+    public function scopeStillWalking($query)
+    {
+        return $query->whereNot('health', 'dead');
     }
 
     public function getInfectedBy(): HasMany

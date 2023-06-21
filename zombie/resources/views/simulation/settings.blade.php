@@ -12,6 +12,9 @@
                             maxValue="1000"/>
             <x-standard-button label="Przejdź do symulacji"/>
         </form>
+        <form method="POST" action="{{route('simulation.delete')}}">
+            <x-standard-button label="Resetuj symulacje"/>
+        </form>
     </div>
 </x-main-layout>
 

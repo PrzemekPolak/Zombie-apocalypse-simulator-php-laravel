@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HumanBite;
 use App\Models\SimulationSetting;
-use App\Models\SimulationTurn;
 use App\Services\SimulationSettingService;
-use Database\Seeders\HumanSeeder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class SimulationSettingController extends Controller
 {
@@ -21,11 +20,21 @@ class SimulationSettingController extends Controller
     {
         $this->service->updateAllSettings($request);
         $this->service->populateDbWithInitialData($request);
-        $turn = new SimulationTurn();
-        $turn->status = 'active';
-        $turn->save();
+        $this->service->createFirstTurn();
 
         return response()->redirectTo('/dashboard');
+    }
+
+    public function clearSimulation(Request $request)
+    {
+        DB::table('human_bites')->truncate();
+        DB::table('human_injuries')->truncate();
+        DB::table('zombies')->truncate();
+        DB::table('humans')->truncate();
+        DB::table('resources')->truncate();
+        DB::table('simulation_turns')->truncate();
+
+        return response()->redirectTo('/settings');
     }
 
     public function index(Request $request)

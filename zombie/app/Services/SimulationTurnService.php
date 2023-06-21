@@ -9,6 +9,7 @@ use App\Models\Resource;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
+use Illuminate\Support\Facades\DB;
 
 class SimulationTurnService
 {
@@ -19,7 +20,7 @@ class SimulationTurnService
 
     private function turnHumanIntoZombie(Human $human): void
     {
-        $zombie = $human->replicate(['name', 'age', 'profession']);
+        $zombie = $human->replicate(['last_eat_at']);
         $zombie->health = 'infected';
         $zombie->setTable('zombies');
         $zombie->save();
@@ -60,7 +61,7 @@ class SimulationTurnService
     public function checkWhoDiedFromStarvation(): void
     {
         $turn = $this->currentTurn();
-        $humans = Human::all();
+        $humans = Human::alive()->get();
         foreach ($humans as $human) {
             if ($turn - $human->last_eat_at >= 3) {
                 $human->update(['health', 'dead']);
@@ -71,7 +72,7 @@ class SimulationTurnService
     public function checkWhoBleedOut(): void
     {
         $turn = $this->currentTurn();
-        $humans = Human::all();
+        $humans = Human::alive()->get();
         foreach ($humans as $human) {
             if ($human->health === 'injured' && $turn - HumanInjury::where('human_id', $human->id)->latest()->first()->injured_at >= 2) {
                 $human->update(['health', 'dead']);
@@ -82,9 +83,10 @@ class SimulationTurnService
     public function checkWhoTurnIntoZombie(): void
     {
         $turn = $this->currentTurn();
-        $humans = Human::all();
+        $humans = Human::alive()->get();
         foreach ($humans as $human) {
-            if ($turn - HumanBite::where('human_id', $human->id)->latest()->first()->turn_id >= 1) {
+            $turn_id = HumanBite::where('human_id', $human->id)->latest()->first()->turn_id ?? null;
+            if ($turn_id !== null && ($turn - $turn_id >= 1)) {
                 $this->turnHumanIntoZombie($human);
             }
         }
@@ -92,9 +94,9 @@ class SimulationTurnService
 
     public function generateResources(): void
     {
-        $healthProducers = Human::whereIn('profession', ['doctor', 'nurse'])->whereIn('health', ['healthy', 'infected'])->count();
-        $foodProducers = Human::whereIn('profession', ['farmer', 'hunter'])->whereIn('health', ['healthy', 'infected'])->count();
-        $weaponsProducers = Human::whereIn('profession', ['engineer', 'mechanic'])->whereIn('health', ['healthy', 'infected'])->count();
+        $healthProducers = Human::alive()->whereIn('profession', ['doctor', 'nurse'])->whereIn('health', ['healthy', 'infected'])->count();
+        $foodProducers = Human::alive()->whereIn('profession', ['farmer', 'hunter'])->whereIn('health', ['healthy', 'infected'])->count();
+        $weaponsProducers = Human::alive()->whereIn('profession', ['engineer', 'mechanic'])->whereIn('health', ['healthy', 'infected'])->count();
         $health = Resource::where('type', 'health')->first();
         $health->update(['quantity' => $health->quantity + $healthProducers * 2]);
         $food = Resource::where('type', 'food')->first();
@@ -105,16 +107,18 @@ class SimulationTurnService
 
     public function zombieEncounters(): void
     {
-        $encounterChance = SimulationSetting::where('event', 'encounterChance')->first();
-        $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first();
+        $encounterChance = SimulationSetting::where('event', 'encounterChance')->first()->chance;
+        $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first()->chance;
 
-        $humans = Human::all();
+        $humans = Human::alive()->get();
         $weapon = Resource::where('type', 'weapon')->first()->quantity;
 
+        $encounterNumber = Zombie::stillWalking()->count();
         foreach ($humans as $human) {
             if (rand(0, 99) < $encounterChance) {
+                $encounterNumber = --$encounterNumber;
                 $chanceForBite = $defaultChanceForBite;
-                $zombie = Zombie::inRandomOrder()->limit(1)->get();
+                $zombie = Zombie::stillWalking()->inRandomOrder()->first();
                 if ($weapon > 0) {
                     $weapon = --$weapon;
                     $chanceForBite = $chanceForBite - 20;
@@ -128,6 +132,7 @@ class SimulationTurnService
                     $human->killZombie($zombie);
                 }
             }
+            if ($encounterNumber === 0) break;
         }
         Resource::where('type', 'weapon')->first()->update(['weapon' => $weapon]);
     }
@@ -135,14 +140,16 @@ class SimulationTurnService
     // generates injuries not caused by zombies
     public function humanNonBiteInjuries(): void
     {
-        $injuryChance = SimulationSetting::where('event', 'injuryChance')->first();
+        $injuryChance = SimulationSetting::where('event', 'injuryChance')->first()->chance;
 
-        $humans = Human::all();
+        $humans = Human::alive()->get();
+        $currentTurn = SimulationTurn::latest()->first()->id;
         foreach ($humans as $human) {
             if (rand(0, 99) < $injuryChance) {
                 $injury = new HumanInjury();
                 $injury->human_id = $human->id;
                 $injury->injury_cause = $this->chooseInjuryCause();
+                $injury->injured_at = $currentTurn;
                 $injury->save();
             }
         }
@@ -151,7 +158,7 @@ class SimulationTurnService
     // injured humans attempt to heal their injuries
     public function healHumanInjuries(): void
     {
-        $humans = Human::all()->where('health', 'injured');
+        $humans = Human::where('health', 'injured')->get();
         $health = Resource::where('type', 'health')->first()->quantity;
 
         foreach ($humans as $human) {
@@ -165,7 +172,7 @@ class SimulationTurnService
     // humans need to eat food
     public function humansEatFood(): void
     {
-        $humans = Human::inRandomOrder()->all();
+        $humans = Human::alive()->inRandomOrder()->get();
         $food = Resource::where('type', 'food')->first()->quantity;
 
         foreach ($humans as $human) {
@@ -174,5 +181,14 @@ class SimulationTurnService
             }
         }
         Resource::where('type', 'food')->first()->update(['food' => $food]);
+    }
+
+    public function checkIfSimulationShouldEnd()
+    {
+        $endReason = false;
+        if (Human::alive()->count() === 0) $endReason = 'Ludzie wygineli';
+        else if (Zombie::stillWalking()->count() === 0) $endReason = 'Zombie wygineły';
+        else if (Resource::where('type', 'food')->first()->quantity <= 0) $endReason = 'Jedzenie się skończyło';
+        return $endReason;
     }
 }

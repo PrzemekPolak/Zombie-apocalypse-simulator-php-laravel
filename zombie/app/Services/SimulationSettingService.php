@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\Human;
 use App\Models\SimulationSetting;
+use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 
 class SimulationSettingService
@@ -24,6 +26,26 @@ class SimulationSettingService
     {
         Human::factory()->count($request->input('humanNumber'))->create();
         Zombie::factory()->count($request->input('zombieNumber'))->create();
+        DB::table('resources')->insert([
+            'type' => 'health',
+            'quantity' => 1000,
+        ]);
+        DB::table('resources')->insert([
+            'type' => 'food',
+            'quantity' => 5000,
+        ]);
+        DB::table('resources')->insert([
+            'type' => 'weapon',
+            'quantity' => 500,
+        ]);
+        return response()->json(['message' => 'ok'], 200);
+    }
+
+    public function createFirstTurn(): JsonResponse
+    {
+        $turn = new SimulationTurn();
+        $turn->status = 'active';
+        $turn->save();
         return response()->json(['message' => 'ok'], 200);
     }
 

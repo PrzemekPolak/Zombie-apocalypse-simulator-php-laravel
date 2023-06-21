@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HumanController;
+use App\Http\Controllers\SimulationSettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('human/professions', [\App\Http\Controllers\HumanController::class, 'getHumansCountByProfession']);
+Route::post('clearSimulation', [SimulationSettingController::class, 'clearSimulation'])->name('simulation.delete');
+Route::get('human/professions', [HumanController::class, 'getHumansCountByProfession']);

@@ -19,7 +19,7 @@ class Human extends Model
 
     public function isImmuneToBite(): bool
     {
-        $immuneChance = SimulationSetting::where('event', 'immuneChance')->first();
+        $immuneChance = SimulationSetting::where('event', 'immuneChance')->first()->chance;
         return rand(0, 99) < $immuneChance;
     }
 
@@ -28,11 +28,10 @@ class Human extends Model
         return $zombie->update(['health' => 'dead']);
     }
 
-    public function eatFood(): void
+    public function scopeAlive($query)
     {
-        $food = Resource::where('type', 'food')->first();
-        $food->quantity = --$food->quantity;
-        $food->save();
+        return $query->whereNot('health', 'dead');
+
     }
 
     public function useHealingResource(): void

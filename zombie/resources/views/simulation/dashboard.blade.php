@@ -3,6 +3,12 @@
         <div>Obecna tura: {{$currentTurn}}</div>
         <div>Liczba ludzi: {{$humansNumber}}</div>
         <div>Liczba zombie: {{$zombieNumber}}</div>
+        @foreach($resources as $data)
+            <div>
+                <div>{{$data->type}}</div>
+                <div>{{$data->quantity}}</div>
+            </div>
+        @endforeach
     </div>
     <form method="POST" action="{{route('turn.create')}}">
         @csrf

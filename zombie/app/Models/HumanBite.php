@@ -15,10 +15,4 @@ class HumanBite extends Model
         'turn_id'
     ];
 
-    protected static function booted(): void
-    {
-        static::saved(function (HumanBite $humanBite) {
-            $humanBite->update(['turn_id' => SimulationTurn::latest()->first()->id]);
-        });
-    }
 }

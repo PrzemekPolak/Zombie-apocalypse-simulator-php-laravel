@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Human;
+use App\Models\Resource;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use App\Services\SimulationTurnService;
@@ -28,15 +29,19 @@ class SimulationTurnController extends Controller
 
         // TODO: Add conditions for simulation to end
 
-        if (true) {
-            $this->service->nextTurn();
-        } else {
+        if ($this->service->checkIfSimulationShouldEnd()) {
             $this->service->endSimulation();
+        } else {
+            $this->service->nextTurn();
         }
+
+        return response()->redirectTo('/dashboard');
     }
 
     public function index(Request $request)
     {
-        return view('simulation.dashboard', ['currentTurn' => SimulationTurn::latest()->first()->id, 'humansNumber' => Human::all()->count(), 'zombieNumber' => Zombie::all()->count()]);
+        return view('simulation.dashboard', ['currentTurn' => SimulationTurn::latest()->first()->id,
+            'humansNumber' => Human::alive()->count(),
+            'zombieNumber' => Zombie::stillWalking()->count(), 'resources' => Resource::all()]);
     }
 }
