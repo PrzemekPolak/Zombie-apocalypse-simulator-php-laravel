@@ -1,15 +1,16 @@
 <div class="slider-container">
-    <div id="value-display">{{$initialValue}}%</div>
+    <div class="value-display-for-slider" id="value-display-{{ $name }}">{{$initialValue}}%</div>
     <input type="range" id="{{$name}}" name="{{$name}}"
-           min="0" max="100" value="{{$initialValue}}" step="1" oninput="updateValueDisplay(this.value)">
+           min="0" max="100" value="{{$initialValue}}" step="1">
     <label for="{{$name}}">{{$label}}</label>
 </div>
 
 <script>
-    const updateValueDisplay = (value) => {
-        let displayDiv = document.getElementById('value-display')
-        displayDiv.innerHTML = value + '%'
-    }
+    document.getElementById('{{$name}}').oninput =
+        function (e) {
+            let displayDiv = document.getElementById(`value-display-{{ $name }}`)
+            displayDiv.innerHTML = e.target.value + '%'
+        }
 </script>
 
 <style>
@@ -18,7 +19,7 @@
         gap: 8px;
     }
 
-    #value-display {
+    .value-display-for-slider {
         width: 40px;
     }
 </style>

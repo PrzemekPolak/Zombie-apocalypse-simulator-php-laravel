@@ -24,6 +24,7 @@ class SimulationTurnController extends Controller
         $this->service->humanNonBiteInjuries();
 
         // TODO: Add conditions for simulation to end
+
         if (true) {
             $this->service->nextTurn();
         } else {
