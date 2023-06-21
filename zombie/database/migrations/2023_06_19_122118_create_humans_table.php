@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->integer('age')->nullable();
             $table->string('profession')->nullable();
-            $table->string('health')->nullable(); // <- infected / alive / dead / immune / injured
+            $table->string('health')->nullable();
             $table->integer('last_eat_at');
             $table->timestamps();
         });

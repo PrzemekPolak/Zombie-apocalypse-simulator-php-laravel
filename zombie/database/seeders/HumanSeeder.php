@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Human;
 use Illuminate\Database\Seeder;
 
 class HumanSeeder extends Seeder
@@ -12,6 +12,6 @@ class HumanSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Human::factory()->count(100)->create();
     }
 }

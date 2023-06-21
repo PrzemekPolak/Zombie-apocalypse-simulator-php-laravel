@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Human;
+use App\Models\SimulationTurn;
+use App\Models\Zombie;
 use App\Services\SimulationTurnService;
 use Illuminate\Http\Request;
 
@@ -34,6 +37,6 @@ class SimulationTurnController extends Controller
 
     public function index(Request $request)
     {
-        return view('simulation.dashboard');
+        return view('simulation.dashboard', ['currentTurn' => SimulationTurn::latest()->first()->id, 'humansNumber' => Human::all()->count(), 'zombieNumber' => Zombie::all()->count()]);
     }
 }

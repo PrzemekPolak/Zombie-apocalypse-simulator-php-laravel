@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SimulationSetting;
+use App\Models\SimulationTurn;
 use App\Services\SimulationSettingService;
+use Database\Seeders\HumanSeeder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class SimulationSettingController extends Controller
 {
@@ -17,7 +20,10 @@ class SimulationSettingController extends Controller
     public function store(Request $request)
     {
         $this->service->updateAllSettings($request);
-        // TODO: generate initial values in db
+        $this->service->populateDbWithInitialData($request);
+        $turn = new SimulationTurn();
+        $turn->status = 'active';
+        $turn->save();
 
         return response()->redirectTo('/dashboard');
     }

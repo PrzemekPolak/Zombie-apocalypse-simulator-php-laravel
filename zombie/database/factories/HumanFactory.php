@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Human;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Human>
+ * @extends Factory<Human>
  */
 class HumanFactory extends Factory
 {
@@ -17,7 +18,11 @@ class HumanFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'age' => $this->faker->numberBetween(12, 80),
+            'profession' => $this->faker->randomElement(['doctor', 'nurse', 'farmer', 'hunter', 'engineer', 'mechanic', 'student', 'programmer']),
+            'health' => 'healthy',
+            'last_eat_at' => 0,
         ];
     }
 }

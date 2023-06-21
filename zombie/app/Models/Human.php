@@ -17,7 +17,7 @@ class Human extends Model
         'last_eat_at',
     ];
 
-    public function isImmuneToBite(): boolean
+    public function isImmuneToBite(): bool
     {
         $immuneChance = SimulationSetting::where('event', 'immuneChance')->first();
         return rand(0, 99) < $immuneChance;
