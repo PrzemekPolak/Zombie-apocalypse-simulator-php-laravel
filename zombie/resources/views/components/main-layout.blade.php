@@ -3,6 +3,7 @@
     <title>Symulacja apokalipsy zombie</title>
     <meta charset="UTF-8">
     <link href='{{asset('app.css')}}' type="text/css" rel="stylesheet"/>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <div class="main-layout-content">

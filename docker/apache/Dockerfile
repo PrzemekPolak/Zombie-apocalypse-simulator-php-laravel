@@ -14,8 +14,16 @@ RUN apt upgrade -y
 
 RUN apt-get install -y postgresql \
         libpq-dev \
+        curl \
+        sudo \
+        nano \
+        dos2unix \
         && a2enmod \
         rewrite
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
+    apt-get install -y nodejs \
+    build-essential
 
 RUN docker-php-ext-install pgsql pdo_pgsql
 

@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class HumanController extends Controller
 {
-    public function getHumansCountByProfession(Request $request)
+    public function getHumanRandomList(Request $request)
     {
-        return Human::all(); // TODO: finish it
+        return Human::alive()->inRandomOrder()->limit(3)->get();
     }
 }

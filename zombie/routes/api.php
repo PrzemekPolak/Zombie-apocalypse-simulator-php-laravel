@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HumanController;
 use App\Http\Controllers\SimulationSettingController;
+use App\Http\Controllers\ZombieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('clearSimulation', [SimulationSettingController::class, 'clearSimulation'])->name('simulation.delete');
-Route::get('human/professions', [HumanController::class, 'getHumansCountByProfession']);
+Route::get('human/randomList', [HumanController::class, 'getHumanRandomList']);
+Route::get('zombie/randomList', [ZombieController::class, 'getZombieRandomList']);
+
