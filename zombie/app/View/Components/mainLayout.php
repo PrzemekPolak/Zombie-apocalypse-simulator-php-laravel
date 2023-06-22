@@ -9,10 +9,12 @@ use Illuminate\View\Component;
 class mainLayout extends Component
 {
     public $title;
+    public bool $showSettingsButton;
 
-    public function __construct($title)
+    public function __construct($title, $showSettingsButton = false)
     {
         $this->title = $title;
+        $this->showSettingsButton = $showSettingsButton;
     }
 
     /**

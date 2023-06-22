@@ -151,6 +151,7 @@ class SimulationTurnService
                 $injury->injury_cause = $this->chooseInjuryCause();
                 $injury->injured_at = $currentTurn;
                 $injury->save();
+                $human->update(['health' => 'injured']);
             }
         }
     }

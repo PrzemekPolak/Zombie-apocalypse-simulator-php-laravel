@@ -25,13 +25,53 @@ button:hover {
     display: none;
 }
 
+.big-text {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.small-text {
+    font-size: 14px;
+}
+
+.icon-img {
+    height: 50px;
+}
+
+.center-child {
+    justify-content: center;
+    display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap-16 {
+    gap: 16px;
+}
+
 /*main-layout*/
 .main-layout-content {
+    position: relative;
     background-color: #e5e7eb;
     border: solid 1px #9ca3af;
     border-radius: 10px;
     padding: 16px;
     min-width: 600px;
+}
+
+.settings-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+/*settings*/
+settings-form-button {
+    width: fit-content;
+    place-self: center;
 }
 
 /*number-input*/
@@ -50,4 +90,38 @@ button:hover {
 
 .value-display-for-slider {
     width: 40px;
+}
+
+/*dashboard*/
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.left-panel-container {
+    gap: 16px;
+    margin-right: 32px;
+}
+
+/*info-panel-element*/
+.info-panel-element-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border: solid 1px #a0aec0;
+    /*border-radius: 5px;*/
+}
+
+.info-panel-element-info-container {
+    place-content: center;
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    padding: 8px;
+}
+
+.info-panel-element-icon {
+    background-color: #a0aec0;
+    padding: 8px 8px 8px 8px;
+    display: flex;
+    place-content: center;
 }

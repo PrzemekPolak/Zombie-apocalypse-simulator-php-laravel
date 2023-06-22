@@ -45,4 +45,20 @@ class Human extends Model
             $this->save();
         }
     }
+
+    public function getHealthAttribute($value): string
+    {
+        $translation = ['injured' => 'Ranny',
+            'healthy' => 'Zdrowy',
+            'infected' => 'Zarażony',
+            'dead' => 'Martwy'];
+        return $translation[$value];
+    }
+
+    public function getProfessionAttribute($value): string
+    {
+        $translation = ['doctor' => 'Lekarz', 'nurse' => 'Pielęgniarka', 'farmer' => 'Rolnik', 'hunter' => 'Myśliwy',
+            'engineer' => 'Inżynier', 'mechanic' => 'Mechanik', 'student' => 'Student', 'programmer' => 'Programista'];
+        return $translation[$value];
+    }
 }

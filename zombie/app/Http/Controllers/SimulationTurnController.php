@@ -38,8 +38,16 @@ class SimulationTurnController extends Controller
 
     public function index(Request $request)
     {
-        return view('simulation.dashboard', ['currentTurn' => SimulationTurn::latest()->first()->id,
-            'humansNumber' => Human::alive()->count(),
-            'zombieNumber' => Zombie::stillWalking()->count(), 'resources' => Resource::all()]);
+        $leftPanelData = [
+            ['label' => 'Obecna tura', 'value' => SimulationTurn::latest()->first()->id, 'icon' => 'clock-solid.svg'],
+            ['label' => 'Żywi ludzie', 'value' => Human::alive()->count(), 'icon' => 'person-solid.svg'],
+            ['label' => 'Zombie', 'value' => Zombie::stillWalking()->count(), 'icon' => 'biohazard-solid.svg'],
+            ['label' => 'Jedzenie', 'value' => Resource::where('type', 'food')->first()->quantity, 'icon' => 'utensils-solid.svg'],
+            ['label' => 'Lekarstwa', 'value' => Resource::where('type', 'health')->first()->quantity, 'icon' => 'briefcase-medical-solid.svg'],
+            ['label' => 'Broń', 'value' => Resource::where('type', 'weapon')->first()->quantity, 'icon' => 'gun-solid.svg'],
+        ];
+        return view('simulation.dashboard', ['leftPanelData' => $leftPanelData,
+            'randomHumans' => Human::alive()->inRandomOrder()->limit(3)->get(),
+            'randomZombies' => Zombie::stillWalking()->inRandomOrder()->limit(3)->get()]);
     }
 }
