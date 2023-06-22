@@ -6,8 +6,10 @@ use App\Models\Human;
 use App\Models\Resource;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
+use App\Services\SimulationSettingService;
 use App\Services\SimulationTurnService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SimulationTurnController extends Controller
 {
@@ -34,6 +36,31 @@ class SimulationTurnController extends Controller
         }
 
         return response()->redirectTo('/dashboard');
+    }
+
+    public function runWholeSimulationOnServer(Request $request)
+    {
+
+        if (SimulationTurn::first() === null) {
+            $settingsService = new SimulationSettingService();
+            $settingsService->populateDbWithInitialData($request);
+            $settingsService->createFirstTurn();
+        }
+
+        while ($this->service->checkIfSimulationShouldEnd() === false) {
+            $this->service->generateResources();
+            $this->service->humansEatFood();
+            $this->service->checkWhoDiedFromStarvation();
+            $this->service->healHumanInjuries();
+            $this->service->checkWhoBleedOut();
+            $this->service->checkWhoTurnIntoZombie();
+            $this->service->zombieEncounters();
+            $this->service->humanNonBiteInjuries();
+            $this->service->nextTurn();
+        }
+        $this->service->endSimulation();
+//        return response()->redirectTo('/dashboard');
+        return response(route('dashboard'));
     }
 
     public function index(Request $request)

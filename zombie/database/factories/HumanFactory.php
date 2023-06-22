@@ -18,7 +18,7 @@ class HumanFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
             'age' => $this->faker->numberBetween(12, 80),
             'profession' => $this->faker->randomElement(['doctor', 'nurse', 'farmer', 'hunter', 'engineer', 'mechanic', 'student', 'programmer']),
             'health' => 'healthy',

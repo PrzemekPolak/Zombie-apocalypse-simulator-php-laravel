@@ -14,7 +14,29 @@
         </form>
         <form method="POST"
               action="{{route('simulation.delete')}}" {{$simulationOngoing ? 'class=center-child' : 'class=hidden'}}>
+            @csrf
             <button>Resetuj symulacje</button>
         </form>
+
+        <button onclick="startSimulationLoop()">Przeprowadź całą symulację w tle</button>
     </div>
 </x-main-layout>
+
+<script>
+
+    function startSimulationLoop() {
+        // document.querySelectorAll('button').forEach((el)=>el.setAtribute('disabled', true))
+        let humanNumber = parseInt(document.getElementById("humanNumber-input").value)
+        let zombieNumber = parseInt(document.getElementById("zombieNumber-input").value)
+        axios.post('{{route('simulation.loop')}}', {humanNumber: humanNumber, zombieNumber: zombieNumber})
+            .then(function (response) {
+                console.log(response)
+                if (response.status === 200) {
+                    window.location.href = response.data
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>

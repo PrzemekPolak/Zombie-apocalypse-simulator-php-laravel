@@ -19,7 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [SimulationTurnController::class, 'index']);
+Route::get('/dashboard', [SimulationTurnController::class, 'index'])->name('dashboard');;
 Route::post('/simulation_turn', [SimulationTurnController::class, 'store'])->name('turn.create');
+Route::post('/simulation_loop', [SimulationTurnController::class, 'runWholeSimulationOnServer'])->name('simulation.loop');
 Route::get('/settings', [SimulationSettingController::class, 'index']);
 Route::post('/send_settings', [SimulationSettingController::class, 'store'])->name('settings.update');

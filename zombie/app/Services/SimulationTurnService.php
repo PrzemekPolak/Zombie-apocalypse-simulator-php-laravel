@@ -190,6 +190,7 @@ class SimulationTurnService
         if (Human::alive()->count() === 0) $endReason = 'Ludzie wygineli';
         else if (Zombie::stillWalking()->count() === 0) $endReason = 'Zombie wygineły';
         else if (Resource::where('type', 'food')->first()->quantity <= 0) $endReason = 'Jedzenie się skończyło';
+        else if (SimulationTurn::all()->sortByDesc('id')->first()->id >= 10) $endReason = 'Wynaleziono szczepionkę';
         return $endReason;
     }
 }
