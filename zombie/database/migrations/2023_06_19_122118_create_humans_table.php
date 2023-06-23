@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('humans', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->integer('age')->nullable();
-            $table->string('profession')->nullable();
-            $table->string('health')->nullable();
+            $table->string('name');
+            $table->integer('age');
+            $table->string('profession');
+            $table->string('health');
             $table->integer('last_eat_at');
+            $table->string('death_cause')->nullable();
             $table->timestamps();
         });
     }

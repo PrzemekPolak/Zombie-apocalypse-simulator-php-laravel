@@ -15,5 +15,15 @@
     @endif
     {{ $slot }}
 </div>
+
+<script>
+    function loadingNow(state) {
+        if (state) {
+            document.querySelectorAll('button').forEach((el) => el.disabled = true)
+        } else {
+            document.querySelectorAll('button').forEach((el) => el.disabled = false)
+        }
+    }
+</script>
 </body>
 </html>

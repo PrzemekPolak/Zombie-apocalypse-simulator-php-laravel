@@ -23,6 +23,7 @@ class HumanFactory extends Factory
             'profession' => $this->faker->randomElement(['doctor', 'nurse', 'farmer', 'hunter', 'engineer', 'mechanic', 'student', 'programmer']),
             'health' => 'healthy',
             'last_eat_at' => 0,
+            'death_cause' => null,
         ];
     }
 }

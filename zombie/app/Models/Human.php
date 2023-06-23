@@ -16,6 +16,7 @@ class Human extends Model
         'profession',
         'health',
         'last_eat_at',
+        'death_cause',
     ];
 
     public function isImmuneToBite(): bool
@@ -34,17 +35,13 @@ class Human extends Model
         $query->whereNotIn('health', ['dead', 'turned']);
     }
 
-    public function scopeHealthy(Builder $query)
-    {
-        $query->where('health', 'healthy');
-    }
-
     public function getHealthAttribute($value): string
     {
         $translation = ['injured' => 'Ranny',
             'healthy' => 'Zdrowy',
             'infected' => 'Zarażony',
-            'dead' => 'Martwy'];
+            'dead' => 'Martwy',
+            'turned' => 'Stał się zombie'];
         return $translation[$value];
     }
 

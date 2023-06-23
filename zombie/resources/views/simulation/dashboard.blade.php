@@ -9,8 +9,12 @@
             <h3 style="text-align: center; margin-bottom: 0;">Przykładowe osoby</h3>
             <div style="display: flex; justify-content: space-evenly; flex: 1;">
                 <div class="flex-column gap-16">
-                    <div style="text-align: center" class="big-text">Ludzie:</div>
-                    <button onclick="changeHumans()">reset</button>
+                    <div class="flex gap-16">
+                        <button style="padding: 2px;" onclick="changeHumans()"><img style="height: 20px;"
+                                                                                    src="{{asset('images/rotate-solid.svg')}}">
+                        </button>
+                        <div class="big-text">Ludzie:</div>
+                    </div>
                     <div id='humans-container' class="flex-column"
                          style="gap: 16px; justify-content: space-between; flex: 1;">
                         @foreach($randomHumans as $data)
@@ -25,8 +29,12 @@
                     </div>
                 </div>
                 <div class="flex-column gap-16">
-                    <div style="text-align: center" class="big-text">Zombie:</div>
-                    <button onclick="changeZombies()">reset</button>
+                    <div class="flex gap-16">
+                        <button style="padding: 2px;" onclick="changeZombies()"><img style="height: 20px;"
+                                                                                     src="{{asset('images/rotate-solid.svg')}}">
+                        </button>
+                        <div class="big-text">Zombie:</div>
+                    </div>
                     <div id='zombies-container' class="flex-column"
                          style="gap: 16px; justify-content: space-between; flex: 1;">
                         @foreach($randomZombies as $data)
@@ -41,7 +49,8 @@
                 </div>
 
             </div>
-            <form method="POST" action="{{route('turn.create')}}" class="center-child" style="margin-bottom: 0;">
+            <form id="nextTurnForm" method="POST" action="{{route('turn.create')}}" class="center-child"
+                  style="margin-bottom: 0;">
                 @csrf
                 <x-standard-button label="Następna tura"/>
             </form>
@@ -50,6 +59,11 @@
 </x-main-layout>
 
 <script>
+    document.getElementById('nextTurnForm').addEventListener(
+        "submit",
+        () => loadingNow(true),
+    );
+
     function changeHumans() {
         let parent = document.getElementById("humans-container")
         parent.innerHTML = 'Ładuję...';

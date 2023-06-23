@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StartSimulationRequest;
 use App\Models\Human;
-use App\Models\SimulationTurn;
 use App\Models\Zombie;
-use App\Services\SimulationSettingService;
 use App\Services\SimulationTurnService;
 
 class SimulationTurnController extends Controller
@@ -19,15 +16,12 @@ class SimulationTurnController extends Controller
     public function store()
     {
         if ($this->service->checkIfSimulationShouldEnd()) {
-            return view('simulation.end', [
-                'turns' => SimulationTurn::all()->count(),
-            ]);
+            return view('simulation.end', $this->service->getSimulationEndStatistics());
         } else {
             $this->service->conductTurn();
             $this->service->nextTurn('active');
             return response()->redirectTo('/dashboard');
         }
-
 
     }
 
@@ -37,9 +31,7 @@ class SimulationTurnController extends Controller
             $this->service->conductTurn();
             $this->service->nextTurn('active');
         }
-        return view('simulation.end', [
-            'turns' => SimulationTurn::all()->count(),
-        ]);
+        return view('simulation.end', $this->service->getSimulationEndStatistics());
     }
 
     public function index()

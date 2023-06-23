@@ -10,7 +10,6 @@ use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SimulationTurnService
 {
@@ -28,7 +27,7 @@ class SimulationTurnService
 
         DB::transaction(function () use ($humans) {
             for ($i = 0; $i < $humans->count(); $i++) {
-                $humans[$i]->update(['health' => 'dead']);
+                $humans[$i]->update(['health' => 'dead', 'death_cause', 'starvation']);
             }
         });
     }
@@ -48,7 +47,7 @@ class SimulationTurnService
         $this->healHumanInjuries();
         $this->humansEatFood();
         $this->generateResources();
-        $this->checkIfSimulationShouldEnd();
+//        $this->checkIfSimulationShouldEnd();
     }
 
     public function checkWhoBleedOut(): void
@@ -76,7 +75,7 @@ class SimulationTurnService
 
     private function turnHumanIntoZombie(Human $human): void
     {
-        $zombie = $human->replicate(['last_eat_at']);
+        $zombie = $human->replicate(['last_eat_at', 'death_cause']);
         $zombie->health = 'infected';
         $zombie->setTable('zombies');
         $zombie->save();
@@ -84,6 +83,7 @@ class SimulationTurnService
     }
 
     public function humanNonBiteInjuries(): void
+        // generates injuries not caused by zombies
     {
         $injuryChance = SimulationSetting::where('event', 'injuryChance')->first()->chance;
         $count = $this->calculateTimesEventOccured('injuryChance');
@@ -99,7 +99,7 @@ class SimulationTurnService
                 $human->update(['health' => 'injured']);
             }
             if ($human->health === 'injured') {
-                $human->update(['health' => 'dead']);
+                $human->update(['health' => 'dead', 'death_cause', 'second_injury']);
             }
         }
     }
@@ -110,8 +110,6 @@ class SimulationTurnService
         $event = SimulationSetting::where('event', $event)->first()->chance;
         return $event * $humanCount / 100;
     }
-
-    // generates injuries not caused by zombies
 
     private function chooseInjuryCause(): string
     {
@@ -130,16 +128,15 @@ class SimulationTurnService
         return $injuryCauses[array_rand($injuryCauses, 1)];
     }
 
-    // injured humans attempt to heal their injuries
 
     public function zombieEncounters(): void
     {
-        $encounterChance = SimulationSetting::where('event', 'encounterChance')->first()->chance; // 1
-        $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first()->chance; // 1
-        $weapon = Resource::where('type', 'weapon')->first()->quantity; // 1
+        $encounterChance = SimulationSetting::where('event', 'encounterChance')->first()->chance;
+        $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first()->chance;
+        $weapon = Resource::where('type', 'weapon')->first()->quantity;
 
 
-        $encounterNumber = Zombie::stillWalking()->count(); //1
+        $encounterNumber = Zombie::stillWalking()->count();
         $count = $this->calculateTimesEventOccured('injuryChance');
         $humans = Human::alive()->inRandomOrder()->get()->take($count);
         $zombies = Zombie::stillWalking()->inRandomOrder()->get();
@@ -154,7 +151,7 @@ class SimulationTurnService
             }
 
             if (in_array($human->proffesion, ['soldier', 'police'])) {
-                $chanceForBite -= 20;
+                $chanceForBite -= 10;
             }
             if (rand(0, 99) < $chanceForBite) {
                 $zombie = $zombies->shift();
@@ -171,9 +168,8 @@ class SimulationTurnService
         Resource::where('type', 'weapon')->first()->update(['weapon' => $weapon]);
     }
 
-    // humans need to eat food
-
     public function healHumanInjuries(): void
+        // injured humans attempt to heal their injuries
     {
         $humans = Human::where('health', 'injured')->get();
         $resource = Resource::where('type', 'health')->first();
@@ -191,6 +187,7 @@ class SimulationTurnService
     }
 
     public function humansEatFood(): void
+        // humans need to eat food
     {
         $humans = Human::alive()->inRandomOrder()->get();
         $food = Resource::where('type', 'food')->first()->quantity;
@@ -220,16 +217,16 @@ class SimulationTurnService
         $weapon->update(['quantity' => $weapon->quantity + $weaponsProducers * 1]);
     }
 
-    public function checkIfSimulationShouldEnd()
+    public function checkIfSimulationShouldEnd(): bool|string
     {
         $endReason = false;
-        if (Human::alive()->count() === 0) {
+        if (Human::alive()->count() <= 0) {
             $endReason = 'Ludzie wygineli';
-        } else if (Zombie::stillWalking()->count() === 0) {
+        } else if (Zombie::stillWalking()->count() <= 0) {
             $endReason = 'Zombie wygineły';
         } else if (Resource::where('type', 'food')->first()->quantity <= 0) {
             $endReason = 'Jedzenie się skończyło';
-        } else if (SimulationTurn::all()->sortByDesc('id')->first()->id >= 100) {
+        } else if (SimulationTurn::all()->sortByDesc('id')->first()->id >= 20) {
             $endReason = 'Wynaleziono szczepionkę';
         }
         return $endReason;
@@ -244,6 +241,18 @@ class SimulationTurnService
             ['label' => 'Jedzenie', 'value' => Resource::where('type', 'food')->first()->quantity, 'icon' => 'utensils-solid.svg'],
             ['label' => 'Lekarstwa', 'value' => Resource::where('type', 'health')->first()->quantity, 'icon' => 'briefcase-medical-solid.svg'],
             ['label' => 'Broń', 'value' => Resource::where('type', 'weapon')->first()->quantity, 'icon' => 'gun-solid.svg'],
+        ];
+    }
+
+    public function getSimulationEndStatistics(): array
+    {
+        return [
+            'turns' => SimulationTurn::all()->count(),
+            'reasonForEnding' => $this->checkIfSimulationShouldEnd(),
+            'zombieNumber' => Zombie::stillWalking()->count(),
+            'humanNumber' => Human::alive()->count(),
+            'allBites' => HumanBite::all()->count(),
+            'allInjuries' => HumanInjury::all()->count(),
         ];
     }
 }

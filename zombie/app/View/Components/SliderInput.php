@@ -11,12 +11,16 @@ class SliderInput extends Component
     public $name;
     public $label;
     public $initialValue;
+    public int $maxValue;
+    public int $minValue;
 
-    public function __construct($name, $label, $initialValue)
+    public function __construct($name, $label, $initialValue, $maxValue = 100, $minValue = 0)
     {
         $this->name = $name;
         $this->label = $label;
         $this->initialValue = $initialValue;
+        $this->maxValue = $maxValue;
+        $this->minValue = $minValue;
     }
 
     /**

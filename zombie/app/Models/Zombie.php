@@ -23,7 +23,7 @@ class Zombie extends Model
         if ($human->isImmuneToBite()) {
             // die if it's second bite
             if ($human->health === 'injured') {
-                $human->update(['health' => 'dead']);
+                $human->update(['health' => 'dead', 'death_cause', 'zombie_bite']);
                 // gets injured if it's first bite
             } else {
                 $human->update(['health' => 'injured']);
@@ -46,11 +46,6 @@ class Zombie extends Model
     public function scopeStillWalking($query)
     {
         return $query->whereNot('health', 'dead');
-    }
-
-    public function getInfectedBy(): HasMany
-    {
-        return $this->hasMany('HumanBite');
     }
 
     public function getHealthAttribute($value): string
