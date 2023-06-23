@@ -32,9 +32,9 @@ class SimulationTurnService
         });
     }
 
-    private function currentTurn()
+    public function currentTurn()
     {
-        return SimulationTurn::latest()->first()->id;
+        return SimulationTurn::all()->sortByDesc('id')->first()->id;
     }
 
     public function conductTurn(): void
@@ -234,7 +234,7 @@ class SimulationTurnService
     public function getFrontendDataForDashboard(): array
     {
         return [
-            ['label' => 'Obecna tura', 'value' => SimulationTurn::latest()->first()->id, 'icon' => 'clock-solid.svg'],
+            ['label' => 'Obecna tura', 'value' => $this->currentTurn(), 'icon' => 'clock-solid.svg'],
             ['label' => 'Żywi ludzie', 'value' => Human::alive()->count(), 'icon' => 'person-solid.svg'],
             ['label' => 'Zombie', 'value' => Zombie::stillWalking()->count(), 'icon' => 'biohazard-solid.svg'],
             ['label' => 'Jedzenie', 'value' => Resource::where('type', 'food')->first()->quantity, 'icon' => 'utensils-solid.svg'],

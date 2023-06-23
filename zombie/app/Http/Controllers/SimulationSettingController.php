@@ -14,7 +14,6 @@ class SimulationSettingController extends Controller
     public function __construct()
     {
         $this->service = new SimulationSettingService();
-        $this->rules = (new StartSimulationRequest())->rules();
     }
 
     public function store(StartSimulationRequest $request)
@@ -45,7 +44,7 @@ class SimulationSettingController extends Controller
         return view('simulation.settings',
             [
                 'settings' => $settings,
-                'rules' => $this->rules,
+                'rules' => $this->service->prepareRulesForFrontend(),
                 'simulationOngoing' => SimulationTurn::first() !== null
             ]);
     }

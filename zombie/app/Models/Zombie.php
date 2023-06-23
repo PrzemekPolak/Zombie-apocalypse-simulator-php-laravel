@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SimulationTurnService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +20,7 @@ class Zombie extends Model
 
     public function bite(Human $human): void
     {
-        $currentTurn = SimulationTurn::latest()->first()->id;
+        $currentTurn = (new SimulationTurnService())->currentTurn();
         if ($human->isImmuneToBite()) {
             // die if it's second bite
             if ($human->health === 'injured') {

@@ -7,36 +7,33 @@
         </div>
         <div class="flex-column" style="align-items: stretch; gap: 16px;">
             <h3 style="text-align: center; margin-bottom: 0;">Przykładowe osoby</h3>
-            <div style="display: flex; justify-content: space-evenly; flex: 1;">
+            <div class="dashboard-examples-container">
                 <div class="flex-column gap-16">
-                    <div class="flex gap-16">
-                        <button style="padding: 2px;" onclick="changeHumans()"><img style="height: 20px;"
-                                                                                    src="{{asset('images/rotate-solid.svg')}}">
+                    <div class="dashboard-examples-titles">
+                        <button onclick="changeHumans()">
+                            <img src="{{asset('images/rotate-solid.svg')}}">
                         </button>
                         <div class="big-text">Ludzie:</div>
                     </div>
-                    <div id='humans-container' class="flex-column"
-                         style="gap: 16px; justify-content: space-between; flex: 1;">
+                    <div id='humans-container' class="dashboard-examples-each-container">
                         @foreach($randomHumans as $data)
                             <div>
                                 <div>{{$data->name}}</div>
                                 <div>Wiek: {{$data->age}}</div>
                                 <div>Zawód: {{$data->profession}}</div>
-                                <div>Ostatni posiłek: {{$data->last_eat_at}} turn temu</div>
+                                <div>Ostatni posiłek: {{ $currentTurn - $data->last_eat_at }} tura temu</div>
                                 <div>Stan zdrowia: {{$data->health}}</div>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="flex-column gap-16">
-                    <div class="flex gap-16">
-                        <button style="padding: 2px;" onclick="changeZombies()"><img style="height: 20px;"
-                                                                                     src="{{asset('images/rotate-solid.svg')}}">
+                    <div class="dashboard-examples-titles">
+                        <button onclick="changeZombies()"><img src="{{asset('images/rotate-solid.svg')}}">
                         </button>
                         <div class="big-text">Zombie:</div>
                     </div>
-                    <div id='zombies-container' class="flex-column"
-                         style="gap: 16px; justify-content: space-between; flex: 1;">
+                    <div id='zombies-container' class="dashboard-examples-each-container">
                         @foreach($randomZombies as $data)
                             <div>
                                 <div>{{$data->name}}</div>

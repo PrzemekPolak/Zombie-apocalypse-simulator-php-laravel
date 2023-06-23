@@ -1,4 +1,4 @@
-<div>
+<div class="number-input-container">
     <input class="number-input" id="{{ $name }}-input" type="number" name="{{$name}}"
            min="1" max="{{$maxValue}}" step="1" value="{{$initialValue}}"/>
     <label for="{{$name}}">{{$label}} [1-{{$maxValue}}]</label>

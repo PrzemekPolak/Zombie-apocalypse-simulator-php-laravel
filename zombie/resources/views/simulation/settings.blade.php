@@ -3,24 +3,22 @@
         <form id="settingsForm" method="POST" action="{{route('settings.update')}}" class="flex-column gap-16">
             @csrf
             @foreach($settings as $data)
-                <div>{{  str_replace('max:', "", explode('|', $rules[$data->event])[1]) }}
-                    <x-slider-input name="{{$data->event}}" label="{{$data->description}}"
-                                    initialValue="{{$data->chance}}"
-                                    {{--                                minValue="{{  str_replace('min:', "", explode('|', $rules[$data->event])[0]) }}"--}}
-                                    {{--                                maxValue="{{  str_replace('max:', "", explode('|', $rules[$data->event])[1]) }}"--}}
-                                    minValue="10"
-                                    maxValue="50"
-                    />
-                </div>
+                <x-slider-input
+                    minValue='{{$rules[$data->event][0]}}'
+                    maxValue='{{$rules[$data->event][1]}}'
+                    name="{{$data->event}}"
+                    label="{{$data->description}}"
+                    initialValue="{{$data->chance}}">
+                </x-slider-input>
             @endforeach
             <x-number-input name="humanNumber" label="Ilość ludzi na początku symulacji" initialValue="100"
                             maxValue="1000"/>
             <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="10"
                             maxValue="1000"/>
             <div>
-                <input type="checkbox" id="shouldLoop" name="shouldLoop"/><label for="shouldLoop"> Czy powinno
-                    przeprowadzić całą
-                    symulację w tle</label>
+                <input type="checkbox" id="shouldLoop" name="shouldLoop"/>
+                <label for="shouldLoop"> Czy powinno przeprowadzić całą symulację w pętli na serwerze i przekierować do
+                    statystyk po jej zakończeniu</label>
             </div>
             <button class="settings-form-button">Potwierdź ustawienia i przejdź do symulacji</button>
         </form>

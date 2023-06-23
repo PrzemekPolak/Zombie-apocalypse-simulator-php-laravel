@@ -21,6 +21,7 @@ button {
     border-radius: 5px;
     padding: 8px 16px 8px 16px;
     background-color: ghostwhite;
+    width: 100%;
 }
 
 button:hover {
@@ -71,23 +72,31 @@ button:hover {
     background-color: #e5e7eb;
     border: solid 1px #9ca3af;
     border-radius: 10px;
-    padding: 16px;
-    min-width: 600px;
+    padding: 32px;
 }
 
 .settings-button {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
+}
+
+.settings-button img {
+    height: 20px;
 }
 
 /*settings*/
 .settings-form-button {
-    width: fit-content;
+    width: 100%;
     place-self: center;
 }
 
 /*number-input*/
+.number-input-container {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 .number-input {
     width: 150px;
     padding: 4px 4px 4px 16px;
@@ -99,18 +108,54 @@ button:hover {
 /*slider-input*/
 .slider-input-container {
     display: flex;
+    flex-direction: column-reverse;
     gap: 8px;
+}
+
+.slider-input-container input {
+    width: 100%;
 }
 
 /*dashboard*/
 .dashboard-container {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto;
 }
 
 .left-panel-container {
     gap: 16px;
-    margin-right: 32px;
+}
+
+.dashboard-examples-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 1;
+    gap: 8px;
+}
+
+.dashboard-examples-container button {
+    width: fit-content;
+    padding: 2px;
+}
+
+.dashboard-examples-container img {
+    height: 20px;
+}
+
+.dashboard-examples-titles {
+    place-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.dashboard-examples-each-container {
+    gap: 16px;
+    justify-content: space-between;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /*info-panel-element*/
@@ -134,4 +179,58 @@ button:hover {
     padding: 8px 8px 8px 8px;
     display: flex;
     place-content: center;
+}
+
+@media screen and (min-width: 500px) {
+    button {
+        width: unset;
+    }
+
+    .main-layout-content {
+        padding: 16px;
+    }
+
+    .settings-button {
+        top: 16px;
+        right: 16px;
+    }
+
+    .settings-button img {
+        height: 50px;
+    }
+
+    .settings-form-button {
+        width: fit-content;
+    }
+
+    .number-input-container {
+        flex-direction: row;
+    }
+
+    .slider-input-container {
+        flex-direction: row;
+    }
+
+    .slider-input-container input {
+        width: unset;
+    }
+
+    .dashboard-container {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .left-panel-container {
+        margin-right: 32px;
+    }
+
+    .dashboard-examples-container {
+        display: flex;
+        justify-content: space-evenly;
+        flex: 1;
+        flex-direction: row;
+    }
+
+    .dashboard-examples-container button {
+        padding: 4px;
+    }
 }

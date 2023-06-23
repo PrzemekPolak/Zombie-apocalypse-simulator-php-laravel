@@ -15,9 +15,7 @@ RUN apt upgrade -y
 RUN apt-get install -y postgresql \
         libpq-dev \
         curl \
-        sudo \
         nano \
-        dos2unix \
         && a2enmod \
         rewrite
 

@@ -46,6 +46,7 @@ class SimulationTurnController extends Controller
             [
                 'leftPanelData' => $leftPanelData,
                 'simulationStillOngoing' => $this->service->checkIfSimulationShouldEnd() === false,
+                'currentTurn' => $this->service->currentTurn(),
                 'randomHumans' => Human::alive()->inRandomOrder()->limit(3)->get(),
                 'randomZombies' => Zombie::stillWalking()->inRandomOrder()->limit(3)->get()
             ]);

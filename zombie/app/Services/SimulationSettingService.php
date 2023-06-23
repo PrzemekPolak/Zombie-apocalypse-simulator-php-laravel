@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\StartSimulationRequest;
 use App\Models\Human;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
@@ -61,6 +62,18 @@ class SimulationSettingService
         DB::table('simulation_turns')->truncate();
 //            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return response()->json(['message' => 'ok'], 200);
+    }
+
+    public function prepareRulesForFrontend()
+    {
+        $rules = [];
+        $rulesFromRequest = (new StartSimulationRequest())->rules();
+        foreach ($rulesFromRequest as $key => $value) {
+            $rules[$key] = explode('|', str_replace('required|', '', $value));
+            $rules[$key][0] = (int)str_replace('min:', '', $rules[$key][0]);
+            $rules[$key][1] = (int)str_replace('max:', '', $rules[$key][1]);
+        }
+        return $rules;
     }
 
 }
