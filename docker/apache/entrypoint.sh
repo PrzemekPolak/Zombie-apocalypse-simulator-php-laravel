@@ -17,9 +17,10 @@ if [ -f .env ]; then
 else
   echo "creating .env file";
   cp /var/www/html/.env.example /var/www/html/.env;
-  echo "generating laravel key";
-  php artisan key:generate;
 fi
+
+echo "generating laravel key";
+php artisan key:generate;
 
 echo "migrating db and seeding";
 php artisan migrate:fresh;

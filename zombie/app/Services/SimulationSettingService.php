@@ -53,14 +53,12 @@ class SimulationSettingService
 
     public function clearSimulationTables(): JsonResponse
     {
-//            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('human_bites')->truncate();
         DB::table('human_injuries')->truncate();
         DB::table('zombies')->truncate();
         DB::table('humans')->truncate();
         DB::table('resources')->truncate();
         DB::table('simulation_turns')->truncate();
-//            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return response()->json(['message' => 'ok'], 200);
     }
 

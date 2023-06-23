@@ -11,14 +11,14 @@
                     initialValue="{{$data->chance}}">
                 </x-slider-input>
             @endforeach
-            <x-number-input name="humanNumber" label="Ilość ludzi na początku symulacji" initialValue="100"
-                            maxValue="1000"/>
-            <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="10"
-                            maxValue="1000"/>
+            <x-number-input name="humanNumber" label="Ilość ludzi na początku symulacji" initialValue="200"
+                            maxValue="500"/>
+            <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="50"
+                            maxValue="500"/>
             <div>
                 <input type="checkbox" id="shouldLoop" name="shouldLoop"/>
                 <label for="shouldLoop"> Czy powinno przeprowadzić całą symulację w pętli na serwerze i przekierować do
-                    statystyk po jej zakończeniu</label>
+                    statystyk po jej zakończeniu (przy dużych ilościach osób zajmie dużo czasu)</label>
             </div>
             <button class="settings-form-button">Potwierdź ustawienia i przejdź do symulacji</button>
         </form>

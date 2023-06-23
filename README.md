@@ -22,7 +22,8 @@ simulation that app execute
 
 ```bash
     docker exec -it zombie-apocalypse-apache-1 sh
-    ./var/www/html/entrypoint.sh
+    cd /var/www/html
+    ./entrypoint.sh
 ```
 
 To quit docker exec(#) use exit

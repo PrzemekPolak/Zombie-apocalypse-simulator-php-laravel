@@ -24,10 +24,10 @@ class StartSimulationRequest extends FormRequest
         return [
             'humanNumber' => 'required|min:1|max:500',
             'zombieNumber' => 'required|min:1|max:500',
-            'encounterChance' => 'min:1|max:100',
-            'chanceForBite' => 'min:40|max:100',
-            'injuryChance' => 'min:1|max:50',
-            'immuneChance' => 'min:1|max:50',
+            'encounterChance' => 'min:1|max:100|integer',
+            'chanceForBite' => 'min:40|max:100|integer',
+            'injuryChance' => 'min:1|max:50|integer',
+            'immuneChance' => 'min:1|max:50|integer',
         ];
     }
 }

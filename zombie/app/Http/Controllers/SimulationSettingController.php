@@ -25,7 +25,7 @@ class SimulationSettingController extends Controller
             $this->service->createFirstTurn();
         }
 
-        if ($request->shouldLoop) {
+        if ($request->shouldLoop === 'on') {
             return (new SimulationTurnController())->runWholeSimulationOnServer();
         } else {
             return response()->redirectTo('/dashboard');

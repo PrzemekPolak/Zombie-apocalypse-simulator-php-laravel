@@ -47,7 +47,6 @@ class SimulationTurnService
         $this->healHumanInjuries();
         $this->humansEatFood();
         $this->generateResources();
-//        $this->checkIfSimulationShouldEnd();
     }
 
     public function checkWhoBleedOut(): void
@@ -82,8 +81,11 @@ class SimulationTurnService
         $human->update(['health' => 'turned']);
     }
 
+    /**
+     * generates injuries not caused by zombies
+     * @return void
+     */
     public function humanNonBiteInjuries(): void
-        // generates injuries not caused by zombies
     {
         $injuryChance = SimulationSetting::where('event', 'injuryChance')->first()->chance;
         $count = $this->calculateTimesEventOccured('injuryChance');
@@ -167,8 +169,11 @@ class SimulationTurnService
         Resource::where('type', 'weapon')->first()->update(['weapon' => $weapon]);
     }
 
+    /**
+     * injured humans attempt to heal their injuries
+     * @return void
+     */
     public function healHumanInjuries(): void
-        // injured humans attempt to heal their injuries
     {
         $humans = Human::where('health', 'injured')->get();
         $resource = Resource::where('type', 'health')->first();
@@ -185,8 +190,11 @@ class SimulationTurnService
         });
     }
 
+    /**
+     * humans need to eat food
+     * @return void
+     */
     public function humansEatFood(): void
-        // humans need to eat food
     {
         $humans = Human::alive()->inRandomOrder()->get();
         $food = Resource::where('type', 'food')->first()->quantity;
@@ -216,6 +224,11 @@ class SimulationTurnService
         $weapon->update(['quantity' => $weapon->quantity + $weaponsProducers * 1]);
     }
 
+    /**
+     * Checks different rules for simulation to end. If all are false then returns false.
+     * If some condition is met, returns string with information about it
+     * @return bool|string
+     */
     public function checkIfSimulationShouldEnd(): bool|string
     {
         $endReason = false;
@@ -249,7 +262,10 @@ class SimulationTurnService
             'turns' => SimulationTurn::all()->count(),
             'reasonForEnding' => $this->checkIfSimulationShouldEnd(),
             'zombieNumber' => Zombie::stillWalking()->count(),
+            'deadZombies' => Zombie::where('health', 'dead')->count(),
             'humanNumber' => Human::alive()->count(),
+            'deadHumans' => Human::where('health', 'dead')->count(),
+            'turnedHumans' => Human::where('health', 'turned')->count(),
             'allBites' => HumanBite::all()->count(),
             'allInjuries' => HumanInjury::all()->count(),
         ];

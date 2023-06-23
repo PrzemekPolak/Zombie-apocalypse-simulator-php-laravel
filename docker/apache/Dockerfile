@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ARG uid=1000
 ARG gid=1000
@@ -15,9 +15,13 @@ RUN apt upgrade -y
 RUN apt-get install -y postgresql \
         libpq-dev \
         curl \
+        git \
+        zip \
+        libzip-dev \
         nano \
         && a2enmod \
-        rewrite
+        rewrite \
+        && docker-php-ext-install zip
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
     apt-get install -y nodejs \
