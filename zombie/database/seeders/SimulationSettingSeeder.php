@@ -15,17 +15,17 @@ class SimulationSettingSeeder extends Seeder
     {
         DB::table('simulation_settings')->insert([
             'event' => 'encounterChance',
-            'chance' => 20,
+            'chance' => 40,
             'description' => 'Szansa, że dojdzie do walki z zombie',
         ]);
         DB::table('simulation_settings')->insert([
             'event' => 'chanceForBite',
-            'chance' => 40,
+            'chance' => 80,
             'description' => 'Podstawowa szansa, że człowiek zostanie ugryziony przez zombie podczas walki',
         ]);
         DB::table('simulation_settings')->insert([
             'event' => 'injuryChance',
-            'chance' => 1,
+            'chance' => 5,
             'description' => 'Szansa na przypadkowe zranienie się przez człowieka',
         ]);
         DB::table('simulation_settings')->insert([
