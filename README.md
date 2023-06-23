@@ -42,45 +42,6 @@ To run this project, you will need to add the following environment variables to
 
 `DB_PASSWORD`
 
-## Tech Stack
-
-**Client:** Blade, Javascript
-
-**Server:** Apache, Laravel
-
-## Appendix
-
-This project was created within a relatively short period of time due to it being an assignment for a job application.
-The time constraints meant that certain aspects of the project, including optimization, may not have been fully realized
-or could have been improved further with additional time and resources.
-
-If you have any feedback or suggestions regarding this project, please feel free to reach out to me.
-
-## Roadmap of creation
-
-The application is built using Docker containers with Apache Laravel and PostgreSQL. Here's how I approached this
-project as a whole.
-
-- First I've chosen Laravel as my backend, because its easy deployable and provides high amount of solutions that lets
-  you create sophisticated applications in no time
-
-- When I had my stack chosen I've started preparing my Docker environment for work, I've created `docker-compose.yml`
-  that contains Apache as my server and PostgreSQL as my Database and `Dockerfile` that uses php:8.2-apache image to
-  create environment needed to use Laravel 10. (More about what `Dockerfile` does can be found in files comments). I've
-  prepared config for Apache2 and php as well.
-
-- Then I've moved to programming - I've created basic models and migrations for Humans, Zombies and Resources, and I've
-  created methods that let them interact with each-other, I've prepared basic frontend to show those interactions.
-
-- After manually testing application I've noticed some opportunities to optimize application - like n+1 queries or
-  redundant loops.
-
-## Lessons Learned
-
-During the development of this project I've tried to follow principles from books "Clean Code" and "Clean Architecture"
-written by Robert C. Martin. These principles and architectural pattern have significantly influenced me and my view at
-the project. I've noticed that I've spent more time thinking about creating better code. I tried to create smaller
-functions, modular and extensible code and eliminate duplicated one.
 
 ## Application logic
 
@@ -143,3 +104,43 @@ In top right corner there is a button that leads to settings page. The button on
 #### Statistics
 
 Place for user to see how simulation ended. There are many statistics and button to go to settings.
+
+## Tech Stack
+
+**Client:** Blade, Javascript
+
+**Server:** Apache, Laravel
+
+## Roadmap of creation
+
+The application is built using Docker containers with Apache Laravel and PostgreSQL. Here's how I approached this
+project as a whole.
+
+- First I've chosen Laravel as my backend, because its easy deployable and provides high amount of solutions that lets
+  you create sophisticated applications in no time
+
+- When I had my stack chosen I've started preparing my Docker environment for work, I've created `docker-compose.yml`
+  that contains Apache as my server and PostgreSQL as my Database and `Dockerfile` that uses php:8.2-apache image to
+  create environment needed to use Laravel 10. (More about what `Dockerfile` does can be found in files comments). I've
+  prepared config for Apache2 and php as well.
+
+- Then I've moved to programming - I've created basic models and migrations for Humans, Zombies and Resources, and I've
+  created methods that let them interact with each-other, I've prepared basic frontend to show those interactions.
+
+- After manually testing application I've noticed some opportunities to optimize application - like n+1 queries or
+  redundant loops.
+
+## Lessons Learned
+
+During the development of this project I've tried to follow principles from books "Clean Code" and "Clean Architecture"
+written by Robert C. Martin. These principles and architectural pattern have significantly influenced me and my view at
+the project. I've noticed that I've spent more time thinking about creating better code. I tried to create smaller
+functions, modular and extensible code and eliminate duplicated one.
+
+## Appendix
+
+This project was created within a relatively short period of time due to it being an assignment for a job application.
+The time constraints meant that certain aspects of the project, including optimization, may not have been fully realized
+or could have been improved further with additional time and resources.
+
+If you have any feedback or suggestions regarding this project, please feel free to reach out to me.
