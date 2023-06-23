@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HumanBite;
+use App\Http\Requests\StartSimulationRequest;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Services\SimulationSettingService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SimulationSettingController extends Controller
 {
@@ -15,9 +14,10 @@ class SimulationSettingController extends Controller
     public function __construct()
     {
         $this->service = new SimulationSettingService();
+        $this->rules = (new StartSimulationRequest())->rules();
     }
 
-    public function store(Request $request)
+    public function store(StartSimulationRequest $request)
     {
         $this->service->updateAllSettings($request);
         // do only if starting a new simulation
@@ -26,7 +26,11 @@ class SimulationSettingController extends Controller
             $this->service->createFirstTurn();
         }
 
-        return response()->redirectTo('/dashboard');
+        if ($request->shouldLoop) {
+            return (new SimulationTurnController())->runWholeSimulationOnServer();
+        } else {
+            return response()->redirectTo('/dashboard');
+        }
     }
 
     public function clearSimulation(Request $request)
@@ -38,6 +42,11 @@ class SimulationSettingController extends Controller
     public function index(Request $request)
     {
         $settings = SimulationSetting::all();
-        return view('simulation.settings', ['settings' => $settings, 'simulationOngoing' => SimulationTurn::first() !== null]);
+        return view('simulation.settings',
+            [
+                'settings' => $settings,
+                'rules' => $this->rules,
+                'simulationOngoing' => SimulationTurn::first() !== null
+            ]);
     }
 }

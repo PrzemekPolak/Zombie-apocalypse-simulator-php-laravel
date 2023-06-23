@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,22 +29,14 @@ class Human extends Model
         return $zombie->update(['health' => 'dead']);
     }
 
-    public function scopeAlive($query)
+    public function scopeAlive(Builder $query)
     {
-        return $query->whereNot('health', 'dead');
-
+        $query->whereNotIn('health', ['dead', 'turned']);
     }
 
-    public function useHealingResource(): void
+    public function scopeHealthy(Builder $query)
     {
-        $health = Resource::where('type', 'health')->first();
-        $health->quantity = --$health->quantity;
-        $health->save();
-
-        if ($this->health === 'injured') {
-            $this->health = 'healthy';
-            $this->save();
-        }
+        $query->where('health', 'healthy');
     }
 
     public function getHealthAttribute($value): string
@@ -57,8 +50,36 @@ class Human extends Model
 
     public function getProfessionAttribute($value): string
     {
-        $translation = ['doctor' => 'Lekarz', 'nurse' => 'Pielęgniarka', 'farmer' => 'Rolnik', 'hunter' => 'Myśliwy',
-            'engineer' => 'Inżynier', 'mechanic' => 'Mechanik', 'student' => 'Student', 'programmer' => 'Programista'];
+        $translation = [
+            'doctor' => 'lekarz',
+            'nurse' => 'pielęgniarka',
+            'farmer' => 'rolnik',
+            'hunter' => 'łowca',
+            'engineer' => 'inżynier',
+            'mechanic' => 'mechanik',
+            'student' => 'student',
+            'programmer' => 'programista',
+            'teacher' => 'nauczyciel',
+            'lawyer' => 'prawnik',
+            'accountant' => 'księgowy',
+            'architect' => 'architekt',
+            'chef' => 'szef kuchni',
+            'writer' => 'pisarz',
+            'artist' => 'artysta',
+            'musician' => 'muzyk',
+            'photographer' => 'fotograf',
+            'dentist' => 'dentysta',
+            'pilot' => 'pilot',
+            'scientist' => 'naukowiec',
+            'firefighter' => 'strażak',
+            'marketing manager' => 'kierownik marketingu',
+            'graphic designer' => 'grafik',
+            'athlete' => 'sportowiec',
+            'veterinarian' => 'weterynarz',
+            'journalist' => 'dziennikarz',
+            'electrician' => 'elektryk',
+            'psychologist' => 'psycholog'
+        ];
         return $translation[$value];
     }
 }

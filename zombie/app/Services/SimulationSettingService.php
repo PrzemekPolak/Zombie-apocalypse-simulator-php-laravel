@@ -8,7 +8,6 @@ use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 
 class SimulationSettingService
@@ -25,12 +24,11 @@ class SimulationSettingService
 
     public function populateDbWithInitialData($request): JsonResponse
     {
-        Log::log('info', $request->humanNumber . ' ' . $request->zombieNumber);
         Human::factory()->count($request->humanNumber)->create();
         Zombie::factory()->count($request->zombieNumber)->create();
         DB::table('resources')->insert([
             'type' => 'health',
-            'quantity' => 100,
+            'quantity' => 50,
         ]);
         DB::table('resources')->insert([
             'type' => 'food',
@@ -53,13 +51,14 @@ class SimulationSettingService
 
     public function clearSimulationTables(): JsonResponse
     {
+//            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('human_bites')->truncate();
         DB::table('human_injuries')->truncate();
         DB::table('zombies')->truncate();
         DB::table('humans')->truncate();
         DB::table('resources')->truncate();
         DB::table('simulation_turns')->truncate();
-
+//            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return response()->json(['message' => 'ok'], 200);
     }
 

@@ -10,33 +10,43 @@
                             maxValue="10000"/>
             <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="10"
                             maxValue="1000"/>
-            <button class="settings-form-button">Potwierdź ustawienia i przejdź do symulacji</button>
+            <div>
+                <input type="checkbox" name="shouldLoop"/><label for="shouldLoop"> Czy powinno przeprowadzić całą
+                    symulację w tle</label>
+            </div>
+            <button class="settings-form-button" onclick="loadingNow()">Potwierdź ustawienia i przejdź do symulacji
+            </button>
         </form>
         <form method="POST"
               action="{{route('simulation.delete')}}" {{$simulationOngoing ? 'class=center-child' : 'class=hidden'}}>
             @csrf
-            <button>Resetuj symulacje</button>
+            <button onclick="loadingNow(true)">Resetuj symulacje</button>
         </form>
 
-        <button onclick="startSimulationLoop()">Przeprowadź całą symulację w tle</button>
+        {{--        <button onclick="startSimulationLoop()">Przeprowadź całą symulację w tle</button>--}}
     </div>
 </x-main-layout>
 
 <script>
-
-    function startSimulationLoop() {
-        // document.querySelectorAll('button').forEach((el)=>el.setAtribute('disabled', true))
-        let humanNumber = parseInt(document.getElementById("humanNumber-input").value)
-        let zombieNumber = parseInt(document.getElementById("zombieNumber-input").value)
-        axios.post('{{route('simulation.loop')}}', {humanNumber: humanNumber, zombieNumber: zombieNumber})
-            .then(function (response) {
-                console.log(response)
-                if (response.status === 200) {
-                    window.location.href = response.data
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    function loadingNow(state) {
+        if (state) {
+            // document.querySelectorAll('button').forEach((el) => el.disabled = true)
+        }
     }
+
+    {{--function startSimulationLoop() {--}}
+    {{--    loadingNow(true)--}}
+    {{--    let humanNumber = parseInt(document.getElementById("humanNumber-input").value)--}}
+    {{--    let zombieNumber = parseInt(document.getElementById("zombieNumber-input").value)--}}
+    {{--    axios.post('{{route('simulation.loop')}}', {humanNumber: humanNumber, zombieNumber: zombieNumber})--}}
+    {{--        .then(function (response) {--}}
+    {{--            console.log(response)--}}
+    {{--            if (response.status === 200) {--}}
+    {{--                window.location.href = response.data--}}
+    {{--            }--}}
+    {{--        })--}}
+    {{--        .catch(function (error) {--}}
+    {{--            console.log(error);--}}
+    {{--        });--}}
+    {{--}--}}
 </script>
