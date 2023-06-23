@@ -23,3 +23,4 @@ Route::get('/dashboard', [SimulationTurnController::class, 'index'])->name('dash
 Route::post('/simulation_turn', [SimulationTurnController::class, 'store'])->name('turn.create');
 Route::get('/settings', [SimulationSettingController::class, 'index']);
 Route::post('/send_settings', [SimulationSettingController::class, 'store'])->name('settings.update');
+Route::get('/statistics', [SimulationTurnController::class, 'getStatisticsView']);

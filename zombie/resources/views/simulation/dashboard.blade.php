@@ -49,11 +49,15 @@
                 </div>
 
             </div>
-            <form id="nextTurnForm" method="POST" action="{{route('turn.create')}}" class="center-child"
+            <form id="nextTurnForm" method="POST" action="{{route('turn.create')}}"
+                  {{$simulationStillOngoing ? 'class=center-child' : 'class=hidden'}}
                   style="margin-bottom: 0;">
                 @csrf
                 <x-standard-button label="Następna tura"/>
             </form>
+            <a {{$simulationStillOngoing ? 'class=hidden' : 'class=center-child'}} href="{{  asset ('/statistics')}}">
+                <button>Symulacja zakończona - wyświetl statystyki</button>
+            </a>
         </div>
     </div>
 </x-main-layout>

@@ -12,6 +12,10 @@ h1 {
     text-align: center;
 }
 
+a {
+    text-decoration: none;
+}
+
 button {
     border: solid 1px #9ca3af;
     border-radius: 5px;
@@ -78,27 +82,24 @@ button:hover {
 }
 
 /*settings*/
-settings-form-button {
+.settings-form-button {
     width: fit-content;
     place-self: center;
 }
 
 /*number-input*/
 .number-input {
-    width: 180px;
+    width: 150px;
     padding: 4px 4px 4px 16px;
     border: solid 1px #9ca3af;
     border-radius: 8px;
+    margin-right: 35px;
 }
 
 /*slider-input*/
 .slider-input-container {
     display: flex;
     gap: 8px;
-}
-
-.value-display-for-slider {
-    width: 40px;
 }
 
 /*dashboard*/

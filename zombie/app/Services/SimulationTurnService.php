@@ -27,7 +27,7 @@ class SimulationTurnService
 
         DB::transaction(function () use ($humans) {
             for ($i = 0; $i < $humans->count(); $i++) {
-                $humans[$i]->update(['health' => 'dead', 'death_cause', 'starvation']);
+                $humans[$i]->update(['health' => 'dead', 'death_cause' => 'starvation']);
             }
         });
     }
@@ -99,7 +99,7 @@ class SimulationTurnService
                 $human->update(['health' => 'injured']);
             }
             if ($human->health === 'injured') {
-                $human->update(['health' => 'dead', 'death_cause', 'second_injury']);
+                $human->update(['health' => 'dead', 'death_cause' => 'second_injury']);
             }
         }
     }
@@ -134,7 +134,6 @@ class SimulationTurnService
         $encounterChance = SimulationSetting::where('event', 'encounterChance')->first()->chance;
         $defaultChanceForBite = SimulationSetting::where('event', 'chanceForBite')->first()->chance;
         $weapon = Resource::where('type', 'weapon')->first()->quantity;
-
 
         $encounterNumber = Zombie::stillWalking()->count();
         $count = $this->calculateTimesEventOccured('injuryChance');

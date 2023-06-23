@@ -18,7 +18,8 @@
             <x-number-input name="zombieNumber" label="Ilość zombie na początku symulacji" initialValue="10"
                             maxValue="1000"/>
             <div>
-                <input type="checkbox" id="shouldLoop"/><label for="shouldLoop"> Czy powinno przeprowadzić całą
+                <input type="checkbox" id="shouldLoop" name="shouldLoop"/><label for="shouldLoop"> Czy powinno
+                    przeprowadzić całą
                     symulację w tle</label>
             </div>
             <button class="settings-form-button">Potwierdź ustawienia i przejdź do symulacji</button>

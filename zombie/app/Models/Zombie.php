@@ -23,7 +23,7 @@ class Zombie extends Model
         if ($human->isImmuneToBite()) {
             // die if it's second bite
             if ($human->health === 'injured') {
-                $human->update(['health' => 'dead', 'death_cause', 'zombie_bite']);
+                $human->update(['health' => 'dead', 'death_cause' => 'zombie_bite']);
                 // gets injured if it's first bite
             } else {
                 $human->update(['health' => 'injured']);

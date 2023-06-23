@@ -25,6 +25,8 @@ simulation that app execute
 
 To quit docker exec(#) use exit
 
+#### By default application can be opened on http://localhost/settings
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file - however if you copy
@@ -103,7 +105,7 @@ functions, modular and extensible code and eliminate duplicated one.
 - There is no more food
 - If enough turns happened humans create vaccine
 
-### There are two views on frontend: settings and dashboard
+### There are 3 views on frontend: settings, dashboard and statistics
 
 #### Settings
 
@@ -115,13 +117,14 @@ Place for user to define simulation settings such as:
 - chance for human to not become infected after getting bitten
 - base number of humans on simulation start
 - base number of zombies on simulation start
+- checkbox if simulation should be run turn by turn, or in the loop with only results shown after it ends
 
 There are also 3 buttons:
 
-- save settings and go to simulation, which sends user to dashboard. If there is no simulation then it gets started
+- save settings and go to simulation. Either sends user to dashboard or run the whole simulation in loop and sends user
+  to statistics after it ends, depending on selected option.
 - reset simulation, which is only visible when there is already simulation ongoing. Clicking it clears current
   simulation.
-- run whole simulation in the loop which sends user to dashboard only when the simulation finishes.
 
 #### Dashboard
 
@@ -136,3 +139,7 @@ Additionally, it also shows 3 randomly chosen alive humans and zombies. There is
 reroll them.
 
 In top right corner there is a button that leads to settings page. The button on the bottom change turn to the next one.
+
+#### Statistics
+
+Place for user to see how simulation ended. There are many statistics and button to go to settings.

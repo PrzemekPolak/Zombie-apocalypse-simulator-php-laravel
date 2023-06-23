@@ -8,9 +8,9 @@ use Illuminate\View\Component;
 
 class SliderInput extends Component
 {
-    public $name;
-    public $label;
-    public $initialValue;
+    public string $name;
+    public string $label;
+    public int $initialValue;
     public int $maxValue;
     public int $minValue;
 

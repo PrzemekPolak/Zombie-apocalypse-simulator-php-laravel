@@ -24,19 +24,20 @@ class SimulationSettingService
 
     public function populateDbWithInitialData($request): JsonResponse
     {
-        Human::factory()->count($request->humanNumber)->create();
+        $humansNumber = $request->humanNumber;
+        Human::factory()->count($humansNumber)->create();
         Zombie::factory()->count($request->zombieNumber)->create();
         DB::table('resources')->insert([
             'type' => 'health',
-            'quantity' => 50,
+            'quantity' => $humansNumber * 1,
         ]);
         DB::table('resources')->insert([
             'type' => 'food',
-            'quantity' => 1000,
+            'quantity' => $humansNumber * 10,
         ]);
         DB::table('resources')->insert([
             'type' => 'weapon',
-            'quantity' => 100,
+            'quantity' => $humansNumber * 1,
         ]);
         return response()->json(['message' => 'ok'], 200);
     }

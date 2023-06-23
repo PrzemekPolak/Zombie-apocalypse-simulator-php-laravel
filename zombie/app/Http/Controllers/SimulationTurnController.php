@@ -15,10 +15,10 @@ class SimulationTurnController extends Controller
 
     public function store()
     {
+        $this->service->conductTurn();
         if ($this->service->checkIfSimulationShouldEnd()) {
             return view('simulation.end', $this->service->getSimulationEndStatistics());
         } else {
-            $this->service->conductTurn();
             $this->service->nextTurn('active');
             return response()->redirectTo('/dashboard');
         }
@@ -34,12 +34,18 @@ class SimulationTurnController extends Controller
         return view('simulation.end', $this->service->getSimulationEndStatistics());
     }
 
+    public function getStatisticsView()
+    {
+        return view('simulation.end', $this->service->getSimulationEndStatistics());
+    }
+
     public function index()
     {
         $leftPanelData = $this->service->getFrontendDataForDashboard();
         return view('simulation.dashboard',
             [
                 'leftPanelData' => $leftPanelData,
+                'simulationStillOngoing' => $this->service->checkIfSimulationShouldEnd() === false,
                 'randomHumans' => Human::alive()->inRandomOrder()->limit(3)->get(),
                 'randomZombies' => Zombie::stillWalking()->inRandomOrder()->limit(3)->get()
             ]);
