@@ -5,6 +5,8 @@ or loop through it until it finishes itself.
 
 ## Installation
 
+You need to copy .env.example to .env file in project root directory (directory with docker-compose.yml)
+
 Install project with docker, in application home directory, where Dockerfile is located use command below to build
 application that consist of apache container and postgresql container
 
