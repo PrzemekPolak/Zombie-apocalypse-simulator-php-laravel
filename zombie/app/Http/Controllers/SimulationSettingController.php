@@ -18,11 +18,11 @@ class SimulationSettingController extends Controller
 
     public function store(StartSimulationRequest $request)
     {
-        $this->service->updateAllSettings($request);
+        SimulationSetting::updateAllSettings($request);
         // do only if starting a new simulation
-        if (SimulationTurn::first() === null) {
+        if (!SimulationTurn::simulationIsOngoing()) {
             $this->service->populateDbWithInitialData($request);
-            $this->service->createFirstTurn();
+            SimulationTurn::createNewTurn();
         }
 
         if ($request->shouldLoop === 'on') {
@@ -45,7 +45,7 @@ class SimulationSettingController extends Controller
             [
                 'settings' => $settings,
                 'rules' => $this->service->prepareRulesForFrontend(),
-                'simulationOngoing' => SimulationTurn::first() !== null
+                'simulationOngoing' => SimulationTurn::simulationIsOngoing()
             ]);
     }
 }

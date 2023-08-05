@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Human;
+use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use App\Services\SimulationTurnService;
 
@@ -19,7 +20,7 @@ class SimulationTurnController extends Controller
         if ($this->service->checkIfSimulationShouldEnd()) {
             return view('simulation.end', $this->service->getSimulationEndStatistics());
         } else {
-            $this->service->nextTurn('active');
+            SimulationTurn::createNewTurn();
             return response()->redirectTo('/dashboard');
         }
 
@@ -29,7 +30,7 @@ class SimulationTurnController extends Controller
     {
         while ($this->service->checkIfSimulationShouldEnd() === false) {
             $this->service->conductTurn();
-            $this->service->nextTurn('active');
+            SimulationTurn::createNewTurn();
         }
         return view('simulation.end', $this->service->getSimulationEndStatistics());
     }
@@ -46,7 +47,7 @@ class SimulationTurnController extends Controller
             [
                 'leftPanelData' => $leftPanelData,
                 'simulationStillOngoing' => $this->service->checkIfSimulationShouldEnd() === false,
-                'currentTurn' => $this->service->currentTurn(),
+                'currentTurn' => SimulationTurn::currentTurn(),
                 'randomHumans' => Human::alive()->inRandomOrder()->limit(3)->get(),
                 'randomZombies' => Zombie::stillWalking()->inRandomOrder()->limit(3)->get()
             ]);

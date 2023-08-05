@@ -26,6 +26,7 @@ simulation that app execute
 ```bash
     docker exec -it zombie-apocalypse-apache-1 sh
     cd /var/www/html
+    chmod 777 entrypoint.sh
     ./entrypoint.sh
 ```
 

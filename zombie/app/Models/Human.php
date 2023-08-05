@@ -21,7 +21,7 @@ class Human extends Model
 
     public function isImmuneToBite(): bool
     {
-        $immuneChance = SimulationSetting::where('event', 'immuneChance')->first()->chance;
+        $immuneChance = SimulationSetting::getEventChance('immuneChance');
         return rand(0, 99) < $immuneChance;
     }
 
@@ -33,6 +33,21 @@ class Human extends Model
     public function scopeAlive(Builder $query)
     {
         $query->whereNotIn('health', ['dead', 'turned']);
+    }
+
+    public static function getNumberOfResourceProducers(string $type): int
+    {
+        return self::alive()
+            ->when('health' === $type, function ($q) {
+                return $q->whereIn('profession', ['doctor', 'nurse']);
+            })
+            ->when('food' === $type, function ($q) {
+                return $q->whereIn('profession', ['farmer', 'hunter']);
+            })
+            ->when('weapon' === $type, function ($q) {
+                return $q->whereIn('profession', ['engineer', 'mechanic']);
+            })
+            ->whereIn('health', ['healthy', 'infected'])->count();
     }
 
     public function getHealthAttribute($value): string
