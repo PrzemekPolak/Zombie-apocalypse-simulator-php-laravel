@@ -22,23 +22,15 @@ class Zombie extends Model
         if ($human->isImmuneToBite()) {
             // die if it's second bite
             if ($human->health === 'injured') {
-                $human->update(['health' => 'dead', 'death_cause' => 'zombie_bite']);
+                $human->die('zombie_bite');
                 // gets injured if it's first bite
             } else {
-                $human->update(['health' => 'injured']);
-                $injury = new HumanInjury();
-                $injury->injury_cause = 'bite';
-                $injury->human_id = $human->id;
-                $injury->injured_at = $currentTurn;
-                $injury->save();
+                $human->setHealth('injured');
+                HumanInjury::add($human->id, 'bite', $currentTurn);
             }
         } else {
-            $human->update(['health' => 'infected']);
-            $humanBite = new HumanBite;
-            $humanBite->human_id = $human->id;
-            $humanBite->zombie_id = $this->id;
-            $humanBite->turn_id = $currentTurn;
-            $humanBite->save();
+            $human->setHealth('infected');
+            HumanBite::add($human->id, $this->id, $currentTurn);
         }
     }
 
@@ -89,5 +81,10 @@ class Zombie extends Model
             'psychologist' => 'psycholog'
         ];
         return $translation[$value];
+    }
+
+    public function die(): void
+    {
+        $this->update(['health' => 'dead']);
     }
 }

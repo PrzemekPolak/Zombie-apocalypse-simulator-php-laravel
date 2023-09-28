@@ -25,14 +25,14 @@ class Human extends Model
         return rand(0, 99) < $immuneChance;
     }
 
-    public function killZombie(Zombie $zombie): bool
+    public function killZombie(Zombie $zombie): void
     {
-        return $zombie->update(['health' => 'dead']);
+        $zombie->die();
     }
 
     public function scopeAlive(Builder $query)
     {
-        $query->whereNotIn('health', ['dead', 'turned']);
+        $query->whereNotIn('health', ['dead', 'turned', 'injured']);
     }
 
     public static function getNumberOfResourceProducers(string $type): int
@@ -50,15 +50,15 @@ class Human extends Model
             ->whereIn('health', ['healthy', 'infected'])->count();
     }
 
-    public function getHealthAttribute($value): string
-    {
-        $translation = ['injured' => 'Ranny',
-            'healthy' => 'Zdrowy',
-            'infected' => 'Zarażony',
-            'dead' => 'Martwy',
-            'turned' => 'Stał się zombie'];
-        return $translation[$value];
-    }
+//    public function getHealthAttribute($value): string
+//    {
+//        $translation = ['injured' => 'Ranny',
+//            'healthy' => 'Zdrowy',
+//            'infected' => 'Zarażony',
+//            'dead' => 'Martwy',
+//            'turned' => 'Stał się zombie'];
+//        return $translation[$value];
+//    }
 
     public function getProfessionAttribute($value): string
     {
@@ -93,5 +93,20 @@ class Human extends Model
             'psychologist' => 'psycholog'
         ];
         return $translation[$value];
+    }
+
+    public function die(string $deathCause): void
+    {
+        $this->update(['health' => 'dead', 'death_cause' => $deathCause]);
+    }
+
+    public function setHealth(string $health): void
+    {
+        $this->update(['health' => $health]);
+    }
+
+    public function isNotHealthy(): bool
+    {
+        return 'injured' === $this->health || 'infected' === $this->health;
     }
 }

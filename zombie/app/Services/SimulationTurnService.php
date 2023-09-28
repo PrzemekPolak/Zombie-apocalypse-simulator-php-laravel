@@ -24,7 +24,7 @@ class SimulationTurnService
 
         DB::transaction(function () use ($humans) {
             for ($i = 0; $i < $humans->count(); $i++) {
-                $humans[$i]->update(['health' => 'dead', 'death_cause' => 'starvation']);
+                $humans[$i]->die('starvation');
             }
         });
     }
@@ -47,8 +47,8 @@ class SimulationTurnService
 
         foreach ($injuredHumans as $injuredHuman) {
             $human = Human::find($injuredHuman->human_id);
-            if ($human->health === 'injured') {
-                $human->update(['health', 'dead']);
+            if ($human->isNotHealthy()) {
+                $human->die($injuredHuman->injury_cause);
             }
         }
     }
@@ -80,16 +80,13 @@ class SimulationTurnService
         $count = $this->calculateTimesEventOccured('injuryChance');
         $humans = Human::alive()->inRandomOrder()->get()->take($count);
         foreach ($humans as $human) {
-            $injury = new HumanInjury();
-            $injury->human_id = $human->id;
-            $injury->injury_cause = $this->chooseInjuryCause();
-            $injury->injured_at = $this->currentTurn;
-            $injury->save();
-            if ($human->health === 'healthy') {
-                $human->update(['health' => 'injured']);
+            $injury = $this->chooseInjuryCause();
+            HumanInjury::add($human->id, $injury, $this->currentTurn);
+            if ($human->isNotHealthy()) {
+                $human->die($injury);
             }
-            if ($human->health === 'injured') {
-                $human->update(['health' => 'dead', 'death_cause' => 'second_injury']);
+            if ($human->health === 'healthy') {
+                $human->setHealth('injured');
             }
         }
     }

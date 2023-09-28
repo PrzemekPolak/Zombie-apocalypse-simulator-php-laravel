@@ -15,4 +15,13 @@ class HumanInjury extends Model
         'human_id',
     ];
 
+    public static function add(int $humanId, string $injuryCause, int $turnId): void
+    {
+        $injury = new self();
+        $injury->injury_cause = $injuryCause;
+        $injury->human_id = $humanId;
+        $injury->injured_at = $turnId;
+        $injury->save();
+    }
+
 }
