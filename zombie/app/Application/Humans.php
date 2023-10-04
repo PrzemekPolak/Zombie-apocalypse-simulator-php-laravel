@@ -3,7 +3,6 @@
 namespace App\Application;
 
 use App\Domain\Human;
-use App\Domain\Human as DomainHuman;
 
 interface Humans
 {
@@ -14,8 +13,11 @@ interface Humans
 
     public function update(int $id, array $fields): void;
 
-    /** @param $humans DomainHuman[] */
+    /** @param $humans Human[] */
     public function saveFromArray(array $humans): void;
 
     public function getNumberOfResourceProducers(string $resourceType): int;
+
+    /** @return Human[] */
+    public function injured(): array;
 }

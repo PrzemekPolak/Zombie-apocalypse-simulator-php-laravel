@@ -17,17 +17,7 @@ class SqlHumans implements Humans
     /** @return DomainHuman[] */
     public function allAlive(): array
     {
-        return array_map(static function ($human) {
-            return new DomainHuman(
-                $human['id'],
-                $human['name'],
-                $human['age'],
-                $human['profession'],
-                $human['health'],
-                $human['last_eat_at'],
-                $human['death_cause'],
-            );
-        }, Human::alive()->get()->toArray());
+        return $this->mapToDomainHumansArray(Human::alive()->get()->toArray());
     }
 
     public function countAlive(): int
@@ -62,5 +52,18 @@ class SqlHumans implements Humans
     public function getNumberOfResourceProducers(string $resourceType): int
     {
         return $this->human::getNumberOfResourceProducers($resourceType);
+    }
+
+    public function injured(): array
+    {
+        return $this->mapToDomainHumansArray(Human::where('health', 'injured')->get()->toArray());
+    }
+
+    /** @return DomainHuman[] */
+    private function mapToDomainHumansArray(array $dbArray): array
+    {
+        return array_map(static function ($human) {
+            return DomainHuman::fromArray($human);
+        }, $dbArray);
     }
 }

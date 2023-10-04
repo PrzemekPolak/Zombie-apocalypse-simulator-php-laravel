@@ -67,15 +67,6 @@ class SimulationTurnService
         }
     }
 
-    private function turnHumanIntoZombie(Human $human): void
-    {
-        $zombie = $human->replicate(['last_eat_at', 'death_cause']);
-        $zombie->health = 'infected';
-        $zombie->setTable('zombies');
-        $zombie->save();
-        $human->update(['health' => 'turned']);
-    }
-
     /**
      * generates injuries not caused by zombies
      * @return void
@@ -95,31 +86,6 @@ class SimulationTurnService
             }
         }
     }
-
-    private function calculateTimesEventOccured(string $event)
-    {
-        $humanCount = Human::all()->count();
-        $event = SimulationSetting::getEventChance($event);
-        return $event * $humanCount / 100;
-    }
-
-    private function chooseInjuryCause(): string
-    {
-        $injuryCauses = [
-            "Tripped over a zombie's shoelaces",
-            "Poked a zombie in the eye while trying to take a selfie",
-            "Got a paper cut from a zombie-themed comic book",
-            "Slipped on a banana peel while running from a zombie horde",
-            "Accidentally stapled own finger while crafting zombie repellent",
-            "Sprained ankle while attempting a zombie-inspired dance move",
-            "Burned hand on a hot slice of zombie-shaped pizza",
-            "Got a black eye from a friendly zombie high-five gone wrong",
-            "Bumped head on a low-hanging zombie-themed piñata",
-            "Stubbed toe on a hidden zombie action figure",
-        ];
-        return $injuryCauses[array_rand($injuryCauses, 1)];
-    }
-
 
     public function zombieEncounters(): void
     {
@@ -158,32 +124,26 @@ class SimulationTurnService
         Resource::where('type', 'weapon')->first()->update(['weapon' => $weapon]);
     }
 
-    /**
-     * injured humans attempt to heal their injuries
-     * @return void
-     */
     public function healHumanInjuries(): void
     {
-        $humans = Human::where('health', 'injured')->get();
-        $resource = Resource::where('type', 'health')->first();
-        $health = $resource->quantity;
+        $humans = $this->humans->injured();
+        $healthItems = $this->resources->getByType('health');
 
-        DB::transaction(function () use ($humans, $health, $resource) {
-            for ($i = 0; $i < $humans->count(); $i++) {
-                if (($health > 0) && random_int(0, 10) === 5) {
-                    $health = --$health;
-                    $resource->update(['health' => $health]);
-                    $humans[$i]->update(['health' => 'healthy']);
-                }
+        for ($i = 0; $i < count($humans); $i++) {
+            if (($healthItems->getQuantity() > 0) && random_int(0, 4) === 2) {
+                $healthItems->consume();
+                $humans[$i]->getsHealthy();
             }
-        });
+        }
+        $this->humans->saveFromArray($humans);
+        $this->resources->save($healthItems);
     }
 
     public function humansEatFood(): void
     {
         $humans = $this->humans->allAlive();
         $food = $this->resources->getByType('food');
-        for ($i = 0; $i < $this->humans->countAlive(); $i++) {
+        for ($i = 0; $i < count($humans); $i++) {
             if ($food->getQuantity() > 0) {
                 $food->consume();
                 $humans[$i]->ateFood($this->currentTurn);
@@ -248,5 +208,38 @@ class SimulationTurnService
             'allBites' => HumanBite::all()->count(),
             'allInjuries' => HumanInjury::all()->count(),
         ];
+    }
+
+    private function turnHumanIntoZombie(Human $human): void
+    {
+        $zombie = $human->replicate(['last_eat_at', 'death_cause']);
+        $zombie->health = 'infected';
+        $zombie->setTable('zombies');
+        $zombie->save();
+        $human->update(['health' => 'turned']);
+    }
+
+    private function calculateTimesEventOccured(string $event)
+    {
+        $humanCount = Human::all()->count();
+        $event = SimulationSetting::getEventChance($event);
+        return $event * $humanCount / 100;
+    }
+
+    private function chooseInjuryCause(): string
+    {
+        $injuryCauses = [
+            "Tripped over a zombie's shoelaces",
+            "Poked a zombie in the eye while trying to take a selfie",
+            "Got a paper cut from a zombie-themed comic book",
+            "Slipped on a banana peel while running from a zombie horde",
+            "Accidentally stapled own finger while crafting zombie repellent",
+            "Sprained ankle while attempting a zombie-inspired dance move",
+            "Burned hand on a hot slice of zombie-shaped pizza",
+            "Got a black eye from a friendly zombie high-five gone wrong",
+            "Bumped head on a low-hanging zombie-themed piñata",
+            "Stubbed toe on a hidden zombie action figure",
+        ];
+        return $injuryCauses[array_rand($injuryCauses, 1)];
     }
 }
