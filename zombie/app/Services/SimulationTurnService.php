@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\SimulationTurns;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
@@ -16,11 +17,12 @@ use Illuminate\Support\Facades\DB;
 class SimulationTurnService
 {
     public function __construct(
-        private readonly Humans    $humans,
-        private readonly Resources $resources,
+        private readonly Humans          $humans,
+        private readonly Resources       $resources,
+        private readonly SimulationTurns $simulationTurns,
     )
     {
-        $this->currentTurn = SimulationTurn::currentTurn();
+        $this->currentTurn = $this->simulationTurns->currentTurn();
     }
 
     public function checkWhoDiedFromStarvation(): void
