@@ -195,15 +195,12 @@ class SimulationTurnService
 
     public function generateResources(): void
     {
-        $healthProducers = Human::getNumberOfResourceProducers('health');
-        $foodProducers = Human::getNumberOfResourceProducers('food');
-        $weaponsProducers = Human::getNumberOfResourceProducers('weapon');
-        $health = Resource::getResourceQuantity('health');
-        $food = Resource::getResourceQuantity('food');
-        $weapon = Resource::getResourceQuantity('weapon');
-        Resource::setResourceQuantity('health', $health + $healthProducers * 1);
-        Resource::setResourceQuantity('food', $food + $foodProducers * 2);
-        Resource::setResourceQuantity('weapon', $weapon + $weaponsProducers * 1);
+        $resourcesTypes = ['health', 'food', 'weapon'];
+        foreach ($resourcesTypes as $resourceType) {
+            $resource = $this->resources->getByType($resourceType);
+            $resource->produce($this->humans->getNumberOfResourceProducers($resourceType));
+            $this->resources->save($resource);
+        }
     }
 
     /**

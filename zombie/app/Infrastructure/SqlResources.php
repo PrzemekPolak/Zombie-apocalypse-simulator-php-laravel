@@ -14,7 +14,8 @@ class SqlResources implements Resources
         $resource = ResourceModel::where('type', $type)->first();
         return new Resource(
             $resource->type,
-            $resource->quantity
+            $resource->quantity,
+            $resource->type === 'food' ? 2 : 1,
         );
     }
 

@@ -16,4 +16,6 @@ interface Humans
 
     /** @param $humans DomainHuman[] */
     public function saveFromArray(array $humans): void;
+
+    public function getNumberOfResourceProducers(string $resourceType): int;
 }

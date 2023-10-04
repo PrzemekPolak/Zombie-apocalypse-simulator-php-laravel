@@ -58,4 +58,9 @@ class SqlHumans implements Humans
             }
         });
     }
+
+    public function getNumberOfResourceProducers(string $resourceType): int
+    {
+        return $this->human::getNumberOfResourceProducers($resourceType);
+    }
 }
