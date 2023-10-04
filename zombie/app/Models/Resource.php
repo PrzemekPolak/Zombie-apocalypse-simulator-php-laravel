@@ -9,8 +9,6 @@ class Resource extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'type';
-
     protected $fillable = [
         'type',
         'quantity'

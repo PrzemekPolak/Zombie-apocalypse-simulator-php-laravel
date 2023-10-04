@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Infrastructure;
+
+use App\Application\Resources;
+use App\Domain\Resource;
+use App\Models\Resource as ResourceModel;
+
+class SqlResources implements Resources
+{
+
+    public function getByType(string $type): Resource
+    {
+        $resource = ResourceModel::where('type', $type)->first();
+        return new Resource(
+            $resource->type,
+            $resource->quantity
+        );
+    }
+
+    public function save(Resource $resource): void
+    {
+        ResourceModel::where('type', $resource->type)->update(['quantity' => $resource->getQuantity()]);
+    }
+}

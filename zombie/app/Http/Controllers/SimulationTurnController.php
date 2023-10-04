@@ -9,9 +9,10 @@ use App\Services\SimulationTurnService;
 
 class SimulationTurnController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        private readonly SimulationTurnService $service,
+    )
     {
-        $this->service = new SimulationTurnService();
     }
 
     public function store()

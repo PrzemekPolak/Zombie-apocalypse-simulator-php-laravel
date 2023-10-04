@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Application\Humans;
+use App\Application\Resources;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
@@ -13,7 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class SimulationTurnService
 {
-    public function __construct()
+    public function __construct(
+        private readonly Humans    $humans,
+        private readonly Resources $resources,
+    )
     {
         $this->currentTurn = SimulationTurn::currentTurn();
     }
@@ -174,25 +179,18 @@ class SimulationTurnService
         });
     }
 
-    /**
-     * humans need to eat food
-     * @return void
-     */
     public function humansEatFood(): void
     {
-        $humans = Human::alive()->inRandomOrder()->get();
-        $food = Resource::where('type', 'food')->first()->quantity;
-        $resource = Resource::where('type', 'food')->first();
-        $turn = $this->currentTurn;
-        DB::transaction(function () use ($humans, $turn, $food) {
-            for ($i = 0; $i < $humans->count(); $i++) {
-                if ($food > 0) {
-                    $food = --$food;
-                    $humans[$i]->update(['last_eat_at' => $turn]);
-                }
+        $humans = $this->humans->allAlive();
+        $food = $this->resources->getByType('food');
+        for ($i = 0; $i < $this->humans->countAlive(); $i++) {
+            if ($food->getQuantity() > 0) {
+                $food->consume();
+                $humans[$i]->ateFood($this->currentTurn);
             }
-        });
-        $resource->update(['quantity' => $food - $humans->count()]);
+        }
+        $this->humans->saveFromArray($humans);
+        $this->resources->save($food);
     }
 
     public function generateResources(): void
