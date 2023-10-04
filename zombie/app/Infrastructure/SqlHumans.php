@@ -66,4 +66,9 @@ class SqlHumans implements Humans
             return DomainHuman::fromArray($human);
         }, $dbArray);
     }
+
+    public function add(DomainHuman $human): void
+    {
+        throw new \Exception('Not implemented!');
+    }
 }

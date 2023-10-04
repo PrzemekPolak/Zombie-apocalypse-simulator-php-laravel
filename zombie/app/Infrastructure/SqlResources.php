@@ -23,4 +23,9 @@ class SqlResources implements Resources
     {
         ResourceModel::where('type', $resource->type)->update(['quantity' => $resource->getQuantity()]);
     }
+
+    public function add(Resource $resource): void
+    {
+        throw new \Exception('Not implemented!');
+    }
 }

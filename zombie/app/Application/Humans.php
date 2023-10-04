@@ -20,4 +20,6 @@ interface Humans
 
     /** @return Human[] */
     public function injured(): array;
+
+    public function add(Human $human): void;
 }
