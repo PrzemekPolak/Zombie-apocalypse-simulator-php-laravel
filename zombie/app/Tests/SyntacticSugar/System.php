@@ -16,6 +16,11 @@ class System
     {
     }
 
+    public function humans(): Humans
+    {
+        return $this->humans;
+    }
+
     public function resources(): Resources
     {
         return $this->resources;

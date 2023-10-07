@@ -41,8 +41,8 @@ class SqlHumans implements Humans
                         'age' => $human->age,
                         'profession' => $human->profession,
                         'health' => $human->health,
-                        'last_eat_at' => $human->last_eat_at,
-                        'death_cause' => $human->death_cause,
+                        'last_eat_at' => $human->lastEatAt,
+                        'death_cause' => $human->deathCause,
                     ]
                 );
             }

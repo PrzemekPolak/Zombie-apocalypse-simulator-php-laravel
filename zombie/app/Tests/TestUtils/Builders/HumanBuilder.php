@@ -12,8 +12,8 @@ class HumanBuilder
         public int     $age,
         public string  $profession,
         public string  $health,
-        public int     $last_eat_at,
-        public ?string $death_cause,
+        public int     $lastEatAt,
+        public ?string $deathCause,
     )
     {
     }
@@ -39,8 +39,21 @@ class HumanBuilder
             $this->age,
             $this->profession,
             'injured',
-            $this->last_eat_at,
-            $this->death_cause,
+            $this->lastEatAt,
+            $this->deathCause,
+        );
+    }
+
+    public function lastAteAt(int $turn): self
+    {
+        return new self(
+            $this->id,
+            $this->name,
+            $this->age,
+            $this->profession,
+            $this->health,
+            $turn,
+            $this->deathCause,
         );
     }
 
@@ -52,8 +65,8 @@ class HumanBuilder
             $this->age,
             $this->profession,
             $this->health,
-            $this->last_eat_at,
-            $this->death_cause,
+            $this->lastEatAt,
+            $this->deathCause,
         );
     }
 }

@@ -10,8 +10,8 @@ class Human
         public readonly int     $age,
         public readonly string  $profession,
         public string           $health,
-        public int              $last_eat_at,
-        public readonly ?string $death_cause,
+        public int              $lastEatAt,
+        public readonly ?string $deathCause,
     )
     {
     }
@@ -31,7 +31,7 @@ class Human
 
     public function ateFood(int $turn): void
     {
-        $this->last_eat_at = $turn;
+        $this->lastEatAt = $turn;
     }
 
     public function getsHealthy(): void
