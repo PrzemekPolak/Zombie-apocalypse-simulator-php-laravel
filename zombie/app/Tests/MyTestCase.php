@@ -34,6 +34,7 @@ class MyTestCase extends TestCase
         $this->system = new System(
             $humans,
             $resources,
+            $simulationTurns,
         );
 
         $this->simulationTurnService = new SimulationTurnService(

@@ -22,12 +22,11 @@ class SimulationTurnService
         private readonly SimulationTurns $simulationTurns,
     )
     {
-        $this->currentTurn = $this->simulationTurns->currentTurn();
     }
 
     public function checkWhoDiedFromStarvation(): void
     {
-        $humans = Human::alive()->where('last_eat_at', '<=', $this->currentTurn - 3)->get();
+        $humans = Human::alive()->where('last_eat_at', '<=', $this->simulationTurns->currentTurn() - 3)->get();
 
         DB::transaction(function () use ($humans) {
             for ($i = 0; $i < $humans->count(); $i++) {
@@ -50,7 +49,7 @@ class SimulationTurnService
 
     public function checkWhoBleedOut(): void
     {
-        $injuredHumans = HumanInjury::where('injured_at', '>', $this->currentTurn - 2)->get();
+        $injuredHumans = HumanInjury::where('injured_at', '>', $this->simulationTurns->currentTurn() - 2)->get();
 
         foreach ($injuredHumans as $injuredHuman) {
             $human = Human::find($injuredHuman->human_id);
@@ -62,7 +61,7 @@ class SimulationTurnService
 
     public function checkWhoTurnIntoZombie(): void
     {
-        $bitten = HumanBite::where('turn_id', $this->currentTurn - 1)->get();
+        $bitten = HumanBite::where('turn_id', $this->simulationTurns->currentTurn() - 1)->get();
         foreach ($bitten as $bite) {
             $human = Human::find($bite->human_id);
             $this->turnHumanIntoZombie($human);
@@ -79,7 +78,7 @@ class SimulationTurnService
         $humans = Human::alive()->inRandomOrder()->get()->take($count);
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
-            HumanInjury::add($human->id, $injury, $this->currentTurn);
+            HumanInjury::add($human->id, $injury, $this->simulationTurns->currentTurn());
             if ($human->isNotHealthy()) {
                 $human->die($injury);
             }
@@ -148,7 +147,7 @@ class SimulationTurnService
         for ($i = 0; $i < count($humans); $i++) {
             if ($food->getQuantity() > 0) {
                 $food->consume();
-                $humans[$i]->ateFood($this->currentTurn);
+                $humans[$i]->ateFood($this->simulationTurns->currentTurn());
             }
         }
         $this->humans->saveFromArray($humans);
@@ -188,7 +187,7 @@ class SimulationTurnService
     public function getFrontendDataForDashboard(): array
     {
         return [
-            ['label' => 'Obecna tura', 'value' => $this->currentTurn, 'icon' => 'clock-solid.svg'],
+            ['label' => 'Obecna tura', 'value' => $this->simulationTurns->currentTurn(), 'icon' => 'clock-solid.svg'],
             ['label' => 'Żywi ludzie', 'value' => Human::alive()->count(), 'icon' => 'person-solid.svg'],
             ['label' => 'Zombie', 'value' => Zombie::stillWalking()->count(), 'icon' => 'biohazard-solid.svg'],
             ['label' => 'Jedzenie', 'value' => Resource::where('type', 'food')->first()->quantity, 'icon' => 'utensils-solid.svg'],

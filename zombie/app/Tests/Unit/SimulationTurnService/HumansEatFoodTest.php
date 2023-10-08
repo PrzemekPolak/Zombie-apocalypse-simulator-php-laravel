@@ -9,6 +9,7 @@ class HumansEatFoodTest extends MyTestCase
     /** @test */
     public function foodResourcesDecreaseAfterHumansConsumeThem(): void
     {
+        $this->systemIsOnTurn(1);
         $this->system()->hasHumans(
             aHuman()->build(),
             aHuman()->build(),
@@ -23,6 +24,7 @@ class HumansEatFoodTest extends MyTestCase
     /** @test */
     public function foodResourcesDontGoBelowZero(): void
     {
+        $this->systemIsOnTurn(1);
         $this->system()->hasHumans(
             aHuman()->build(),
         );
@@ -40,6 +42,7 @@ class HumansEatFoodTest extends MyTestCase
         $human = aHuman()->lastAteAt(0)->build();
         $currentTurn = 1;
 
+        $this->systemIsOnTurn($currentTurn);
         $this->system()->hasHumans(
             $human,
         );
@@ -53,9 +56,10 @@ class HumansEatFoodTest extends MyTestCase
     /** @test */
     public function humanLastEatAtValueDontChangeIfThereIsNoFood(): void
     {
-        $previousTurn = 0;
+        $previousTurn = 1;
         $human = aHuman()->lastAteAt($previousTurn)->build();
 
+        $this->systemIsOnTurn($previousTurn + 1);
         $this->system()->hasHumans(
             $human,
         );
@@ -64,6 +68,13 @@ class HumansEatFoodTest extends MyTestCase
         $this->simulationTurnService()->humansEatFood();
 
         $this->assertThat($this->turnHumanLastAteAt(), self::equalTo($previousTurn));
+    }
+
+    private function systemIsOnTurn(int $turnNumber): void
+    {
+        $this->system()->hasSimulationTurns(
+            aSimulationTurn()->withTurnNumber($turnNumber)->build(),
+        );
     }
 
     private function systemHasFood(int $quantity = 123): void
