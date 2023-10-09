@@ -44,6 +44,19 @@ class HumanBuilder
         );
     }
 
+    public function withProfession(string $profession): self
+    {
+        return new self(
+            $this->id,
+            $this->name,
+            $this->age,
+            $profession,
+            $this->health,
+            $this->lastEatAt,
+            $this->deathCause,
+        );
+    }
+
     public function lastAteAt(int $turn): self
     {
         return new self(

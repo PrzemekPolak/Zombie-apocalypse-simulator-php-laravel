@@ -7,6 +7,7 @@ use App\Domain\Human;
 
 class InMemoryHumans implements Humans
 {
+    /** @var Human[] $humans */
     private array $humans = [];
 
     public function allAlive(): array
@@ -31,7 +32,15 @@ class InMemoryHumans implements Humans
 
     public function getNumberOfResourceProducers(string $resourceType): int
     {
-        throw new \Exception('Not implemented!');
+        if ('health' === $resourceType) {
+            return $this->countProducers(['doctor', 'nurse']);
+        }
+        if ('food' === $resourceType) {
+            return $this->countProducers(['farmer', 'hunter']);
+        }
+        if ('weapon' === $resourceType) {
+            return $this->countProducers(['engineer', 'mechanic']);
+        }
     }
 
     public function injured(): array
@@ -42,5 +51,16 @@ class InMemoryHumans implements Humans
     public function add(Human $human): void
     {
         $this->humans[] = $human;
+    }
+
+    private function countProducers(array $professions): int
+    {
+        $count = 0;
+        foreach ($this->humans as $human) {
+            if (in_array($human->profession, $professions)) {
+                $count += 1;
+            }
+        }
+        return $count;
     }
 }
