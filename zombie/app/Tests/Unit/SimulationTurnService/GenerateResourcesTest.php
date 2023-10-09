@@ -17,6 +17,7 @@ class GenerateResourcesTest extends MyTestCase
             aHuman()->withProfession($foodProducingProfession)->build(),
             aHuman()->withProfession($healthProducingProfession)->build(),
             aHuman()->withProfession($weaponProducingProfession)->build(),
+            aHuman()->build(),
         );
         $this->system()->hasResources(
             aFoodResource()->withQuantity(0)->build(),

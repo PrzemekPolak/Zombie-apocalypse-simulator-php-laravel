@@ -39,7 +39,7 @@ class SqlHumans implements Humans
                     [
                         'name' => $human->name,
                         'age' => $human->age,
-                        'profession' => $human->profession,
+                        'profession' => $human->professionName(),
                         'health' => $human->health,
                         'last_eat_at' => $human->lastEatAt,
                         'death_cause' => $human->deathCause,

@@ -3,17 +3,18 @@
 namespace App\Tests\TestUtils\Builders;
 
 use App\Domain\Human;
+use App\Domain\Profession;
 
 class HumanBuilder
 {
     public function __construct(
-        public int     $id,
-        public string  $name,
-        public int     $age,
-        public string  $profession,
-        public string  $health,
-        public int     $lastEatAt,
-        public ?string $deathCause,
+        public int        $id,
+        public string     $name,
+        public int        $age,
+        public Profession $profession,
+        public string     $health,
+        public int        $lastEatAt,
+        public ?string    $deathCause,
     )
     {
     }
@@ -24,7 +25,7 @@ class HumanBuilder
             mt_rand(1, 999999),
             'Name',
             mt_rand(1, 100),
-            'musician',
+            Profession::create('musician'),
             'healthy',
             0,
             null,
@@ -50,7 +51,7 @@ class HumanBuilder
             $this->id,
             $this->name,
             $this->age,
-            $profession,
+            Profession::create($profession),
             $this->health,
             $this->lastEatAt,
             $this->deathCause,

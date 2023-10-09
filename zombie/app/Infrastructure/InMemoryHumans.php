@@ -32,15 +32,13 @@ class InMemoryHumans implements Humans
 
     public function getNumberOfResourceProducers(string $resourceType): int
     {
-        if ('health' === $resourceType) {
-            return $this->countProducers(['doctor', 'nurse']);
+        $count = 0;
+        foreach ($this->humans as $human) {
+            if ($human->professionType() === $resourceType) {
+                $count += 1;
+            }
         }
-        if ('food' === $resourceType) {
-            return $this->countProducers(['farmer', 'hunter']);
-        }
-        if ('weapon' === $resourceType) {
-            return $this->countProducers(['engineer', 'mechanic']);
-        }
+        return $count;
     }
 
     public function injured(): array
@@ -51,16 +49,5 @@ class InMemoryHumans implements Humans
     public function add(Human $human): void
     {
         $this->humans[] = $human;
-    }
-
-    private function countProducers(array $professions): int
-    {
-        $count = 0;
-        foreach ($this->humans as $human) {
-            if (in_array($human->profession, $professions)) {
-                $count += 1;
-            }
-        }
-        return $count;
     }
 }
