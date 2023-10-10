@@ -21,5 +21,8 @@ interface Humans
     /** @return Human[] */
     public function injured(): array;
 
+    /** @return Human[] */
+    public function getRandomHumans(int $count): array;
+
     public function add(Human $human): void;
 }

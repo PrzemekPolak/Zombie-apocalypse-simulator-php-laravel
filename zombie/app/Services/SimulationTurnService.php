@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Models\Human;
 use App\Models\HumanBite;
@@ -17,9 +18,10 @@ use Illuminate\Support\Facades\DB;
 class SimulationTurnService
 {
     public function __construct(
-        private readonly Humans          $humans,
-        private readonly Resources       $resources,
-        private readonly SimulationTurns $simulationTurns,
+        private readonly Humans             $humans,
+        private readonly Resources          $resources,
+        private readonly SimulationTurns    $simulationTurns,
+        private readonly SimulationSettings $simulationSettings,
     )
     {
     }
@@ -74,18 +76,18 @@ class SimulationTurnService
      */
     public function humanNonBiteInjuries(): void
     {
-        $count = $this->calculateTimesEventOccured('injuryChance');
-        $humans = Human::alive()->inRandomOrder()->get()->take($count);
+        $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('injuryChance'));
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
             HumanInjury::add($human->id, $injury, $this->simulationTurns->currentTurn());
             if ($human->isNotHealthy()) {
                 $human->die($injury);
             }
-            if ($human->health === 'healthy') {
-                $human->setHealth('injured');
+            if ($human->isHealthy()) {
+                $human->getsInjured();
             }
         }
+        $this->humans->saveFromArray($humans);
     }
 
     public function zombieEncounters(): void
@@ -94,7 +96,7 @@ class SimulationTurnService
         $weapon = Resource::where('type', 'weapon')->first()->quantity;
 
         $encounterNumber = Zombie::stillWalking()->count();
-        $count = $this->calculateTimesEventOccured('injuryChance');
+        $count = $this->calculateTimesEventOccurred('injuryChance');
         $humans = Human::alive()->inRandomOrder()->get()->take($count);
         $zombies = Zombie::stillWalking()->inRandomOrder()->get();
         foreach ($humans as $human) {
@@ -220,11 +222,11 @@ class SimulationTurnService
         $human->update(['health' => 'turned']);
     }
 
-    private function calculateTimesEventOccured(string $event)
+    private function calculateTimesEventOccurred(string $event): int
     {
-        $humanCount = Human::all()->count();
-        $event = SimulationSetting::getEventChance($event);
-        return $event * $humanCount / 100;
+        $humanCount = $this->humans->countAlive();
+        $event = $this->simulationSettings->getEventChance($event);
+        return floor($event * $humanCount / 100);
     }
 
     private function chooseInjuryCause(): string

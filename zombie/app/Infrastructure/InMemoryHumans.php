@@ -17,7 +17,13 @@ class InMemoryHumans implements Humans
 
     public function countAlive(): int
     {
-        throw new \Exception('Not implemented!');
+        $count = 0;
+        foreach ($this->humans as $human) {
+            if ($human->isAlive()) {
+                $count += 1;
+            }
+        }
+        return $count;
     }
 
     public function update(int $id, array $fields): void
@@ -49,5 +55,11 @@ class InMemoryHumans implements Humans
     public function add(Human $human): void
     {
         $this->humans[] = $human;
+    }
+
+    public function getRandomHumans(int $count): array
+    {
+        shuffle($this->humans);
+        return array_slice($this->humans, 0, $count);
     }
 }

@@ -11,7 +11,7 @@ class Human
         private readonly Profession $profession,
         public string               $health,
         public int                  $lastEatAt,
-        public readonly ?string     $deathCause,
+        private ?string             $deathCause,
     )
     {
     }
@@ -60,6 +60,11 @@ class Human
         $this->health = 'healthy';
     }
 
+    public function getsInjured(): void
+    {
+        $this->health = 'injured';
+    }
+
     public function professionName(): string
     {
         return $this->profession->name;
@@ -68,5 +73,33 @@ class Human
     public function professionType(): string
     {
         return $this->profession->type;
+    }
+
+    public function isHealthy(): bool
+    {
+        return $this->health === 'healthy';
+    }
+
+    public function isNotHealthy(): bool
+    {
+        return $this->health !== 'healthy';
+    }
+
+    public function die(string $injury): void
+    {
+        $this->health = 'dead';
+        $this->deathCause = $injury;
+    }
+
+    public function getDeathCause(): string
+    {
+        return $this->deathCause;
+    }
+
+    public function isAlive(): bool
+    {
+        if ('healthy' === $this->health || 'injured' === $this->health) {
+            return true;
+        } else return false;
     }
 }

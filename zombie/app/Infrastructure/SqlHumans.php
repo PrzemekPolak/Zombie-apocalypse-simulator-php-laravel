@@ -42,7 +42,7 @@ class SqlHumans implements Humans
                         'profession' => $human->professionName(),
                         'health' => $human->health,
                         'last_eat_at' => $human->lastEatAt,
-                        'death_cause' => $human->deathCause,
+                        'death_cause' => $human->getDeathCause(),
                     ]
                 );
             }
@@ -59,16 +59,21 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(Human::where('health', 'injured')->get()->toArray());
     }
 
+    public function add(DomainHuman $human): void
+    {
+        throw new \Exception('Not implemented!');
+    }
+
+    public function getRandomHumans(int $count): array
+    {
+        return $this->mapToDomainHumansArray(Human::alive()->inRandomOrder()->get()->take($count)->toArray());
+    }
+
     /** @return DomainHuman[] */
     private function mapToDomainHumansArray(array $dbArray): array
     {
         return array_map(static function ($human) {
             return DomainHuman::fromArray($human);
         }, $dbArray);
-    }
-
-    public function add(DomainHuman $human): void
-    {
-        throw new \Exception('Not implemented!');
     }
 }

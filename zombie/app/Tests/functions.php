@@ -2,6 +2,7 @@
 
 use App\Tests\TestUtils\Builders\HumanBuilder;
 use App\Tests\TestUtils\Builders\ResourceBuilder;
+use App\Tests\TestUtils\Builders\SimulationSettingBuilder;
 use App\Tests\TestUtils\Builders\SimulationTurnBuilder;
 
 function aHuman(): HumanBuilder
@@ -27,4 +28,9 @@ function aWeaponResource(): ResourceBuilder
 function aSimulationTurn(): SimulationTurnBuilder
 {
     return SimulationTurnBuilder::default();
+}
+
+function aSimulationSetting(): SimulationSettingBuilder
+{
+    return SimulationSettingBuilder::default();
 }
