@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
@@ -22,6 +23,7 @@ class SimulationTurnService
         private readonly Resources          $resources,
         private readonly SimulationTurns    $simulationTurns,
         private readonly SimulationSettings $simulationSettings,
+        private readonly HumanInjuries      $humanInjuries,
     )
     {
     }
@@ -79,13 +81,8 @@ class SimulationTurnService
         $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('injuryChance'));
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
-            HumanInjury::add($human->id, $injury, $this->simulationTurns->currentTurn());
-            if ($human->isNotHealthy()) {
-                $human->die($injury);
-            }
-            if ($human->isHealthy()) {
-                $human->getsInjured();
-            }
+            $human->getsInjured($injury);
+            $this->humanInjuries->add($human->id, $injury, $this->simulationTurns->currentTurn());
         }
         $this->humans->saveFromArray($humans);
     }

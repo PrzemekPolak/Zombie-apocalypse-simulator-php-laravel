@@ -2,6 +2,7 @@
 
 namespace App\Tests\SyntacticSugar;
 
+use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
@@ -18,6 +19,7 @@ class System
         private readonly Resources          $resources,
         private readonly SimulationTurns    $simulationTurns,
         private readonly SimulationSettings $simulationSettings,
+        private readonly HumanInjuries      $humanInjuries,
     )
     {
     }
@@ -30,6 +32,11 @@ class System
     public function resources(): Resources
     {
         return $this->resources;
+    }
+
+    public function getHumanInjuries(): HumanInjuries
+    {
+        return $this->humanInjuries;
     }
 
     public function hasHumans(Human ...$humans): void

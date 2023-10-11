@@ -60,9 +60,14 @@ class Human
         $this->health = 'healthy';
     }
 
-    public function getsInjured(): void
+    public function getsInjured(string $injury): void
     {
-        $this->health = 'injured';
+        if ($this->isNotHealthy()) {
+            $this->die($injury);
+        }
+        if ($this->isHealthy()) {
+            $this->health = 'injured';
+        }
     }
 
     public function professionName(): string

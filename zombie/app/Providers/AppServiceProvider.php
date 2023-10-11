@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
+use App\Infrastructure\SqlHumanInjuries;
 use App\Infrastructure\SqlHumans;
 use App\Infrastructure\SqlResources;
 use App\Infrastructure\SqlSimulationSettings;
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Resources::class, SqlResources::class);
         $this->app->bind(SimulationTurns::class, SqlSimulationTurns::class);
         $this->app->bind(SimulationSettings::class, SqlSimulationSettings::class);
+        $this->app->bind(HumanInjuries::class, SqlHumanInjuries::class);
     }
 
     /**

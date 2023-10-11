@@ -9,17 +9,8 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     /** @test */
     public function humanGetsOnlyInjuredWhenHealthy(): void
     {
-        $human = aHuman()->build();
-
-        $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('injuryChance')->withChance(100)->build(),
-        );
-        $this->system()->hasSimulationTurns(
-            aSimulationTurn()->build(),
-        );
-        $this->system()->hasHumans(
-            $human,
-        );
+        $this->humanWillAlwaysGetInjured();
+        $this->systemHasHumanAndTurn();
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
@@ -29,16 +20,12 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     /** @test */
     public function humanDiesWhenAlreadyInjured(): void
     {
-        $human = aHuman()->withInjury()->build();
-
-        $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('injuryChance')->withChance(100)->build(),
-        );
+        $this->humanWillAlwaysGetInjured();
         $this->system()->hasSimulationTurns(
             aSimulationTurn()->build(),
         );
         $this->system()->hasHumans(
-            $human,
+            aHuman()->withInjury()->build(),
         );
 
         $this->simulationTurnService()->humanNonBiteInjuries();
@@ -49,31 +36,64 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     /** @test */
     public function humanInjuryHistoryIsCreated(): void
     {
+        $humanId = 1234;
+        $turn = 1;
 
+        $this->humanWillAlwaysGetInjured();
+        $this->system()->hasSimulationTurns(
+            aSimulationTurn()->withTurnNumber($turn)->build(),
+        );
+        $this->system()->hasHumans(
+            aHuman()->withId($humanId)->build(),
+        );
+
+        $this->simulationTurnService()->humanNonBiteInjuries();
+
+        $this->assertThat($this->idOfHumanInjuredInTurn($turn), $this->equalTo($humanId));
     }
 
     /** @test */
     public function ifInjuryChanceIsZeroNothingHappens(): void
     {
-        $human = aHuman()->build();
-
-        $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('injuryChance')->withChance(0)->build(),
-        );
-        $this->system()->hasSimulationTurns(
-            aSimulationTurn()->build(),
-        );
-        $this->system()->hasHumans(
-            $human,
-        );
+        $this->humanWillNeverGetInjured();
+        $this->systemHasHumanAndTurn();
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
         $this->assertThat($this->humanHealth(), $this->equalTo('healthy'));
     }
 
-    public function humanHealth(): string
+    private function humanHealth(): string
     {
         return $this->system()->humans()->allAlive()[0]->health;
+    }
+
+    private function idOfHumanInjuredInTurn(int $turn): int
+    {
+        return $this->system()->getHumanInjuries()->fromTurn($turn)[0]->humanId;
+    }
+
+    private function humanWillAlwaysGetInjured(): void
+    {
+        $this->system()->hasSimulationSettings(
+            aSimulationSetting()->withEvent('injuryChance')->withChance(100)->build(),
+        );
+    }
+
+    private function humanWillNeverGetInjured(): void
+    {
+        $this->system()->hasSimulationSettings(
+            aSimulationSetting()->withEvent('injuryChance')->withChance(0)->build(),
+        );
+    }
+
+    private function systemHasHumanAndTurn(): void
+    {
+        $this->system()->hasSimulationTurns(
+            aSimulationTurn()->build(),
+        );
+        $this->system()->hasHumans(
+            aHuman()->build(),
+        );
     }
 }

@@ -32,6 +32,19 @@ class HumanBuilder
         );
     }
 
+    public function withId(int $id): self
+    {
+        return new self(
+            $id,
+            $this->name,
+            $this->age,
+            $this->profession,
+            $this->health,
+            $this->lastEatAt,
+            $this->deathCause,
+        );
+    }
+
     public function withInjury(): self
     {
         return new self(
