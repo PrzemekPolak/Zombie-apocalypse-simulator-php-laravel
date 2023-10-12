@@ -2,12 +2,14 @@
 
 namespace App\Tests\SyntacticSugar;
 
+use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Domain\Human;
+use App\Domain\HumanBite;
 use App\Domain\Resource;
 use App\Domain\SimulationSetting;
 use App\Domain\SimulationTurn;
@@ -20,6 +22,7 @@ class System
         private readonly SimulationTurns    $simulationTurns,
         private readonly SimulationSettings $simulationSettings,
         private readonly HumanInjuries      $humanInjuries,
+        private readonly HumanBites         $humanBites
     )
     {
     }
@@ -64,6 +67,17 @@ class System
     {
         foreach ($simulationSettings as $simulationSetting) {
             $this->simulationSettings->add($simulationSetting);
+        }
+    }
+
+    public function hasHumanBites(HumanBite ...$humanBites): void
+    {
+        foreach ($humanBites as $humanBite) {
+            $this->humanBites->add(
+                $humanBite->humanId,
+                $humanBite->zombieId,
+                $humanBite->turn,
+            );
         }
     }
 }

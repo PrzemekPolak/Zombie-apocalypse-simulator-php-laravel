@@ -1,5 +1,6 @@
 <?php
 
+use App\Tests\TestUtils\Builders\HumanBiteBuilder;
 use App\Tests\TestUtils\Builders\HumanBuilder;
 use App\Tests\TestUtils\Builders\ResourceBuilder;
 use App\Tests\TestUtils\Builders\SimulationSettingBuilder;
@@ -33,4 +34,9 @@ function aSimulationTurn(): SimulationTurnBuilder
 function aSimulationSetting(): SimulationSettingBuilder
 {
     return SimulationSettingBuilder::default();
+}
+
+function aHumanBite(): HumanBiteBuilder
+{
+    return HumanBiteBuilder::default();
 }

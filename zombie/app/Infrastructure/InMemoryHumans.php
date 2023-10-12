@@ -62,4 +62,13 @@ class InMemoryHumans implements Humans
         shuffle($this->humans);
         return array_slice($this->humans, 0, $count);
     }
+
+    public function find(int $humanId): Human
+    {
+        foreach ($this->humans as $human) {
+            if ($human->id === $humanId) {
+                return $human;
+            }
+        }
+    }
 }

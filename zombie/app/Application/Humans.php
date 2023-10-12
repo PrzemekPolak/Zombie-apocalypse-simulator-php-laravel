@@ -25,4 +25,6 @@ interface Humans
     public function getRandomHumans(int $count): array;
 
     public function add(Human $human): void;
+
+    public function find(int $humanId): Human;
 }

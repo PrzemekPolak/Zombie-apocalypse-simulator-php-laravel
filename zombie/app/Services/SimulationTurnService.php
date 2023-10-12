@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
+use App\Application\Zombies;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
@@ -14,6 +16,7 @@ use App\Models\Resource;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
+use App\Domain\Zombie as DomainZombie;
 use Illuminate\Support\Facades\DB;
 
 class SimulationTurnService
@@ -24,6 +27,8 @@ class SimulationTurnService
         private readonly SimulationTurns    $simulationTurns,
         private readonly SimulationSettings $simulationSettings,
         private readonly HumanInjuries      $humanInjuries,
+        private readonly HumanBites         $humanBites,
+        private readonly Zombies            $zombies,
     )
     {
     }
@@ -65,17 +70,16 @@ class SimulationTurnService
 
     public function checkWhoTurnIntoZombie(): void
     {
-        $bitten = HumanBite::where('turn_id', $this->simulationTurns->currentTurn() - 1)->get();
+        $bitten = $this->humanBites->fromTurn($this->simulationTurns->currentTurn() - 1);
         foreach ($bitten as $bite) {
-            $human = Human::find($bite->human_id);
-            $this->turnHumanIntoZombie($human);
+            $human = $this->humans->find($bite->humanId);
+            $human->becomeZombie();
+            $this->zombies->add(DomainZombie::fromHuman($human));
+
+            $this->humans->saveFromArray([$human]);
         }
     }
 
-    /**
-     * generates injuries not caused by zombies
-     * @return void
-     */
     public function humanNonBiteInjuries(): void
     {
         $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('injuryChance'));
@@ -208,15 +212,6 @@ class SimulationTurnService
             'allBites' => HumanBite::all()->count(),
             'allInjuries' => HumanInjury::all()->count(),
         ];
-    }
-
-    private function turnHumanIntoZombie(Human $human): void
-    {
-        $zombie = $human->replicate(['last_eat_at', 'death_cause']);
-        $zombie->health = 'infected';
-        $zombie->setTable('zombies');
-        $zombie->save();
-        $human->update(['health' => 'turned']);
     }
 
     private function calculateTimesEventOccurred(string $event): int

@@ -69,6 +69,11 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(Human::alive()->inRandomOrder()->get()->take($count)->toArray());
     }
 
+    public function find(int $humanId): DomainHuman
+    {
+        return DomainHuman::fromArray(Human::find($humanId));
+    }
+
     /** @return DomainHuman[] */
     private function mapToDomainHumansArray(array $dbArray): array
     {

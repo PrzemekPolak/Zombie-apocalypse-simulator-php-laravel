@@ -107,4 +107,9 @@ class Human
             return true;
         } else return false;
     }
+
+    public function becomeZombie(): void
+    {
+        $this->health = 'turned';
+    }
 }
