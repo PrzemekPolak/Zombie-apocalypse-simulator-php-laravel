@@ -8,6 +8,7 @@ use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
+use App\Application\Zombies;
 use App\Domain\Human;
 use App\Domain\HumanBite;
 use App\Domain\Resource;
@@ -22,7 +23,8 @@ class System
         private readonly SimulationTurns    $simulationTurns,
         private readonly SimulationSettings $simulationSettings,
         private readonly HumanInjuries      $humanInjuries,
-        private readonly HumanBites         $humanBites
+        private readonly HumanBites         $humanBites,
+        private readonly Zombies            $zombies,
     )
     {
     }
@@ -40,6 +42,11 @@ class System
     public function getHumanInjuries(): HumanInjuries
     {
         return $this->humanInjuries;
+    }
+
+    public function getZombies(): Zombies
+    {
+        return $this->zombies;
     }
 
     public function hasHumans(Human ...$humans): void

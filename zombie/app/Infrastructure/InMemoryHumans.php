@@ -12,7 +12,13 @@ class InMemoryHumans implements Humans
 
     public function allAlive(): array
     {
-        return $this->humans;
+        $result = [];
+        foreach ($this->humans as $human) {
+            if ($human->isAlive()) {
+                $result[] = $human;
+            }
+        }
+        return $result;
     }
 
     public function countAlive(): int
@@ -70,5 +76,10 @@ class InMemoryHumans implements Humans
                 return $human;
             }
         }
+    }
+
+    public function all(): array
+    {
+        return $this->humans;
     }
 }

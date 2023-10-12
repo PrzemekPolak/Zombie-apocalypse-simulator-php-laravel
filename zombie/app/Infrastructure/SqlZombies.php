@@ -38,4 +38,17 @@ class SqlZombies implements Zombies
         $newZombie->health = $zombie->health;
         $newZombie->save();
     }
+
+    public function stillWalking(): array
+    {
+        return $this->mapToDomainZombiesArray(ModelZombie::stillWalking()->toArray());
+    }
+
+    /** @return Zombie[] */
+    private function mapToDomainZombiesArray(array $dbArray): array
+    {
+        return array_map(static function ($zombie) {
+            return Zombie::fromArray($zombie);
+        }, $dbArray);
+    }
 }

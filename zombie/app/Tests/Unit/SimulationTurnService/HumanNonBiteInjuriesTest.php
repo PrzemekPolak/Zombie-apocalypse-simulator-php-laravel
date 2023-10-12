@@ -65,7 +65,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
     private function humanHealth(): string
     {
-        return $this->system()->humans()->allAlive()[0]->health;
+        return $this->system()->humans()->all()[0]->health;
     }
 
     private function idOfHumanInjuredInTurn(int $turn): int

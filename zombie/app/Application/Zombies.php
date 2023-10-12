@@ -10,4 +10,7 @@ interface Zombies
     public function save(array $zombies): void;
 
     public function add(Zombie $zombie): void;
+
+    /** @return Zombie[] */
+    public function stillWalking(): array;
 }

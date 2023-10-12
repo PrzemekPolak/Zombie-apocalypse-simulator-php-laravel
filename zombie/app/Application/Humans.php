@@ -27,4 +27,7 @@ interface Humans
     public function add(Human $human): void;
 
     public function find(int $humanId): Human;
+
+    /** @return Human[] */
+    public function all(): array;
 }

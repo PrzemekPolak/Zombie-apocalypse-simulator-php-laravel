@@ -54,6 +54,7 @@ class MyTestCase extends TestCase
             $simulationSettings,
             $humanInjuries,
             $humanBites,
+            $zombies,
         );
 
         $this->simulationTurnService = new SimulationTurnService(

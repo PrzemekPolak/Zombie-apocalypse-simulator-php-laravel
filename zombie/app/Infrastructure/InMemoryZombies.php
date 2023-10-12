@@ -19,4 +19,15 @@ class InMemoryZombies implements Zombies
     {
         $this->zombies[] = $zombie;
     }
+
+    public function stillWalking(): array
+    {
+        $result = [];
+        foreach ($this->zombies as $zombie) {
+            if ('dead' !== $zombie->health) {
+                $result[] = $zombie;
+            }
+        }
+        return $result;
+    }
 }

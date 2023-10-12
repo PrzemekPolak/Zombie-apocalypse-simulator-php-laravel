@@ -12,7 +12,7 @@ class HumanBite
     {
     }
 
-    public function fromArray(array $humanBite): self
+    public static function fromArray(array $humanBite): self
     {
         return new self(
             $humanBite['human_id'],

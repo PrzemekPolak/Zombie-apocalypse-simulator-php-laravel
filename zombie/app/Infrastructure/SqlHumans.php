@@ -71,7 +71,12 @@ class SqlHumans implements Humans
 
     public function find(int $humanId): DomainHuman
     {
-        return DomainHuman::fromArray(Human::find($humanId));
+        return DomainHuman::fromArray(Human::find($humanId)->toArray());
+    }
+
+    public function all(): array
+    {
+        return $this->mapToDomainHumansArray(Human::all()->toArray());
     }
 
     /** @return DomainHuman[] */

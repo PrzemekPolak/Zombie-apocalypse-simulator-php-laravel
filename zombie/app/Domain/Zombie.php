@@ -27,6 +27,17 @@ class Zombie
         );
     }
 
+    public static function fromArray(array $zombie): self
+    {
+        return new self(
+            $zombie['id'],
+            $zombie['name'],
+            $zombie['age'],
+            Profession::create($zombie['profession']),
+            $zombie['health'],
+        );
+    }
+
     public function professionName(): string
     {
         return $this->profession->name;

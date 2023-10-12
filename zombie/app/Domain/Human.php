@@ -96,7 +96,7 @@ class Human
         $this->deathCause = $injury;
     }
 
-    public function getDeathCause(): string
+    public function getDeathCause(): ?string
     {
         return $this->deathCause;
     }
