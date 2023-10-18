@@ -33,7 +33,11 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php",
+            "app/Tests/functions.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [

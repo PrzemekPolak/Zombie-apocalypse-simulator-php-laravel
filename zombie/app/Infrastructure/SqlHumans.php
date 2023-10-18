@@ -31,7 +31,7 @@ class SqlHumans implements Humans
     }
 
     /** @param $humans DomainHuman[] */
-    public function saveFromArray(array $humans): void
+    public function save(array $humans): void
     {
         DB::transaction(function () use ($humans) {
             foreach ($humans as $human) {
@@ -77,6 +77,11 @@ class SqlHumans implements Humans
     public function all(): array
     {
         return $this->mapToDomainHumansArray(Human::all()->toArray());
+    }
+
+    public function whoLastAteAt(int $turn): array
+    {
+        return $this->mapToDomainHumansArray(Human::alive()->where('last_eat_at', '<=', $turn)->get()->toArray());
     }
 
     /** @return DomainHuman[] */

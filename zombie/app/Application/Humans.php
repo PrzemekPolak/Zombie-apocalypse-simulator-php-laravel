@@ -14,7 +14,7 @@ interface Humans
     public function update(int $id, array $fields): void;
 
     /** @param $humans Human[] */
-    public function saveFromArray(array $humans): void;
+    public function save(array $humans): void;
 
     public function getNumberOfResourceProducers(string $resourceType): int;
 
@@ -30,4 +30,7 @@ interface Humans
 
     /** @return Human[] */
     public function all(): array;
+
+    /** @return Human[] */
+    public function whoLastAteAt(int $turn): array;
 }

@@ -35,13 +35,12 @@ class SimulationTurnService
 
     public function checkWhoDiedFromStarvation(): void
     {
-        $humans = Human::alive()->where('last_eat_at', '<=', $this->simulationTurns->currentTurn() - 3)->get();
+        $humans = $this->humans->whoLastAteAt($this->simulationTurns->currentTurn() - 3);
+        foreach ($humans as $human) {
+            $human->die('starvation');
+        }
 
-        DB::transaction(function () use ($humans) {
-            for ($i = 0; $i < $humans->count(); $i++) {
-                $humans[$i]->die('starvation');
-            }
-        });
+        $this->humans->save($humans);
     }
 
     public function conductTurn(): void
@@ -76,7 +75,7 @@ class SimulationTurnService
             $human->becomeZombie();
             $this->zombies->add(DomainZombie::fromHuman($human));
 
-            $this->humans->saveFromArray([$human]);
+            $this->humans->save([$human]);
         }
     }
 
@@ -88,7 +87,7 @@ class SimulationTurnService
             $human->getsInjured($injury);
             $this->humanInjuries->add($human->id, $injury, $this->simulationTurns->currentTurn());
         }
-        $this->humans->saveFromArray($humans);
+        $this->humans->save($humans);
     }
 
     public function zombieEncounters(): void
@@ -139,7 +138,7 @@ class SimulationTurnService
                 $humans[$i]->getsHealthy();
             }
         }
-        $this->humans->saveFromArray($humans);
+        $this->humans->save($humans);
         $this->resources->save($healthItems);
     }
 
@@ -153,7 +152,7 @@ class SimulationTurnService
                 $humans[$i]->ateFood($this->simulationTurns->currentTurn());
             }
         }
-        $this->humans->saveFromArray($humans);
+        $this->humans->save($humans);
         $this->resources->save($food);
     }
 

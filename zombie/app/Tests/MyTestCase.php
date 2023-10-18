@@ -20,8 +20,6 @@ use App\Services\SimulationTurnService;
 use App\Tests\SyntacticSugar\System;
 use Tests\TestCase;
 
-require_once('App\Tests\functions.php');
-
 class MyTestCase extends TestCase
 {
     private System $system;

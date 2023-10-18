@@ -37,7 +37,7 @@ class InMemoryHumans implements Humans
         throw new \Exception('Not implemented!');
     }
 
-    public function saveFromArray(array $humans): void
+    public function save(array $humans): void
     {
         // TODO: Do nothing looks bad, so find way to improve it
     }
@@ -81,5 +81,16 @@ class InMemoryHumans implements Humans
     public function all(): array
     {
         return $this->humans;
+    }
+
+    public function whoLastAteAt(int $turn): array
+    {
+        $result = [];
+        foreach ($this->humans as $human) {
+            if ($human->lastEatAt === $turn) {
+                $result[] = $human;
+            }
+        }
+        return $result;
     }
 }

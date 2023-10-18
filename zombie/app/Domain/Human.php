@@ -90,10 +90,10 @@ class Human
         return $this->health !== 'healthy';
     }
 
-    public function die(string $injury): void
+    public function die(string $reason): void
     {
         $this->health = 'dead';
-        $this->deathCause = $injury;
+        $this->deathCause = $reason;
     }
 
     public function getDeathCause(): ?string
