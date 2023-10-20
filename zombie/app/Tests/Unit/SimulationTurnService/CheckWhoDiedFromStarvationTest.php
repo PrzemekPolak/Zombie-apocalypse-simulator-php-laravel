@@ -24,7 +24,7 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
 
         $this->simulationTurnService()->checkWhoDiedFromStarvation();
 
-        $this->assertThat($this->aliveHumansIds(), $this->equalTo([$humanWhoAte->id]));
+        assertThat($this->aliveHumansIds(), is(equalTo([$humanWhoAte->id])));
     }
 
     /** @test */
@@ -42,8 +42,8 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
 
         $this->simulationTurnService()->checkWhoDiedFromStarvation();
 
-        $this->assertThat($humanWhoDidntEat->health, $this->equalTo('dead'));
-        $this->assertThat($humanWhoDidntEat->getDeathCause(), $this->equalTo('starvation'));
+        assertThat($humanWhoDidntEat->health, is(equalTo('dead')));
+        assertThat($humanWhoDidntEat->getDeathCause(), is(equalTo('starvation')));
     }
 
     private function aliveHumansIds(): array

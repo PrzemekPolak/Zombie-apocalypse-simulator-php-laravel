@@ -14,7 +14,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
-        $this->assertThat($this->humanHealth(), $this->equalTo('injured'));
+        assertThat($this->humanHealth(), is(equalTo('injured')));
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
-        $this->assertThat($this->humanHealth(), $this->equalTo('dead'));
+        assertThat($this->humanHealth(), is(equalTo('dead')));
     }
 
     /** @test */
@@ -49,7 +49,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
-        $this->assertThat($this->idOfHumanInjuredInTurn($turn), $this->equalTo($humanId));
+        assertThat($this->idOfHumanInjuredInTurn($turn), is(equalTo($humanId)));
     }
 
     /** @test */
@@ -60,7 +60,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->simulationTurnService()->humanNonBiteInjuries();
 
-        $this->assertThat($this->humanHealth(), $this->equalTo('healthy'));
+        assertThat($this->humanHealth(), is(equalTo('healthy')));
     }
 
     private function humanHealth(): string

@@ -32,9 +32,9 @@ class GenerateResourcesTest extends MyTestCase
 
     private function assertResourcesAreGeneratedInRightQuantity(): void
     {
-        $this->assertThat($this->resourceQuantityInSystem('food'), self::equalTo(2));
-        $this->assertThat($this->resourceQuantityInSystem('health'), self::equalTo(1));
-        $this->assertThat($this->resourceQuantityInSystem('weapon'), self::equalTo(1));
+        assertThat($this->resourceQuantityInSystem('food'), is(equalTo(2)));
+        assertThat($this->resourceQuantityInSystem('health'), is(equalTo(1)));
+        assertThat($this->resourceQuantityInSystem('weapon'), is(equalTo(1)));
     }
 
     private function resourceQuantityInSystem(string $type): int

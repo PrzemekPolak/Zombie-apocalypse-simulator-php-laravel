@@ -16,6 +16,7 @@ use App\Infrastructure\InMemoryResources;
 use App\Infrastructure\InMemorySimulationSettings;
 use App\Infrastructure\InMemorySimulationTurns;
 use App\Infrastructure\InMemoryZombies;
+use App\Services\ProbabilityService;
 use App\Services\SimulationTurnService;
 use App\Tests\SyntacticSugar\System;
 use Tests\TestCase;
@@ -63,6 +64,7 @@ class MyTestCase extends TestCase
             $humanInjuries,
             $humanBites,
             $zombies,
+            new ProbabilityService(),
         );
     }
 

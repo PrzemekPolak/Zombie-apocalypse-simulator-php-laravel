@@ -17,7 +17,6 @@ use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use App\Domain\Zombie as DomainZombie;
-use Illuminate\Support\Facades\DB;
 
 class SimulationTurnService
 {
@@ -29,6 +28,7 @@ class SimulationTurnService
         private readonly HumanInjuries      $humanInjuries,
         private readonly HumanBites         $humanBites,
         private readonly Zombies            $zombies,
+        private readonly ProbabilityService $probabilityService,
     )
     {
     }
@@ -133,7 +133,7 @@ class SimulationTurnService
         $healthItems = $this->resources->getByType('health');
 
         for ($i = 0; $i < count($humans); $i++) {
-            if (($healthItems->getQuantity() > 0) && random_int(0, 4) === 2) {
+            if ($healthItems->getQuantity() > 0 && $this->probabilityService->willItHappen(25)) {
                 $healthItems->consume();
                 $humans[$i]->getsHealthy();
             }

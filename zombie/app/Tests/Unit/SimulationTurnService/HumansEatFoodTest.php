@@ -18,7 +18,7 @@ class HumansEatFoodTest extends MyTestCase
 
         $this->simulationTurnService()->humansEatFood();
 
-        $this->assertThat($this->foodQuantityInSystem(), self::equalTo(0));
+        assertThat($this->foodQuantityInSystem(), is(equalTo(0)));
     }
 
     /** @test */
@@ -32,7 +32,7 @@ class HumansEatFoodTest extends MyTestCase
 
         $this->simulationTurnService()->humansEatFood();
 
-        $this->assertThat($this->foodQuantityInSystem(), self::equalTo(0));
+        assertThat($this->foodQuantityInSystem(), is(equalTo(0)));
     }
 
 
@@ -50,7 +50,7 @@ class HumansEatFoodTest extends MyTestCase
 
         $this->simulationTurnService()->humansEatFood();
 
-        $this->assertThat($this->turnHumanLastAteAt(), self::equalTo($currentTurn));
+        assertThat($this->turnHumanLastAteAt(), is(equalTo($currentTurn)));
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class HumansEatFoodTest extends MyTestCase
 
         $this->simulationTurnService()->humansEatFood();
 
-        $this->assertThat($this->turnHumanLastAteAt(), self::equalTo($previousTurn));
+        assertThat($this->turnHumanLastAteAt(), is(equalTo($previousTurn)));
     }
 
     private function systemIsOnTurn(int $turnNumber): void

@@ -28,7 +28,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
         $this->simulationTurnService()->checkWhoTurnIntoZombie();
 
-        $this->assertThat($human->health, $this->equalTo('turned'));
+        assertThat($human->health, is(equalTo('turned')));
     }
 
     /** @test */
@@ -45,7 +45,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
         $this->simulationTurnService()->checkWhoTurnIntoZombie();
 
-        $this->assertThat($human->health, $this->equalTo('healthy'));
+        assertThat($human->health, is(equalTo('healthy')));
     }
 
     /** @test */
@@ -78,9 +78,9 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
     private function assertThatHumanCorrectlyBecameZombie(Zombie $actual, Human $expected): void
     {
-        $this->assertThat($actual->name, $this->equalTo($expected->name));
-        $this->assertThat($actual->age, $this->equalTo($expected->age));
-        $this->assertThat($actual->professionName(), $this->equalTo($expected->professionName()));
-        $this->assertThat($actual->health, $this->equalTo('infected'));
+        assertThat($actual->name, is(equalTo($expected->name)));
+        assertThat($actual->age, is(equalTo($expected->age)));
+        assertThat($actual->professionName(), is(equalTo($expected->professionName())));
+        assertThat($actual->health, is(equalTo('infected')));
     }
 }
