@@ -57,12 +57,14 @@ class SimulationTurnService
 
     public function checkWhoBleedOut(): void
     {
-        $injuredHumans = HumanInjury::where('injured_at', '>', $this->simulationTurns->currentTurn() - 2)->get();
+        $humanInjuries = $this->humanInjuries->fromTurn($this->simulationTurns->currentTurn() - 2);
 
-        foreach ($injuredHumans as $injuredHuman) {
-            $human = Human::find($injuredHuman->human_id);
-            if ($human->isNotHealthy()) {
-                $human->die($injuredHuman->injury_cause);
+        foreach ($humanInjuries as $humanInjury) {
+            $human = $this->humans->find($humanInjury->humanId);
+            if ($human->isInjured()) {
+                $human->die($humanInjury->injuryCause);
+
+                $this->humans->save([$human]);
             }
         }
     }
@@ -70,6 +72,7 @@ class SimulationTurnService
     public function checkWhoTurnIntoZombie(): void
     {
         $bitten = $this->humanBites->fromTurn($this->simulationTurns->currentTurn() - 1);
+
         foreach ($bitten as $bite) {
             $human = $this->humans->find($bite->humanId);
             $human->becomeZombie();

@@ -58,6 +58,19 @@ class HumanBuilder
         );
     }
 
+    public function withHealth(string $healthStatus): self
+    {
+        return new self(
+            $this->id,
+            $this->name,
+            $this->age,
+            $this->profession,
+            $healthStatus,
+            $this->lastEatAt,
+            $this->deathCause,
+        );
+    }
+
     public function withProfession(string $profession): self
     {
         return new self(

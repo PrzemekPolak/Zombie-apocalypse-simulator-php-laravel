@@ -13,9 +13,9 @@ class InMemoryHumanInjuries implements HumanInjuries
     public function add(int $humanId, string $injuryCause, int $turn): void
     {
         $this->humanInjuries[] = new HumanInjury(
+            $humanId,
             $turn,
             $injuryCause,
-            $humanId,
         );
     }
 
@@ -23,7 +23,7 @@ class InMemoryHumanInjuries implements HumanInjuries
     {
         $result = [];
         foreach ($this->humanInjuries as $humanInjury) {
-            if ($humanInjury->injuredAt === $turn) {
+            if ($humanInjury->turn === $turn) {
                 $result[] = $humanInjury;
             }
         }

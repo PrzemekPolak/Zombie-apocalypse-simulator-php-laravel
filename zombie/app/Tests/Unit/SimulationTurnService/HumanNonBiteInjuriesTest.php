@@ -18,14 +18,26 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     }
 
     /** @test */
-    public function humanDiesWhenAlreadyInjured(): void
+    public function humanDiesIfAlreadyInjured(): void
     {
         $this->humanWillAlwaysGetInjured();
-        $this->system()->hasSimulationTurns(
-            aSimulationTurn()->build(),
-        );
+        $this->systemHasTurn();
         $this->system()->hasHumans(
             aHuman()->withInjury()->build(),
+        );
+
+        $this->simulationTurnService()->humanNonBiteInjuries();
+
+        assertThat($this->humanHealth(), is(equalTo('dead')));
+    }
+
+    /** @test */
+    public function humanDiesIfAlreadyInfected(): void
+    {
+        $this->humanWillAlwaysGetInjured();
+        $this->systemHasTurn();
+        $this->system()->hasHumans(
+            aHuman()->withHealth('infected')->build(),
         );
 
         $this->simulationTurnService()->humanNonBiteInjuries();
@@ -87,11 +99,16 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         );
     }
 
-    private function systemHasHumanAndTurn(): void
+    private function systemHasTurn(): void
     {
         $this->system()->hasSimulationTurns(
             aSimulationTurn()->build(),
         );
+    }
+
+    private function systemHasHumanAndTurn(): void
+    {
+        $this->systemHasTurn();
         $this->system()->hasHumans(
             aHuman()->build(),
         );

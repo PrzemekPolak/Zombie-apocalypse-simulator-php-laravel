@@ -90,6 +90,11 @@ class Human
         return $this->health !== 'healthy';
     }
 
+    public function isInjured(): bool
+    {
+        return $this->health === 'injured';
+    }
+
     public function die(string $reason): void
     {
         $this->health = 'dead';
@@ -103,7 +108,7 @@ class Human
 
     public function isAlive(): bool
     {
-        if ('healthy' === $this->health || 'injured' === $this->health) {
+        if ('healthy' === $this->health || 'injured' === $this->health || 'infected' === $this->health) {
             return true;
         } else return false;
     }

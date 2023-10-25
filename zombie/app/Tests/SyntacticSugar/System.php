@@ -11,6 +11,7 @@ use App\Application\SimulationTurns;
 use App\Application\Zombies;
 use App\Domain\Human;
 use App\Domain\HumanBite;
+use App\Domain\HumanInjury;
 use App\Domain\Resource;
 use App\Domain\SimulationSetting;
 use App\Domain\SimulationTurn;
@@ -74,6 +75,17 @@ class System
     {
         foreach ($simulationSettings as $simulationSetting) {
             $this->simulationSettings->add($simulationSetting);
+        }
+    }
+
+    public function hasHumanInjuries(HumanInjury ...$humanInjuries): void
+    {
+        foreach ($humanInjuries as $humanInjury) {
+            $this->humanInjuries->add(
+                $humanInjury->humanId,
+                $humanInjury->injuryCause,
+                $humanInjury->turn,
+            );
         }
     }
 
