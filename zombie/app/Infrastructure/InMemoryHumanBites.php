@@ -21,12 +21,8 @@ class InMemoryHumanBites implements HumanBites
         return $result;
     }
 
-    public function add(int $humanId, int $zombieId, int $turn): void
+    public function add(HumanBite $humanBite): void
     {
-        $this->humanBites[] = new HumanBite(
-            $humanId,
-            $zombieId,
-            $turn,
-        );
+        $this->humanBites[] = $humanBite;
     }
 }

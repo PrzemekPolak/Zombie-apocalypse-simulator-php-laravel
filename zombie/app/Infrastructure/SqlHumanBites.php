@@ -13,9 +13,13 @@ class SqlHumanBites implements HumanBites
         return $this->mapToDomainHumanBitesArray(ModelHumanBite::where('turn_id', $turn - 1)->get()->toArray());
     }
 
-    public function add(int $humanId, int $zombieId, int $turn): void
+    public function add(HumanBite $humanBite): void
     {
-        ModelHumanBite::add($humanId, $zombieId, $turn);
+        ModelHumanBite::add(
+            $humanBite->humanId,
+            $humanBite->zombieId,
+            $humanBite->turn
+        );
     }
 
     /** @return HumanBite[] */

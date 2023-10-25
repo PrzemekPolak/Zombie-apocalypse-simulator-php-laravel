@@ -9,6 +9,7 @@ use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\HumanInjury as DomainHumanInjury;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
@@ -88,7 +89,11 @@ class SimulationTurnService
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
             $human->getsInjured($injury);
-            $this->humanInjuries->add($human->id, $injury, $this->simulationTurns->currentTurn());
+            $this->humanInjuries->add(new DomainHumanInjury(
+                $human->id,
+                $this->simulationTurns->currentTurn(),
+                $injury,
+            ));
         }
         $this->humans->save($humans);
     }

@@ -81,22 +81,14 @@ class System
     public function hasHumanInjuries(HumanInjury ...$humanInjuries): void
     {
         foreach ($humanInjuries as $humanInjury) {
-            $this->humanInjuries->add(
-                $humanInjury->humanId,
-                $humanInjury->injuryCause,
-                $humanInjury->turn,
-            );
+            $this->humanInjuries->add($humanInjury);
         }
     }
 
     public function hasHumanBites(HumanBite ...$humanBites): void
     {
         foreach ($humanBites as $humanBite) {
-            $this->humanBites->add(
-                $humanBite->humanId,
-                $humanBite->zombieId,
-                $humanBite->turn,
-            );
+            $this->humanBites->add($humanBite);
         }
     }
 }

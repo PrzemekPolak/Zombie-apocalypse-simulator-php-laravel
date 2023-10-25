@@ -10,13 +10,9 @@ class InMemoryHumanInjuries implements HumanInjuries
     /** @var HumanInjury[] $humanInjuries */
     private array $humanInjuries = [];
 
-    public function add(int $humanId, string $injuryCause, int $turn): void
+    public function add(HumanInjury $humanInjury): void
     {
-        $this->humanInjuries[] = new HumanInjury(
-            $humanId,
-            $turn,
-            $injuryCause,
-        );
+        $this->humanInjuries[] = $humanInjury;
     }
 
     public function fromTurn(int $turn): array
