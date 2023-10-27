@@ -82,7 +82,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
     private function idOfHumanInjuredInTurn(int $turn): int
     {
-        return $this->system()->getHumanInjuries()->fromTurn($turn)[0]->humanId;
+        return $this->system()->humanInjuries()->fromTurn($turn)[0]->humanId;
     }
 
     private function humanWillAlwaysGetInjured(): void

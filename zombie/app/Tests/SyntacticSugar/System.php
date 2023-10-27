@@ -15,6 +15,7 @@ use App\Domain\HumanInjury;
 use App\Domain\Resource;
 use App\Domain\SimulationSetting;
 use App\Domain\SimulationTurn;
+use App\Domain\Zombie;
 
 class System
 {
@@ -35,25 +36,37 @@ class System
         return $this->humans;
     }
 
+    public function zombies(): Zombies
+    {
+        return $this->zombies;
+    }
+
     public function resources(): Resources
     {
         return $this->resources;
     }
 
-    public function getHumanInjuries(): HumanInjuries
+    public function humanInjuries(): HumanInjuries
     {
         return $this->humanInjuries;
     }
 
-    public function getZombies(): Zombies
+    public function humanBites(): HumanBites
     {
-        return $this->zombies;
+        return $this->humanBites;
     }
 
     public function hasHumans(Human ...$humans): void
     {
         foreach ($humans as $human) {
             $this->humans->add($human);
+        }
+    }
+
+    public function hasZombies(Zombie ...$zombies): void
+    {
+        foreach ($zombies as $zombie) {
+            $this->zombies->add($zombie);
         }
     }
 

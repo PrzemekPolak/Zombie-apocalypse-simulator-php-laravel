@@ -9,12 +9,12 @@ use App\Application\Resources;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\HumanBite as DomainHumanBite;
 use App\Domain\HumanInjury as DomainHumanInjury;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
 use App\Models\Resource;
-use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
 use App\Domain\Zombie as DomainZombie;
@@ -100,39 +100,53 @@ class SimulationTurnService
 
     public function zombieEncounters(): void
     {
-        $defaultChanceForBite = SimulationSetting::getEventChance('chanceForBite');
-        $weapon = Resource::where('type', 'weapon')->first()->quantity;
+        $defaultChanceForBite = $this->simulationSettings->getEventChance('chanceForBite');
+        $humanIsImmuneChance = $this->simulationSettings->getEventChance('immuneChance');
+        $turn = $this->simulationTurns->currentTurn();
+        $weapons = $this->resources->getByType('weapon');
 
-        $encounterNumber = Zombie::stillWalking()->count();
-        $count = $this->calculateTimesEventOccurred('injuryChance');
-        $humans = Human::alive()->inRandomOrder()->get()->take($count);
-        $zombies = Zombie::stillWalking()->inRandomOrder()->get();
-        foreach ($humans as $human) {
+        $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('encounterChance'));
+        $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
 
-            $encounterNumber = --$encounterNumber;
+        $encounterNumber = min(count($humans), count($zombies));
+        for ($i = 0; $i < $encounterNumber; $i++) {
+            $human = $humans[$i];
+            $zombie = $zombies[$i];
+
             $chanceForBite = $defaultChanceForBite;
             //Scenarios for encounters
-            if ($weapon > 0) {
-                $weapon = --$weapon;
+            if ($weapons->getQuantity() > 0) {
+                $weapons->consume();
                 $chanceForBite -= 20;
             }
 
-            if (in_array($human->proffesion, ['soldier', 'police'])) {
+            if ('fighting' === $human->professionType()) {
                 $chanceForBite -= 10;
             }
-            if (rand(0, 99) < $chanceForBite) {
-                $zombie = $zombies->shift();
-                $zombie->bite($human);
+            if ($this->probabilityService->willItHappen($chanceForBite)) {
+                if ($this->probabilityService->willItHappen($humanIsImmuneChance)) {
+                    $human->getsInjured('zombie bite');
+                    $this->humanInjuries->add(new DomainHumanInjury(
+                        $human->id,
+                        $turn,
+                        'zombie bite',
+                    ));
+                } else {
+                    $human->becomeInfected();
+                    $this->humanBites->add(new DomainHumanBite(
+                        $human->id,
+                        $zombie->id,
+                        $turn,
+                    ));
+                }
             } else {
-                $zombie = $zombies->shift();
-                $human->killZombie($zombie);
+                $zombie->getsKilled();
             }
-
-            //Break if there are no more zombies
-            if ($encounterNumber === 0) break;
         }
 
-        Resource::where('type', 'weapon')->first()->update(['weapon' => $weapon]);
+        $this->resources->save($weapons);
+        $this->humans->save($humans);
+        $this->zombies->save($zombies);
     }
 
     public function healHumanInjuries(): void

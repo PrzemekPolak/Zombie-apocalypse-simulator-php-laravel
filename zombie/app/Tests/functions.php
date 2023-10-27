@@ -6,6 +6,7 @@ use App\Tests\TestUtils\Builders\HumanInjuryBuilder;
 use App\Tests\TestUtils\Builders\ResourceBuilder;
 use App\Tests\TestUtils\Builders\SimulationSettingBuilder;
 use App\Tests\TestUtils\Builders\SimulationTurnBuilder;
+use App\Tests\TestUtils\Builders\ZombieBuilder;
 
 function aHuman(): HumanBuilder
 {
@@ -45,4 +46,9 @@ function aHumanBite(): HumanBiteBuilder
 function aHumanInjury(): HumanInjuryBuilder
 {
     return HumanInjuryBuilder::default();
+}
+
+function aZombie(): ZombieBuilder
+{
+    return ZombieBuilder::default();
 }

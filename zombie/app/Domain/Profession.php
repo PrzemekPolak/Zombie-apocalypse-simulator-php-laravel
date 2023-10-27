@@ -26,6 +26,9 @@ class Profession
         if (in_array($name, ['engineer', 'mechanic'])) {
             $type = 'weapon';
         }
+        if (in_array($name, ['soldier', 'police'])) {
+            $type = 'fighting';
+        }
 
         return new self(
             $name,

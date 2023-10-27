@@ -117,4 +117,9 @@ class Human
     {
         $this->health = 'turned';
     }
+
+    public function becomeInfected(): void
+    {
+        $this->health = 'infected';
+    }
 }

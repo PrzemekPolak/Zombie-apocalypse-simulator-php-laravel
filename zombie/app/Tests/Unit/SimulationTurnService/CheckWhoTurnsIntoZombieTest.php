@@ -73,7 +73,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
     private function getZombieFromSystem(): Zombie
     {
-        return $this->system()->getZombies()->stillWalking()[0];
+        return $this->system()->zombies()->stillWalking()[0];
     }
 
     private function assertThatHumanCorrectlyBecameZombie(Zombie $actual, Human $expected): void

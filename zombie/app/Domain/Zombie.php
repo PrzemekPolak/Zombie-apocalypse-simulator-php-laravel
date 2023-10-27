@@ -42,4 +42,9 @@ class Zombie
     {
         return $this->profession->name;
     }
+
+    public function getsKilled(): void
+    {
+        $this->health = 'dead';
+    }
 }
