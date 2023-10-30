@@ -12,7 +12,7 @@ class InMemoryHumanInjuries implements HumanInjuries
 
     public function add(HumanInjury $humanInjury): void
     {
-        $this->humanInjuries[] = $humanInjury;
+        $this->humanInjuries[$humanInjury->humanId . '-' . $humanInjury->turn] = $humanInjury;
     }
 
     public function fromTurn(int $turn): array
@@ -24,5 +24,17 @@ class InMemoryHumanInjuries implements HumanInjuries
             }
         }
         return $result;
+    }
+
+    public function save(array $humanInjuries): void
+    {
+        foreach ($humanInjuries as $humanInjury) {
+            $this->humanInjuries[$humanInjury->humanId . '-' . $humanInjury->turn] = $humanInjury;
+        }
+    }
+
+    public function all(): array
+    {
+        return $this->humanInjuries;
     }
 }

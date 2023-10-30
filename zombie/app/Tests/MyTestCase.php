@@ -6,6 +6,7 @@ use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\SimulationRunningService;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
@@ -13,6 +14,7 @@ use App\Infrastructure\InMemoryHumanBites;
 use App\Infrastructure\InMemoryHumanInjuries;
 use App\Infrastructure\InMemoryHumans;
 use App\Infrastructure\InMemoryResources;
+use App\Infrastructure\InMemorySimulationRunningService;
 use App\Infrastructure\InMemorySimulationSettings;
 use App\Infrastructure\InMemorySimulationTurns;
 use App\Infrastructure\InMemoryZombies;
@@ -46,6 +48,16 @@ class MyTestCase extends TestCase
         $humanBites = $this->app->make(HumanBites::class);
         $zombies = $this->app->make(Zombies::class);
 
+        $this->app->bind(SimulationRunningService::class,
+            function () use (
+                $humans,
+                $simulationTurns,
+                $simulationSettings,
+                $humanInjuries
+            ) {
+                return new InMemorySimulationRunningService($humans, $simulationTurns, $simulationSettings, $humanInjuries);
+            });
+
         $this->system = new System(
             $humans,
             $resources,
@@ -65,6 +77,7 @@ class MyTestCase extends TestCase
             $humanBites,
             $zombies,
             new ProbabilityService(),
+            $this->app->make(SimulationRunningService::class),
         );
     }
 

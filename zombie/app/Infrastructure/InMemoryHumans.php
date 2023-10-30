@@ -39,7 +39,9 @@ class InMemoryHumans implements Humans
 
     public function save(array $humans): void
     {
-        // TODO: Do nothing looks bad, so find way to improve it
+        foreach ($humans as $human) {
+            $this->humans[$human->id] = $human;
+        }
     }
 
     public function getNumberOfResourceProducers(string $resourceType): int
@@ -60,7 +62,7 @@ class InMemoryHumans implements Humans
 
     public function add(Human $human): void
     {
-        $this->humans[] = $human;
+        $this->humans[$human->id] = $human;
     }
 
     public function getRandomHumans(int $count): array

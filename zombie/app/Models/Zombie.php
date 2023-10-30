@@ -39,14 +39,14 @@ class Zombie extends Model
         return $query->whereNot('health', 'dead');
     }
 
-    public function getHealthAttribute($value): string
-    {
-        $translation = ['injured' => 'Ranny',
-            'healthy' => 'Zdrowy',
-            'infected' => 'Zarażony',
-            'dead' => 'Martwy'];
-        return $translation[$value];
-    }
+//    public function getHealthAttribute($value): string
+//    {
+//        $translation = ['injured' => 'Ranny',
+//            'healthy' => 'Zdrowy',
+//            'infected' => 'Zarażony',
+//            'dead' => 'Martwy'];
+//        return $translation[$value];
+//    }
 
 //    public function getProfessionAttribute($value): string
 //    {

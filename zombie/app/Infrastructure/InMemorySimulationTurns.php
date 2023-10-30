@@ -17,14 +17,28 @@ class InMemorySimulationTurns implements SimulationTurns
 
     public function createNewTurn(string $status = 'active'): void
     {
-        $this->simulationTurns[] = new SimulationTurn(
-            count($this->simulationTurns) + 1,
+        $newTurnNumber = count($this->simulationTurns) + 1;
+
+        $this->simulationTurns[$newTurnNumber] = new SimulationTurn(
+            $newTurnNumber,
             $status,
         );
     }
 
     public function add(SimulationTurn $simulationTurn): void
     {
-        $this->simulationTurns[] = $simulationTurn;
+        $this->simulationTurns[$simulationTurn->turnNumber] = $simulationTurn;
+    }
+
+    public function save(array $simulationTurns): void
+    {
+        foreach ($simulationTurns as $simulationTurn) {
+            $this->simulationTurns[$simulationTurn->turnNumber] = $simulationTurn;
+        }
+    }
+
+    public function all(): array
+    {
+        return $this->simulationTurns;
     }
 }

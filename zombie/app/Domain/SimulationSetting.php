@@ -11,4 +11,13 @@ class SimulationSetting
     )
     {
     }
+
+    public static function fromArray(array $simulationSetting): self
+    {
+        return new self(
+            $simulationSetting['event'],
+            $simulationSetting['chance'],
+            $simulationSetting['description'],
+        );
+    }
 }

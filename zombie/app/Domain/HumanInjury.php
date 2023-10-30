@@ -11,4 +11,13 @@ class HumanInjury
     )
     {
     }
+
+    public static function fromArray(array $humanInjury): self
+    {
+        return new self(
+            $humanInjury['human_id'],
+            $humanInjury['injured_at'],
+            $humanInjury['injury_cause'],
+        );
+    }
 }

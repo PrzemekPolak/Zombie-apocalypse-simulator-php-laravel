@@ -10,4 +10,12 @@ class SimulationTurn
     )
     {
     }
+
+    public static function fromArray(array $simulationTurn): self
+    {
+        return new self(
+            $simulationTurn['id'],
+            $simulationTurn['status'],
+        );
+    }
 }

@@ -35,7 +35,10 @@ class SqlHumans implements Humans
     {
         DB::transaction(function () use ($humans) {
             foreach ($humans as $human) {
-                $this->human->where(['id' => $human->id])->update(
+                Human::updateOrCreate(
+                    [
+                        'id' => $human->id
+                    ],
                     [
                         'name' => $human->name,
                         'age' => $human->age,

@@ -6,9 +6,11 @@ use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\SimulationRunningService;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Infrastructure\InMemorySimulationRunningService;
 use App\Infrastructure\SqlHumanBites;
 use App\Infrastructure\SqlHumanInjuries;
 use App\Infrastructure\SqlHumans;
@@ -32,6 +34,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(HumanInjuries::class, SqlHumanInjuries::class);
         $this->app->bind(HumanBites::class, SqlHumanBites::class);
         $this->app->bind(Zombies::class, SqlZombies::class);
+        $this->app->bind(SimulationRunningService::class, function () {
+            return new InMemorySimulationRunningService(
+                $this->app->make(Humans::class),
+                $this->app->make(SimulationTurns::class),
+                $this->app->make(SimulationSettings::class),
+                $this->app->make(HumanInjuries::class),
+            );
+        });
     }
 
     /**

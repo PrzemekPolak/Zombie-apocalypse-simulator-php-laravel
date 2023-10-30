@@ -5,6 +5,7 @@ namespace App\Infrastructure;
 use App\Application\SimulationSettings;
 use App\Domain\SimulationSetting;
 use App\Models\SimulationSetting as ModelSimulationSetting;
+use Illuminate\Support\Facades\DB;
 
 class SqlSimulationSettings implements SimulationSettings
 {
@@ -17,5 +18,36 @@ class SqlSimulationSettings implements SimulationSettings
     public function add(SimulationSetting $simulationSetting): void
     {
         throw new \Exception('Not implemented!');
+    }
+
+    public function save(array $simulationSettings): void
+    {
+        DB::transaction(function () use ($simulationSettings) {
+            foreach ($simulationSettings as $simulationSetting) {
+                ModelSimulationSetting::updateOrCreate(
+                    [
+                        'event' => $simulationSetting->event
+                    ],
+                    [
+                        'event' => $simulationSetting->event,
+                        'chance' => $simulationSetting->chance,
+                        'description' => $simulationSetting->description,
+                    ]
+                );
+            }
+        });
+    }
+
+    public function all(): array
+    {
+        return $this->mapToDomainSimulationSettingsArray(ModelSimulationSetting::all()->toArray());
+    }
+
+    /** @return SimulationSetting[] */
+    private function mapToDomainSimulationSettingsArray(array $dbArray): array
+    {
+        return array_map(static function ($simulationSetting) {
+            return SimulationSetting::fromArray($simulationSetting);
+        }, $dbArray);
     }
 }
