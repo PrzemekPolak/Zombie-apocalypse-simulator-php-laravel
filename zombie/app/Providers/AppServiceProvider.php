@@ -40,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 $this->app->make(SimulationTurns::class),
                 $this->app->make(SimulationSettings::class),
                 $this->app->make(HumanInjuries::class),
+                $this->app->make(HumanBites::class),
+                $this->app->make(Zombies::class),
             );
         });
     }

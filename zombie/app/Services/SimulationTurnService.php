@@ -49,45 +49,13 @@ class SimulationTurnService
     public function conductTurn(): void
     {
         $this->checkWhoDiedFromStarvation();
-        $this->checkWhoBleedOut();
-        $this->checkWhoTurnIntoZombie();
-        $this->humanNonBiteInjuries();
+
+        $this->simulationRunningService->runSimulation();
+
         $this->zombieEncounters();
         $this->healHumanInjuries();
         $this->humansEatFood();
         $this->generateResources();
-    }
-
-    public function checkWhoBleedOut(): void
-    {
-        $humanInjuries = $this->humanInjuries->fromTurn($this->simulationTurns->currentTurn() - 2);
-
-        foreach ($humanInjuries as $humanInjury) {
-            $human = $this->humans->find($humanInjury->humanId);
-            if ($human->isInjured()) {
-                $human->die($humanInjury->injuryCause);
-
-                $this->humans->save([$human]);
-            }
-        }
-    }
-
-    public function checkWhoTurnIntoZombie(): void
-    {
-        $bitten = $this->humanBites->fromTurn($this->simulationTurns->currentTurn() - 1);
-
-        foreach ($bitten as $bite) {
-            $human = $this->humans->find($bite->humanId);
-            $human->becomeZombie();
-            $this->zombies->add(DomainZombie::fromHuman($human));
-
-            $this->humans->save([$human]);
-        }
-    }
-
-    public function humanNonBiteInjuries(): void
-    {
-        $this->simulationRunningService->runSimulation();
     }
 
     public function zombieEncounters(): void

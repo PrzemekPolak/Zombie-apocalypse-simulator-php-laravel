@@ -2,6 +2,7 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\CheckWhoBleedOut;
 use App\Domain\Human;
 use App\Tests\MyTestCase;
 
@@ -15,7 +16,7 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->systemHasHumanInjuredTwoTurnsAgo($humanWithInjury, $injuryCause);
 
-        $this->simulationTurnService()->checkWhoBleedOut();
+        $this->checkWhoBleedOut();
 
         assertThat($humanWithInjury->health, is(equalTo('dead')));
         assertThat($humanWithInjury->getDeathCause(), is(equalTo($injuryCause)));
@@ -28,7 +29,7 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->systemHasHumanInjuredTwoTurnsAgo($healthyHuman);
 
-        $this->simulationTurnService()->checkWhoBleedOut();
+        $this->checkWhoBleedOut();
 
         assertThat($healthyHuman->health, is(equalTo('healthy')));
     }
@@ -40,7 +41,7 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->systemHasHumanInjuredTwoTurnsAgo($infectedHuman);
 
-        $this->simulationTurnService()->checkWhoBleedOut();
+        $this->checkWhoBleedOut();
 
         assertThat($infectedHuman->health, is(equalTo('infected')));
     }
@@ -52,9 +53,18 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->systemHasHumanInjuredTwoTurnsAgo($turnedHuman);
 
-        $this->simulationTurnService()->checkWhoBleedOut();
+        $this->checkWhoBleedOut();
 
         assertThat($turnedHuman->health, is(equalTo('turned')));
+    }
+
+    private function checkWhoBleedOut(): void
+    {
+        (new CheckWhoBleedOut(
+            $this->system()->humans(),
+            $this->system()->simulationTurns(),
+            $this->system()->humanInjuries(),
+        ))->execute();
     }
 
     private function systemHasHumanInjuredTwoTurnsAgo(Human $human, string $injuryCause = 'Default injury'): void

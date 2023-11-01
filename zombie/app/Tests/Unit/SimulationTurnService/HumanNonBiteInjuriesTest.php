@@ -2,6 +2,7 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\GenerateHumanNonBiteInjuries;
 use App\Tests\MyTestCase;
 
 class HumanNonBiteInjuriesTest extends MyTestCase
@@ -12,7 +13,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         $this->humanWillAlwaysGetInjured();
         $this->systemHasHumanAndTurn();
 
-        $this->simulationTurnService()->humanNonBiteInjuries();
+        $this->generateHumanNonBiteInjuries();
 
         assertThat($this->humanHealth(), is(equalTo('injured')));
     }
@@ -26,7 +27,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
             aHuman()->withInjury()->build(),
         );
 
-        $this->simulationTurnService()->humanNonBiteInjuries();
+        $this->generateHumanNonBiteInjuries();
 
         assertThat($this->humanHealth(), is(equalTo('dead')));
     }
@@ -40,7 +41,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
             aHuman()->withHealth('infected')->build(),
         );
 
-        $this->simulationTurnService()->humanNonBiteInjuries();
+        $this->generateHumanNonBiteInjuries();
 
         assertThat($this->humanHealth(), is(equalTo('dead')));
     }
@@ -59,7 +60,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
             aHuman()->withId($humanId)->build(),
         );
 
-        $this->simulationTurnService()->humanNonBiteInjuries();
+        $this->generateHumanNonBiteInjuries();
 
         assertThat($this->idOfHumanInjuredInTurn($turn), is(equalTo($humanId)));
     }
@@ -70,9 +71,19 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         $this->humanWillNeverGetInjured();
         $this->systemHasHumanAndTurn();
 
-        $this->simulationTurnService()->humanNonBiteInjuries();
+        $this->generateHumanNonBiteInjuries();
 
         assertThat($this->humanHealth(), is(equalTo('healthy')));
+    }
+
+    private function generateHumanNonBiteInjuries(): void
+    {
+        (new GenerateHumanNonBiteInjuries(
+            $this->system()->humans(),
+            $this->system()->simulationTurns(),
+            $this->system()->simulationSettings(),
+            $this->system()->humanInjuries(),
+        ))->execute();
     }
 
     private function humanHealth(): string

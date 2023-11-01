@@ -46,6 +46,16 @@ class System
         return $this->resources;
     }
 
+    public function simulationTurns(): SimulationTurns
+    {
+        return $this->simulationTurns;
+    }
+
+    public function simulationSettings(): SimulationSettings
+    {
+        return $this->simulationSettings;
+    }
+
     public function humanInjuries(): HumanInjuries
     {
         return $this->humanInjuries;

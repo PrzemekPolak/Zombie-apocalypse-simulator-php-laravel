@@ -12,12 +12,14 @@ class InMemoryZombies implements Zombies
 
     public function save(array $zombies): void
     {
-        // TODO: Do nothing looks bad, so find way to improve it
+        foreach ($zombies as $zombie) {
+            $this->zombies[$zombie->id] = $zombie;
+        }
     }
 
     public function add(Zombie $zombie): void
     {
-        $this->zombies[] = $zombie;
+        $this->zombies[$zombie->id] = $zombie;
     }
 
     public function stillWalking(): array

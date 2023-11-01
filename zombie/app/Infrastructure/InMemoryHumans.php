@@ -57,7 +57,13 @@ class InMemoryHumans implements Humans
 
     public function injured(): array
     {
-        throw new \Exception('Not implemented!');
+        $result = [];
+        foreach ($this->humans as $human) {
+            if ($human->isInjured()) {
+                $result[] = $human;
+            }
+        }
+        return $result;
     }
 
     public function add(Human $human): void

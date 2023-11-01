@@ -53,19 +53,28 @@ class MyTestCase extends TestCase
                 $humans,
                 $simulationTurns,
                 $simulationSettings,
-                $humanInjuries
+                $humanInjuries,
+                $humanBites,
+                $zombies,
             ) {
-                return new InMemorySimulationRunningService($humans, $simulationTurns, $simulationSettings, $humanInjuries);
+                return new InMemorySimulationRunningService(
+                    $humans,
+                    $simulationTurns,
+                    $simulationSettings,
+                    $humanInjuries,
+                    $humanBites,
+                    $zombies,
+                );
             });
 
         $this->system = new System(
-            $humans,
-            $resources,
-            $simulationTurns,
-            $simulationSettings,
-            $humanInjuries,
-            $humanBites,
-            $zombies,
+            $this->app->instance(Humans::class, $humans),
+            $this->app->instance(Resources::class, $resources),
+            $this->app->instance(SimulationTurns::class, $simulationTurns),
+            $this->app->instance(SimulationSettings::class, $simulationSettings),
+            $this->app->instance(HumanInjuries::class, $humanInjuries),
+            $this->app->instance(HumanBites::class, $humanBites),
+            $this->app->instance(Zombies::class, $zombies),
         );
 
         $this->simulationTurnService = new SimulationTurnService(

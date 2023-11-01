@@ -10,4 +10,10 @@ interface HumanBites
     public function fromTurn(int $turn): array;
 
     public function add(HumanBite $humanBite): void;
+
+    /** @param HumanBite[] $humanBites */
+    public function save(array $humanBites): void;
+
+    /** @return HumanBite[] */
+    public function all(): array;
 }

@@ -2,6 +2,7 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\CheckWhoTurnsIntoZombie;
 use App\Domain\Human;
 use App\Domain\Zombie;
 use App\Tests\MyTestCase;
@@ -26,7 +27,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
             aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
-        $this->simulationTurnService()->checkWhoTurnIntoZombie();
+        $this->checkWhoTurnsIntoZombie();
 
         assertThat($human->health, is(equalTo('turned')));
     }
@@ -43,7 +44,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
             aSimulationTurn()->build(),
         );
 
-        $this->simulationTurnService()->checkWhoTurnIntoZombie();
+        $this->checkWhoTurnsIntoZombie();
 
         assertThat($human->health, is(equalTo('healthy')));
     }
@@ -66,9 +67,19 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
             aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
-        $this->simulationTurnService()->checkWhoTurnIntoZombie();
+        $this->checkWhoTurnsIntoZombie();
 
         $this->assertThatHumanCorrectlyBecameZombie($this->getZombieFromSystem(), $human);
+    }
+
+    private function checkWhoTurnsIntoZombie(): void
+    {
+        (new CheckWhoTurnsIntoZombie(
+            $this->system()->humans(),
+            $this->system()->simulationTurns(),
+            $this->system()->humanBites(),
+            $this->system()->zombies(),
+        ))->execute();
     }
 
     private function getZombieFromSystem(): Zombie
