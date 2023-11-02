@@ -2,7 +2,9 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\ZombieEncounters;
 use App\Domain\HumanBite;
+use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
 
 class ZombieEncountersTest extends MyTestCase
@@ -29,7 +31,7 @@ class ZombieEncountersTest extends MyTestCase
         );
         $this->systemHasHumansAndZombies();
 
-        $this->simulationTurnService()->zombieEncounters();
+        $this->zombieEncounters();
 
         assertThat($this->allZombiesAreDead(), is(equalTo(true)));
     }
@@ -44,7 +46,7 @@ class ZombieEncountersTest extends MyTestCase
         );
         $this->systemHasHumansAndZombies();
 
-        $this->simulationTurnService()->zombieEncounters();
+        $this->zombieEncounters();
 
         assertThat($this->allHumansAreInfected(), is(equalTo(true)));
     }
@@ -76,7 +78,7 @@ class ZombieEncountersTest extends MyTestCase
             $zombie,
         );
 
-        $this->simulationTurnService()->zombieEncounters();
+        $this->zombieEncounters();
 
         assertThat($this->humanBiteFromTurn($turn), is(equalTo($expectedHumanBite)));
     }
@@ -91,9 +93,23 @@ class ZombieEncountersTest extends MyTestCase
         );
         $this->systemHasHumansAndZombies();
 
-        $this->simulationTurnService()->zombieEncounters();
+        $this->zombieEncounters();
 
         assertThat($this->allHumansAreInfected(), is(equalTo(false)));
+    }
+
+    private function zombieEncounters(): void
+    {
+        (new ZombieEncounters(
+            $this->system()->humans(),
+            $this->system()->resources(),
+            $this->system()->simulationTurns(),
+            $this->system()->simulationSettings(),
+            $this->system()->humanInjuries(),
+            $this->system()->humanBites(),
+            $this->system()->zombies(),
+            new ProbabilityService(),
+        ))->execute();
     }
 
     private function allZombiesAreDead(): bool

@@ -2,6 +2,7 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\GenerateResources;
 use App\Tests\MyTestCase;
 
 class GenerateResourcesTest extends MyTestCase
@@ -25,9 +26,17 @@ class GenerateResourcesTest extends MyTestCase
             aWeaponResource()->withQuantity(0)->build(),
         );
 
-        $this->simulationTurnService()->generateResources();
+        $this->generateResources();
 
         $this->assertResourcesAreGeneratedInRightQuantity();
+    }
+
+    private function generateResources(): void
+    {
+        (new GenerateResources(
+            $this->system()->humans(),
+            $this->system()->resources(),
+        ))->execute();
     }
 
     private function assertResourcesAreGeneratedInRightQuantity(): void

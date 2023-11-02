@@ -12,6 +12,27 @@ class Resource
     {
     }
 
+    public static function create(
+        string $type,
+        int    $quantity,
+    ): self
+    {
+        return new self(
+            $type,
+            $quantity,
+            $type === 'food' ? 2 : 1,
+        );
+    }
+
+    public static function fromArray(array $resource): self
+    {
+        return new self(
+            $resource['type'],
+            $resource['quantity'],
+            $resource['type'] === 'food' ? 2 : 1,
+        );
+    }
+
     public function consume(): void
     {
         --$this->quantity;

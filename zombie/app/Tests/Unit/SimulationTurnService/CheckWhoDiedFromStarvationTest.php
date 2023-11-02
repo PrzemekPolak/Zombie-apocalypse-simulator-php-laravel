@@ -2,6 +2,7 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\TurnActions\CheckWhoDiedFromStarvation;
 use App\Domain\Human;
 use App\Tests\MyTestCase;
 
@@ -22,7 +23,7 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
             aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
-        $this->simulationTurnService()->checkWhoDiedFromStarvation();
+        $this->checkWhoDiedFromStarvation();
 
         assertThat($this->aliveHumansIds(), is(equalTo([$humanWhoAte->id])));
     }
@@ -40,10 +41,18 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
             aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
-        $this->simulationTurnService()->checkWhoDiedFromStarvation();
+        $this->checkWhoDiedFromStarvation();
 
         assertThat($humanWhoDidntEat->health, is(equalTo('dead')));
         assertThat($humanWhoDidntEat->getDeathCause(), is(equalTo('starvation')));
+    }
+
+    private function checkWhoDiedFromStarvation(): void
+    {
+        (new CheckWhoDiedFromStarvation(
+            $this->system()->humans(),
+            $this->system()->simulationTurns(),
+        ))->execute();
     }
 
     private function aliveHumansIds(): array

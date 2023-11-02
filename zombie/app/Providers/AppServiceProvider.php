@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SimulationRunningService::class, function () {
             return new InMemorySimulationRunningService(
                 $this->app->make(Humans::class),
+                $this->app->make(Resources::class),
                 $this->app->make(SimulationTurns::class),
                 $this->app->make(SimulationSettings::class),
                 $this->app->make(HumanInjuries::class),

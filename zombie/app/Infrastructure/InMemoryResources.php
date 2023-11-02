@@ -12,20 +12,23 @@ class InMemoryResources implements Resources
 
     public function getByType(string $type): Resource
     {
-        foreach ($this->resources as $resource) {
-            if ($resource->type === $type) {
-                return $resource;
-            }
-        }
+        return $this->resources[$type];
     }
 
-    public function save(Resource $resource): void
+    public function save(array $resources): void
     {
-        // TODO: Do nothing looks bad, so find way to improve it
+        foreach ($resources as $resource) {
+            $this->resources[$resource->type] = $resource;
+        }
     }
 
     public function add(Resource $resource): void
     {
-        $this->resources[] = $resource;
+        $this->resources[$resource->type] = $resource;
+    }
+
+    public function all(): array
+    {
+        return $this->resources;
     }
 }

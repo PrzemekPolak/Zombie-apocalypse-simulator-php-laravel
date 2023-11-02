@@ -8,7 +8,11 @@ interface Resources
 {
     public function getByType(string $type): Resource;
 
-    public function save(Resource $resource): void;
+    /** @param Resource[] $resources */
+    public function save(array $resources): void;
 
     public function add(Resource $resource): void;
+
+    /** @return Resource[] */
+    public function all(): array;
 }

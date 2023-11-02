@@ -51,6 +51,7 @@ class MyTestCase extends TestCase
         $this->app->bind(SimulationRunningService::class,
             function () use (
                 $humans,
+                $resources,
                 $simulationTurns,
                 $simulationSettings,
                 $humanInjuries,
@@ -59,6 +60,7 @@ class MyTestCase extends TestCase
             ) {
                 return new InMemorySimulationRunningService(
                     $humans,
+                    $resources,
                     $simulationTurns,
                     $simulationSettings,
                     $humanInjuries,

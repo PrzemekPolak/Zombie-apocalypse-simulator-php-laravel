@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\SimulationTurnService;
 
+use App\Application\Service\TurnActions\HumansEatFood;
 use App\Tests\MyTestCase;
 
 class HumansEatFoodTest extends MyTestCase
@@ -16,7 +17,7 @@ class HumansEatFoodTest extends MyTestCase
         );
         $this->systemHasFood(2);
 
-        $this->simulationTurnService()->humansEatFood();
+        $this->humansEatFood();
 
         assertThat($this->foodQuantityInSystem(), is(equalTo(0)));
     }
@@ -30,7 +31,7 @@ class HumansEatFoodTest extends MyTestCase
         );
         $this->systemHasFood(0);
 
-        $this->simulationTurnService()->humansEatFood();
+        $this->humansEatFood();
 
         assertThat($this->foodQuantityInSystem(), is(equalTo(0)));
     }
@@ -48,7 +49,7 @@ class HumansEatFoodTest extends MyTestCase
         );
         $this->systemHasFood();
 
-        $this->simulationTurnService()->humansEatFood();
+        $this->humansEatFood();
 
         assertThat($this->turnHumanLastAteAt(), is(equalTo($currentTurn)));
     }
@@ -65,9 +66,18 @@ class HumansEatFoodTest extends MyTestCase
         );
         $this->systemHasFood(0);
 
-        $this->simulationTurnService()->humansEatFood();
+        $this->humansEatFood();
 
         assertThat($this->turnHumanLastAteAt(), is(equalTo($previousTurn)));
+    }
+
+    private function humansEatFood(): void
+    {
+        (new HumansEatFood(
+            $this->system()->humans(),
+            $this->system()->resources(),
+            $this->system()->simulationTurns(),
+        ))->execute();
     }
 
     private function systemIsOnTurn(int $turnNumber): void

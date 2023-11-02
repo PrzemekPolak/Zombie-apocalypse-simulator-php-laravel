@@ -10,15 +10,12 @@ use App\Application\Service\SimulationRunningService;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
-use App\Domain\HumanBite as DomainHumanBite;
-use App\Domain\HumanInjury as DomainHumanInjury;
 use App\Models\Human;
 use App\Models\HumanBite;
 use App\Models\HumanInjury;
 use App\Models\Resource;
 use App\Models\SimulationTurn;
 use App\Models\Zombie;
-use App\Domain\Zombie as DomainZombie;
 
 class SimulationTurnService
 {
@@ -36,116 +33,9 @@ class SimulationTurnService
     {
     }
 
-    public function checkWhoDiedFromStarvation(): void
-    {
-        $humans = $this->humans->whoLastAteAt($this->simulationTurns->currentTurn() - 3);
-        foreach ($humans as $human) {
-            $human->die('starvation');
-        }
-
-        $this->humans->save($humans);
-    }
-
     public function conductTurn(): void
     {
-        $this->checkWhoDiedFromStarvation();
-
         $this->simulationRunningService->runSimulation();
-
-        $this->zombieEncounters();
-        $this->healHumanInjuries();
-        $this->humansEatFood();
-        $this->generateResources();
-    }
-
-    public function zombieEncounters(): void
-    {
-        $defaultChanceForBite = $this->simulationSettings->getEventChance('chanceForBite');
-        $humanIsImmuneChance = $this->simulationSettings->getEventChance('immuneChance');
-        $turn = $this->simulationTurns->currentTurn();
-        $weapons = $this->resources->getByType('weapon');
-
-        $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('encounterChance'));
-        $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
-
-        $encounterNumber = min(count($humans), count($zombies));
-        for ($i = 0; $i < $encounterNumber; $i++) {
-            $human = $humans[$i];
-            $zombie = $zombies[$i];
-
-            $chanceForBite = $defaultChanceForBite;
-            //Scenarios for encounters
-            if ($weapons->getQuantity() > 0) {
-                $weapons->consume();
-                $chanceForBite -= 20;
-            }
-
-            if ('fighting' === $human->professionType()) {
-                $chanceForBite -= 10;
-            }
-            if ($this->probabilityService->willItHappen($chanceForBite)) {
-                if ($this->probabilityService->willItHappen($humanIsImmuneChance)) {
-                    $human->getsInjured('zombie bite');
-                    $this->humanInjuries->add(new DomainHumanInjury(
-                        $human->id,
-                        $turn,
-                        'zombie bite',
-                    ));
-                } else {
-                    $human->becomeInfected();
-                    $this->humanBites->add(new DomainHumanBite(
-                        $human->id,
-                        $zombie->id,
-                        $turn,
-                    ));
-                }
-            } else {
-                $zombie->getsKilled();
-            }
-        }
-
-        $this->resources->save($weapons);
-        $this->humans->save($humans);
-        $this->zombies->save($zombies);
-    }
-
-    public function healHumanInjuries(): void
-    {
-        $humans = $this->humans->injured();
-        $healthItems = $this->resources->getByType('health');
-
-        for ($i = 0; $i < count($humans); $i++) {
-            if ($healthItems->getQuantity() > 0 && $this->probabilityService->willItHappen(25)) {
-                $healthItems->consume();
-                $humans[$i]->getsHealthy();
-            }
-        }
-        $this->humans->save($humans);
-        $this->resources->save($healthItems);
-    }
-
-    public function humansEatFood(): void
-    {
-        $humans = $this->humans->allAlive();
-        $food = $this->resources->getByType('food');
-        for ($i = 0; $i < count($humans); $i++) {
-            if ($food->getQuantity() > 0) {
-                $food->consume();
-                $humans[$i]->ateFood($this->simulationTurns->currentTurn());
-            }
-        }
-        $this->humans->save($humans);
-        $this->resources->save($food);
-    }
-
-    public function generateResources(): void
-    {
-        $resourcesTypes = ['health', 'food', 'weapon'];
-        foreach ($resourcesTypes as $resourceType) {
-            $resource = $this->resources->getByType($resourceType);
-            $resource->produce($this->humans->getNumberOfResourceProducers($resourceType));
-            $this->resources->save($resource);
-        }
     }
 
     /**
@@ -193,29 +83,5 @@ class SimulationTurnService
             'allBites' => HumanBite::all()->count(),
             'allInjuries' => HumanInjury::all()->count(),
         ];
-    }
-
-    private function calculateTimesEventOccurred(string $event): int
-    {
-        $humanCount = $this->humans->countAlive();
-        $event = $this->simulationSettings->getEventChance($event);
-        return floor($event * $humanCount / 100);
-    }
-
-    private function chooseInjuryCause(): string
-    {
-        $injuryCauses = [
-            "Tripped over a zombie's shoelaces",
-            "Poked a zombie in the eye while trying to take a selfie",
-            "Got a paper cut from a zombie-themed comic book",
-            "Slipped on a banana peel while running from a zombie horde",
-            "Accidentally stapled own finger while crafting zombie repellent",
-            "Sprained ankle while attempting a zombie-inspired dance move",
-            "Burned hand on a hot slice of zombie-shaped pizza",
-            "Got a black eye from a friendly zombie high-five gone wrong",
-            "Bumped head on a low-hanging zombie-themed piñata",
-            "Stubbed toe on a hidden zombie action figure",
-        ];
-        return $injuryCauses[array_rand($injuryCauses, 1)];
     }
 }
