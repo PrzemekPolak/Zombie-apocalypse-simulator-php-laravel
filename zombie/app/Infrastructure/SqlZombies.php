@@ -31,7 +31,7 @@ class SqlZombies implements Zombies
 
     public function stillWalking(): array
     {
-        return $this->mapToDomainZombiesArray(ModelZombie::stillWalking()->toArray());
+        return $this->mapToDomainZombiesArray(ModelZombie::stillWalking()->get()->toArray());
     }
 
     public function all(): array

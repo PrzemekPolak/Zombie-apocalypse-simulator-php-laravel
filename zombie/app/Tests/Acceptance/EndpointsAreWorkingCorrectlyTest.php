@@ -3,16 +3,20 @@
 namespace App\Tests\Acceptance;
 
 use App\Tests\MyTestCase;
+use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class EndpointsAreWorkingCorrectlyTest extends MyTestCase
 {
     /** @test */
-    public function simulationExecutingEndpointReturnsOkStatus(): void
+    public function simulationExecutingEndpointCorrectlyRedirectsToDashboard(): void
     {
         $this->populateWithPreliminaryData();
 
-        assertThat($this->json('POST', '/simulation_turn')->getStatusCode(), is(equalTo(Response::HTTP_OK)));
+        $response = $this->json('POST', '/simulation_turn');
+
+        assertThat($response->getStatusCode(), is(equalTo(Response::HTTP_FOUND)));
+        assertThat($this->wasRedirectedToDashboard($response), is(equalTo(true)));
     }
 
     private function populateWithPreliminaryData(): void
@@ -43,5 +47,10 @@ class EndpointsAreWorkingCorrectlyTest extends MyTestCase
             aZombie()->build(),
             aZombie()->build(),
         );
+    }
+
+    private function wasRedirectedToDashboard(TestResponse $response): bool
+    {
+        return str_contains($response->content(), 'Redirecting to http://localhost/dashboard');
     }
 }

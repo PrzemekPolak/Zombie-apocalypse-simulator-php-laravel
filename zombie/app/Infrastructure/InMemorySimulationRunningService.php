@@ -6,6 +6,7 @@ use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\SimulationEndingService;
 use App\Application\Service\SimulationRunningService;
 use App\Application\Service\TurnAction;
 use App\Application\Service\TurnActions\CheckWhoBleedOut;
@@ -58,6 +59,28 @@ class InMemorySimulationRunningService implements SimulationRunningService
 
         foreach ($this->turnActions() as $turnAction) {
             $turnAction->execute();
+        }
+        $this->inMemorySimulationTurns->createNewTurn();
+
+        $this->saveChangesOnSimulationEnd();
+    }
+
+    public function runWholeSimulationOnServer(): void
+    {
+        $this->prepareDataForSimulation();
+
+        $simulationEndingService = new SimulationEndingService(
+            $this->inMemoryHumans,
+            $this->inMemoryResources,
+            $this->inMemorySimulationTurns,
+            $this->inMemoryZombies,
+        );
+
+        while ($simulationEndingService->checkIfSimulationShouldEnd() === false) {
+            foreach ($this->turnActions() as $turnAction) {
+                $turnAction->execute();
+            }
+            $this->inMemorySimulationTurns->createNewTurn();
         }
 
         $this->saveChangesOnSimulationEnd();

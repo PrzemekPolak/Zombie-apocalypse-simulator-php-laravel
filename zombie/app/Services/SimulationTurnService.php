@@ -6,6 +6,7 @@ use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\SimulationEndingService;
 use App\Application\Service\SimulationRunningService;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
@@ -29,33 +30,9 @@ class SimulationTurnService
         private readonly Zombies                  $zombies,
         private readonly ProbabilityService       $probabilityService,
         private readonly SimulationRunningService $simulationRunningService,
+        private readonly SimulationEndingService $simulationEndingService
     )
     {
-    }
-
-    public function conductTurn(): void
-    {
-        $this->simulationRunningService->runSimulation();
-    }
-
-    /**
-     * Checks different rules for simulation to end. If all are false then returns false.
-     * If some condition is met, returns string with information about it
-     * @return bool|string
-     */
-    public function checkIfSimulationShouldEnd(): bool|string
-    {
-        $endReason = false;
-        if (Human::alive()->count() <= 0) {
-            $endReason = 'Ludzie wygineli';
-        } else if (Zombie::stillWalking()->count() <= 0) {
-            $endReason = 'Zombie wygineły';
-        } else if (Resource::where('type', 'food')->first()->quantity <= 0) {
-            $endReason = 'Jedzenie się skończyło';
-        } else if (SimulationTurn::all()->sortByDesc('id')->first()->id >= 20) {
-            $endReason = 'Wynaleziono szczepionkę';
-        }
-        return $endReason;
     }
 
     public function getFrontendDataForDashboard(): array
@@ -74,7 +51,7 @@ class SimulationTurnService
     {
         return [
             'turns' => SimulationTurn::all()->count(),
-            'reasonForEnding' => $this->checkIfSimulationShouldEnd(),
+            'reasonForEnding' => implode(' ', $this->simulationEndingService->getReasonsWhySimulationIsFinished()),
             'zombieNumber' => Zombie::stillWalking()->count(),
             'deadZombies' => Zombie::where('health', 'dead')->count(),
             'humanNumber' => Human::alive()->count(),

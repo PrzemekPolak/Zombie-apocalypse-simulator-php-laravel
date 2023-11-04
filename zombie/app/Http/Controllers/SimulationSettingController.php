@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Service\SimulationRunningService;
 use App\Http\Requests\StartSimulationRequest;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
 use App\Services\SimulationSettingService;
+use App\Services\SimulationTurnService;
 use Illuminate\Http\Request;
 
 class SimulationSettingController extends Controller
 {
 
-    public function __construct()
+    public function __construct(
+        private readonly SimulationTurnService    $simulationTurnService,
+        private readonly SimulationRunningService $simulationRunningService,
+    )
     {
         $this->service = new SimulationSettingService();
     }
@@ -26,7 +31,8 @@ class SimulationSettingController extends Controller
         }
 
         if ($request->shouldLoop === 'on') {
-            return (new SimulationTurnController())->runWholeSimulationOnServer();
+            $this->simulationRunningService->runWholeSimulationOnServer();
+            return view('simulation.end', $this->simulationTurnService->getSimulationEndStatistics());
         } else {
             return response()->redirectTo('/dashboard');
         }

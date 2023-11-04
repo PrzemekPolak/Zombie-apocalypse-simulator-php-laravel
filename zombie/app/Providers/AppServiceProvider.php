@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(HumanInjuries::class, SqlHumanInjuries::class);
         $this->app->bind(HumanBites::class, SqlHumanBites::class);
         $this->app->bind(Zombies::class, SqlZombies::class);
-        $this->app->bind(SimulationRunningService::class, function () {
+        $this->app->singleton(SimulationRunningService::class, function () {
             return new InMemorySimulationRunningService(
                 $this->app->make(Humans::class),
                 $this->app->make(Resources::class),
