@@ -11,8 +11,6 @@ interface Resources
     /** @param Resource[] $resources */
     public function save(array $resources): void;
 
-    public function add(Resource $resource): void;
-
     /** @return Resource[] */
     public function all(): array;
 }

@@ -29,16 +29,6 @@ class SqlZombies implements Zombies
         });
     }
 
-    public function add(Zombie $zombie): void
-    {
-        $newZombie = new ModelZombie();
-        $newZombie->name = $zombie->name;
-        $newZombie->age = $zombie->age;
-        $newZombie->profession = $zombie->professionName();
-        $newZombie->health = $zombie->health;
-        $newZombie->save();
-    }
-
     public function stillWalking(): array
     {
         return $this->mapToDomainZombiesArray(ModelZombie::stillWalking()->toArray());

@@ -18,15 +18,12 @@ use App\Infrastructure\InMemorySimulationRunningService;
 use App\Infrastructure\InMemorySimulationSettings;
 use App\Infrastructure\InMemorySimulationTurns;
 use App\Infrastructure\InMemoryZombies;
-use App\Services\ProbabilityService;
-use App\Services\SimulationTurnService;
 use App\Tests\SyntacticSugar\System;
 use Tests\TestCase;
 
 class MyTestCase extends TestCase
 {
     private System $system;
-    private SimulationTurnService $simulationTurnService;
 
     public function setUp(): void
     {
@@ -78,28 +75,10 @@ class MyTestCase extends TestCase
             $this->app->instance(HumanBites::class, $humanBites),
             $this->app->instance(Zombies::class, $zombies),
         );
-
-        $this->simulationTurnService = new SimulationTurnService(
-            $humans,
-            $resources,
-            $simulationTurns,
-            $simulationSettings,
-            $humanInjuries,
-            $humanBites,
-            $zombies,
-            new ProbabilityService(),
-            $this->app->make(SimulationRunningService::class),
-        );
     }
 
     public function system(): System
     {
         return $this->system;
     }
-
-    public function simulationTurnService(): SimulationTurnService
-    {
-        return $this->simulationTurnService;
-    }
-
 }

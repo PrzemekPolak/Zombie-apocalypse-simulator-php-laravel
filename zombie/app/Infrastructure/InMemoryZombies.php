@@ -17,11 +17,6 @@ class InMemoryZombies implements Zombies
         }
     }
 
-    public function add(Zombie $zombie): void
-    {
-        $this->zombies[$zombie->id] = $zombie;
-    }
-
     public function stillWalking(): array
     {
         $result = [];

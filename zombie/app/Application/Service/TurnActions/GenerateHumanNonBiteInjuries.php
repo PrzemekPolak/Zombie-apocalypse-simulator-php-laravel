@@ -26,11 +26,11 @@ class GenerateHumanNonBiteInjuries implements TurnAction
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
             $human->getsInjured($injury);
-            $this->humanInjuries->add(new HumanInjury(
+            $this->humanInjuries->save([new HumanInjury(
                 $human->id,
                 $this->simulationTurns->currentTurn(),
                 $injury,
-            ));
+            )]);
         }
     }
 

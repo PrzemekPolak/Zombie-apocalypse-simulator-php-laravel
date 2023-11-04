@@ -57,18 +57,18 @@ class ZombieEncounters implements TurnAction
             if ($this->probabilityService->willItHappen($chanceForBite)) {
                 if ($this->probabilityService->willItHappen($humanIsImmuneChance)) {
                     $human->getsInjured('zombie bite');
-                    $this->humanInjuries->add(new HumanInjury(
+                    $this->humanInjuries->save([new HumanInjury(
                         $human->id,
                         $turn,
                         'zombie bite',
-                    ));
+                    )]);
                 } else {
                     $human->becomeInfected();
-                    $this->humanBites->add(new HumanBite(
+                    $this->humanBites->save([new HumanBite(
                         $human->id,
                         $zombie->id,
                         $turn,
-                    ));
+                    )]);
                 }
             } else {
                 $zombie->getsKilled();

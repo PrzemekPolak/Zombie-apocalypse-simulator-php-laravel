@@ -3,39 +3,29 @@
 namespace App\Infrastructure;
 
 use App\Application\Humans;
-use App\Models\Human;
-use App\Domain\Human as DomainHuman;
+use App\Models\Human as ModelHuman;
+use App\Domain\Human;
 use Illuminate\Support\Facades\DB;
 
 class SqlHumans implements Humans
 {
-    public function __construct()
-    {
-        $this->human = new Human();
-    }
-
-    /** @return DomainHuman[] */
+    /** @return Human[] */
     public function allAlive(): array
     {
-        return $this->mapToDomainHumansArray(Human::alive()->get()->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::alive()->get()->toArray());
     }
 
     public function countAlive(): int
     {
-        return Human::alive()->count();
+        return ModelHuman::alive()->count();
     }
 
-    public function update(int $id, array $fields): void
-    {
-        $this->human->where(['id' => $id])->update($fields);
-    }
-
-    /** @param $humans DomainHuman[] */
+    /** @param $humans Human[] */
     public function save(array $humans): void
     {
         DB::transaction(function () use ($humans) {
             foreach ($humans as $human) {
-                Human::updateOrCreate(
+                ModelHuman::updateOrCreate(
                     [
                         'id' => $human->id
                     ],
@@ -54,44 +44,39 @@ class SqlHumans implements Humans
 
     public function getNumberOfResourceProducers(string $resourceType): int
     {
-        return $this->human::getNumberOfResourceProducers($resourceType);
+        return ModelHuman::getNumberOfResourceProducers($resourceType);
     }
 
     public function injured(): array
     {
-        return $this->mapToDomainHumansArray(Human::where('health', 'injured')->get()->toArray());
-    }
-
-    public function add(DomainHuman $human): void
-    {
-        throw new \Exception('Not implemented!');
+        return $this->mapToDomainHumansArray(ModelHuman::where('health', 'injured')->get()->toArray());
     }
 
     public function getRandomHumans(int $count): array
     {
-        return $this->mapToDomainHumansArray(Human::alive()->inRandomOrder()->get()->take($count)->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::alive()->inRandomOrder()->get()->take($count)->toArray());
     }
 
-    public function find(int $humanId): DomainHuman
+    public function find(int $humanId): Human
     {
-        return DomainHuman::fromArray(Human::find($humanId)->toArray());
+        return Human::fromArray(ModelHuman::find($humanId)->toArray());
     }
 
     public function all(): array
     {
-        return $this->mapToDomainHumansArray(Human::all()->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::all()->toArray());
     }
 
     public function whoLastAteAt(int $turn): array
     {
-        return $this->mapToDomainHumansArray(Human::alive()->where('last_eat_at', '<=', $turn)->get()->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::alive()->where('last_eat_at', '<=', $turn)->get()->toArray());
     }
 
-    /** @return DomainHuman[] */
+    /** @return Human[] */
     private function mapToDomainHumansArray(array $dbArray): array
     {
         return array_map(static function ($human) {
-            return DomainHuman::fromArray($human);
+            return Human::fromArray($human);
         }, $dbArray);
     }
 }

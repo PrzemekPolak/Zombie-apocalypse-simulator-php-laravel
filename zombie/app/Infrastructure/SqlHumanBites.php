@@ -14,15 +14,6 @@ class SqlHumanBites implements HumanBites
         return $this->mapToDomainHumanBitesArray(ModelHumanBite::where('turn_id', $turn - 1)->get()->toArray());
     }
 
-    public function add(HumanBite $humanBite): void
-    {
-        ModelHumanBite::add(
-            $humanBite->humanId,
-            $humanBite->zombieId,
-            $humanBite->turn
-        );
-    }
-
     public function save(array $humanBites): void
     {
         DB::transaction(function () use ($humanBites) {

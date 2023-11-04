@@ -8,8 +8,6 @@ interface SimulationSettings
 {
     public function getEventChance(string $eventName): int;
 
-    public function add(SimulationSetting $simulationSetting): void;
-
     /** @param SimulationSetting[] $simulationSettings */
     public function save(array $simulationSettings): void;
 

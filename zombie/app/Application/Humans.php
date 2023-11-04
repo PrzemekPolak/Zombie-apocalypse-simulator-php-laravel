@@ -11,8 +11,6 @@ interface Humans
 
     public function countAlive(): int;
 
-    public function update(int $id, array $fields): void;
-
     /** @param $humans Human[] */
     public function save(array $humans): void;
 
@@ -23,8 +21,6 @@ interface Humans
 
     /** @return Human[] */
     public function getRandomHumans(int $count): array;
-
-    public function add(Human $human): void;
 
     public function find(int $humanId): Human;
 

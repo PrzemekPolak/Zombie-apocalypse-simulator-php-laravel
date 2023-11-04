@@ -15,11 +15,6 @@ class InMemorySimulationSettings implements SimulationSettings
         return $this->simulationSettings[$eventName]->chance;
     }
 
-    public function add(SimulationSetting $simulationSetting): void
-    {
-        $this->simulationSettings[$simulationSetting->event] = $simulationSetting;
-    }
-
     public function save(array $simulationSettings): void
     {
         foreach ($simulationSettings as $simulationSetting) {

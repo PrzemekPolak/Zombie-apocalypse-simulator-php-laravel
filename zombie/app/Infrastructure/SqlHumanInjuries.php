@@ -9,15 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class SqlHumanInjuries implements HumanInjuries
 {
-    public function add(HumanInjury $humanInjury): void
-    {
-        ModelHumanInjury::add(
-            $humanInjury->humanId,
-            $humanInjury->injuryCause,
-            $humanInjury->turn
-        );
-    }
-
     public function fromTurn(int $turn): array
     {
         return $this->mapToDomainHumanInjuriesArray(ModelHumanInjury::where(['injured_at' => $turn])->get()->toArray());

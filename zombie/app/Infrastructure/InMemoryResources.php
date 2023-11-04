@@ -22,11 +22,6 @@ class InMemoryResources implements Resources
         }
     }
 
-    public function add(Resource $resource): void
-    {
-        $this->resources[$resource->type] = $resource;
-    }
-
     public function all(): array
     {
         return $this->resources;

@@ -15,11 +15,6 @@ class SqlSimulationSettings implements SimulationSettings
         return ModelSimulationSetting::getEventChance($eventName);
     }
 
-    public function add(SimulationSetting $simulationSetting): void
-    {
-        throw new \Exception('Not implemented!');
-    }
-
     public function save(array $simulationSettings): void
     {
         DB::transaction(function () use ($simulationSettings) {

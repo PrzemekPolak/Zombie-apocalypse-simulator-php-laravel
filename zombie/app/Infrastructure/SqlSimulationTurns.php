@@ -3,35 +3,27 @@
 namespace App\Infrastructure;
 
 use App\Application\SimulationTurns;
-use App\Models\SimulationTurn;
-use App\Domain\SimulationTurn as DomainSimulationTurn;
+use App\Models\SimulationTurn as ModelSimulationTurn;
+use App\Domain\SimulationTurn;
 use Illuminate\Support\Facades\DB;
 
 class SqlSimulationTurns implements SimulationTurns
 {
     public function currentTurn(): int
     {
-        return SimulationTurn::currentTurn();
+        return ModelSimulationTurn::currentTurn();
     }
 
     public function createNewTurn(string $status = 'active'): void
     {
-        SimulationTurn::createNewTurn();
-    }
-
-    public function add(DomainSimulationTurn $simulationTurn): void
-    {
-        $turn = new SimulationTurn();
-        $turn->id = $simulationTurn->turnNumber;
-        $turn->status = $simulationTurn->status;
-        $turn->save();
+        ModelSimulationTurn::createNewTurn();
     }
 
     public function save(array $simulationTurns): void
     {
         DB::transaction(function () use ($simulationTurns) {
             foreach ($simulationTurns as $simulationTurn) {
-                SimulationTurn::updateOrCreate(
+                ModelSimulationTurn::updateOrCreate(
                     [
                         'id' => $simulationTurn->turnNumber
                     ],
@@ -45,14 +37,14 @@ class SqlSimulationTurns implements SimulationTurns
 
     public function all(): array
     {
-        return $this->mapToDomainSimulationTurnsArray(SimulationTurn::all()->toArray());
+        return $this->mapToDomainSimulationTurnsArray(ModelSimulationTurn::all()->toArray());
     }
 
-    /** @return DomainSimulationTurn[] */
+    /** @return SimulationTurn[] */
     private function mapToDomainSimulationTurnsArray(array $dbArray): array
     {
         return array_map(static function ($simulationTurn) {
-            return DomainSimulationTurn::fromArray($simulationTurn);
+            return SimulationTurn::fromArray($simulationTurn);
         }, $dbArray);
     }
 }

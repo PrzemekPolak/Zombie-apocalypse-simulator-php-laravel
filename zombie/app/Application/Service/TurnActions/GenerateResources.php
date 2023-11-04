@@ -22,7 +22,7 @@ class GenerateResources implements TurnAction
         foreach ($resourcesTypes as $resourceType) {
             $resource = $this->resources->getByType($resourceType);
             $resource->produce($this->humans->getNumberOfResourceProducers($resourceType));
-            $this->resources->add($resource);
+            $this->resources->save([$resource]);
         }
     }
 }

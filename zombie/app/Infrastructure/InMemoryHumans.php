@@ -32,11 +32,6 @@ class InMemoryHumans implements Humans
         return $count;
     }
 
-    public function update(int $id, array $fields): void
-    {
-        throw new \Exception('Not implemented!');
-    }
-
     public function save(array $humans): void
     {
         foreach ($humans as $human) {
@@ -64,11 +59,6 @@ class InMemoryHumans implements Humans
             }
         }
         return $result;
-    }
-
-    public function add(Human $human): void
-    {
-        $this->humans[$human->id] = $human;
     }
 
     public function getRandomHumans(int $count): array

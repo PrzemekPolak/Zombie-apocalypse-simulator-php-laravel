@@ -27,7 +27,7 @@ class CheckWhoTurnsIntoZombie implements TurnAction
         foreach ($bitten as $bite) {
             $human = $this->humans->find($bite->humanId);
             $human->becomeZombie();
-            $this->zombies->add(Zombie::fromHuman($human));
+            $this->zombies->save([Zombie::fromHuman($human)]);
         }
     }
 }

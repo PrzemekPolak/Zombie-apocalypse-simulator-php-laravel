@@ -68,50 +68,36 @@ class System
 
     public function hasHumans(Human ...$humans): void
     {
-        foreach ($humans as $human) {
-            $this->humans->add($human);
-        }
+        $this->humans->save($humans);
     }
 
     public function hasZombies(Zombie ...$zombies): void
     {
-        foreach ($zombies as $zombie) {
-            $this->zombies->add($zombie);
-        }
+        $this->zombies->save($zombies);
     }
 
     public function hasResources(Resource ...$resources): void
     {
-        foreach ($resources as $resource) {
-            $this->resources->add($resource);
-        }
+        $this->resources->save($resources);
     }
 
     public function hasSimulationTurns(SimulationTurn ...$simulationTurns): void
     {
-        foreach ($simulationTurns as $simulationTurn) {
-            $this->simulationTurns->add($simulationTurn);
-        }
+        $this->simulationTurns->save($simulationTurns);
     }
 
     public function hasSimulationSettings(SimulationSetting ...$simulationSettings): void
     {
-        foreach ($simulationSettings as $simulationSetting) {
-            $this->simulationSettings->add($simulationSetting);
-        }
+        $this->simulationSettings->save($simulationSettings);
     }
 
     public function hasHumanInjuries(HumanInjury ...$humanInjuries): void
     {
-        foreach ($humanInjuries as $humanInjury) {
-            $this->humanInjuries->add($humanInjury);
-        }
+        $this->humanInjuries->save($humanInjuries);
     }
 
     public function hasHumanBites(HumanBite ...$humanBites): void
     {
-        foreach ($humanBites as $humanBite) {
-            $this->humanBites->add($humanBite);
-        }
+        $this->humanBites->save($humanBites);
     }
 }

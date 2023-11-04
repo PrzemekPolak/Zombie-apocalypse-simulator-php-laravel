@@ -25,11 +25,6 @@ class InMemorySimulationTurns implements SimulationTurns
         );
     }
 
-    public function add(SimulationTurn $simulationTurn): void
-    {
-        $this->simulationTurns[$simulationTurn->turnNumber] = $simulationTurn;
-    }
-
     public function save(array $simulationTurns): void
     {
         foreach ($simulationTurns as $simulationTurn) {
