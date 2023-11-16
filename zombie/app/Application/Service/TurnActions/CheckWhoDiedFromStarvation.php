@@ -20,7 +20,9 @@ class CheckWhoDiedFromStarvation implements TurnAction
         $humans = $this->humans->whoLastAteAt($this->simulationTurns->currentTurn() - 3);
 
         foreach ($humans as $human) {
-            $human->die('starvation');
+            if ($human->isAlive()) {
+                $human->die('starvation');
+            }
         }
     }
 }

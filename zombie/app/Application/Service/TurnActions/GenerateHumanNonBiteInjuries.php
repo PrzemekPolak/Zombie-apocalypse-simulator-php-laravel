@@ -22,7 +22,7 @@ class GenerateHumanNonBiteInjuries implements TurnAction
 
     public function execute(): void
     {
-        $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('injuryChance'));
+        $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
         foreach ($humans as $human) {
             $injury = $this->chooseInjuryCause();
             $human->getsInjured($injury);
@@ -34,10 +34,10 @@ class GenerateHumanNonBiteInjuries implements TurnAction
         }
     }
 
-    private function calculateTimesEventOccurred(string $event): int
+    private function timesEventOccurred(): int
     {
         $humanCount = $this->humans->countAlive();
-        $event = $this->simulationSettings->getEventChance($event);
+        $event = $this->simulationSettings->getEventChance('injuryChance');
         return floor($event * $humanCount / 100);
     }
 

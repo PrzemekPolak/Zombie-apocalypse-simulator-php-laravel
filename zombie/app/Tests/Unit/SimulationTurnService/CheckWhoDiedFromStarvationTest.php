@@ -8,19 +8,26 @@ use App\Tests\MyTestCase;
 
 class CheckWhoDiedFromStarvationTest extends MyTestCase
 {
+    private const CURRENT_TURN = 4;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->system()->hasSimulationTurns(
+            aSimulationTurn()->withTurnNumber(self::CURRENT_TURN)->build(),
+        );
+    }
+
     /** @test */
     public function onlyHumansWhoDidntEatForThreeTurnsDie(): void
     {
-        $currentTurn = 4;
-        $humanWhoDidntEat = aHuman()->lastAteAt($currentTurn - 3)->build();
-        $humanWhoAte = aHuman()->lastAteAt($currentTurn)->build();
+        $humanWhoDidntEat = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->build();
+        $humanWhoAte = aHuman()->lastAteAt(self::CURRENT_TURN)->build();
 
         $this->system()->hasHumans(
             $humanWhoDidntEat,
             $humanWhoAte,
-        );
-        $this->system()->hasSimulationTurns(
-            aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
         $this->checkWhoDiedFromStarvation();
@@ -31,20 +38,46 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
     /** @test */
     public function humanWhoStarvedDiesWithCorrectDeathReason(): void
     {
-        $currentTurn = 4;
-        $humanWhoDidntEat = aHuman()->lastAteAt($currentTurn - 3)->build();
+        $humanWhoDidntEat = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->build();
 
         $this->system()->hasHumans(
             $humanWhoDidntEat,
-        );
-        $this->system()->hasSimulationTurns(
-            aSimulationTurn()->withTurnNumber($currentTurn)->build(),
         );
 
         $this->checkWhoDiedFromStarvation();
 
         assertThat($humanWhoDidntEat->health, is(equalTo('dead')));
         assertThat($humanWhoDidntEat->getDeathCause(), is(equalTo('starvation')));
+    }
+
+    /** @test */
+    public function turnedPeopleCanNoLongerDieFromStarvation(): void
+    {
+        $turnedHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth('turned')->build();
+
+        $this->system()->hasHumans(
+            $turnedHuman,
+        );
+
+        $this->checkWhoDiedFromStarvation();
+
+        assertThat($turnedHuman->health, is(equalTo('turned')));
+        assertThat($turnedHuman->getDeathCause(), is(not(equalTo('starvation'))));
+    }
+
+    /** @test */
+    public function deadPeopleCanNoLongerDieFromStarvation(): void
+    {
+        $deadHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth('dead')->build();
+
+        $this->system()->hasHumans(
+            $deadHuman,
+        );
+
+        $this->checkWhoDiedFromStarvation();
+
+        assertThat($deadHuman->health, is(equalTo('dead')));
+        assertThat($deadHuman->getDeathCause(), is(not(equalTo('starvation'))));
     }
 
     private function checkWhoDiedFromStarvation(): void

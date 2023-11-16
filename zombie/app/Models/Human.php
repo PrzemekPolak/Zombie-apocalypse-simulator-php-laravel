@@ -32,7 +32,7 @@ class Human extends Model
 
     public function scopeAlive(Builder $query)
     {
-        $query->whereNotIn('health', ['dead', 'turned', 'injured']);
+        $query->whereNotIn('health', ['dead', 'turned']);
     }
 
     public static function getNumberOfResourceProducers(string $type): int

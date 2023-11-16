@@ -47,6 +47,34 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     }
 
     /** @test */
+    public function deadHumansAreNotConsideredForCalculatingEventOccurrence(): void
+    {
+        $this->humanWillAlwaysGetInjured();
+        $this->systemHasTurn();
+        $this->system()->hasHumans(
+            aHuman()->withHealth('dead')->build(),
+        );
+
+        $this->generateHumanNonBiteInjuries();
+
+        assertThat($this->system()->humanInjuries()->all(), is(emptyArray()));
+    }
+
+    /** @test */
+    public function turnedHumansAreNotConsideredForCalculatingEventOccurrence(): void
+    {
+        $this->humanWillAlwaysGetInjured();
+        $this->systemHasTurn();
+        $this->system()->hasHumans(
+            aHuman()->withHealth('turned')->build(),
+        );
+
+        $this->generateHumanNonBiteInjuries();
+
+        assertThat($this->system()->humanInjuries()->all(), is(emptyArray()));
+    }
+
+    /** @test */
     public function humanInjuryHistoryIsCreated(): void
     {
         $humanId = 1234;

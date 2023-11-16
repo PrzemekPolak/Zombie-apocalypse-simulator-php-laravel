@@ -43,7 +43,7 @@ class InMemoryHumans implements Humans
     {
         $count = 0;
         foreach ($this->humans as $human) {
-            if ($human->professionType() === $resourceType) {
+            if ($human->professionType() === $resourceType && $human->isAlive()) {
                 $count += 1;
             }
         }
@@ -64,7 +64,7 @@ class InMemoryHumans implements Humans
     public function getRandomHumans(int $count): array
     {
         shuffle($this->humans);
-        return array_slice($this->humans, 0, $count);
+        return array_slice($this->allAlive(), 0, $count);
     }
 
     public function find(int $humanId): Human

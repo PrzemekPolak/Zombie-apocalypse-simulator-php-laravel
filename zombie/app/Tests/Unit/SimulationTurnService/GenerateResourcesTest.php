@@ -20,15 +20,27 @@ class GenerateResourcesTest extends MyTestCase
             aHuman()->withProfession($weaponProducingProfession)->build(),
             aHuman()->build(),
         );
-        $this->system()->hasResources(
-            aFoodResource()->withQuantity(0)->build(),
-            aHealthResource()->withQuantity(0)->build(),
-            aWeaponResource()->withQuantity(0)->build(),
-        );
+        $this->currentlyThereAreNoResources();
 
         $this->generateResources();
 
         $this->assertResourcesAreGeneratedInRightQuantity();
+    }
+
+    /** @test */
+    public function deadAndTurnedHumansDontProduceAnything(): void
+    {
+        $foodProducingProfession = 'farmer';
+
+        $this->system()->hasHumans(
+            aHuman()->withHealth('dead')->withProfession($foodProducingProfession)->build(),
+            aHuman()->withHealth('turned')->withProfession($foodProducingProfession)->build(),
+        );
+        $this->currentlyThereAreNoResources();
+
+        $this->generateResources();
+
+        assertThat($this->resourceQuantityInSystem('food'), is(equalTo(0)));
     }
 
     private function generateResources(): void
@@ -49,5 +61,14 @@ class GenerateResourcesTest extends MyTestCase
     private function resourceQuantityInSystem(string $type): int
     {
         return $this->system()->resources()->getByType($type)->getQuantity();
+    }
+
+    private function currentlyThereAreNoResources(): void
+    {
+        $this->system()->hasResources(
+            aFoodResource()->withQuantity(0)->build(),
+            aHealthResource()->withQuantity(0)->build(),
+            aWeaponResource()->withQuantity(0)->build(),
+        );
     }
 }

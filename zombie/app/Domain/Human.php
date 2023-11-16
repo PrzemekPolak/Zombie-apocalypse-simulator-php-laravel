@@ -87,7 +87,7 @@ class Human
 
     public function isNotHealthy(): bool
     {
-        return $this->health !== 'healthy';
+        return $this->health === 'infected' || $this->isInjured();
     }
 
     public function isInjured(): bool

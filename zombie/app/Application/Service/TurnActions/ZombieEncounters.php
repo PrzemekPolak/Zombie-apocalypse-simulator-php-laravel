@@ -36,7 +36,7 @@ class ZombieEncounters implements TurnAction
         $turn = $this->simulationTurns->currentTurn();
         $weapons = $this->resources->getByType('weapon');
 
-        $humans = $this->humans->getRandomHumans($this->calculateTimesEventOccurred('encounterChance'));
+        $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
         $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
 
         $encounterNumber = min(count($humans), count($zombies));
@@ -76,10 +76,10 @@ class ZombieEncounters implements TurnAction
         }
     }
 
-    private function calculateTimesEventOccurred(string $event): int
+    private function timesEventOccurred(): int
     {
         $humanCount = $this->humans->countAlive();
-        $event = $this->simulationSettings->getEventChance($event);
+        $event = $this->simulationSettings->getEventChance('encounterChance');
         return floor($event * $humanCount / 100);
     }
 }
