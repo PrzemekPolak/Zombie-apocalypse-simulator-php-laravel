@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StartSimulationRequest;
 use App\Models\Human;
 use App\Models\Resource;
 use App\Models\Zombie;
@@ -30,17 +29,4 @@ class SimulationSettingService
         DB::table('resources')->truncate();
         DB::table('simulation_turns')->truncate();
     }
-
-    public function prepareRulesForFrontend()
-    {
-        $rules = [];
-        $rulesFromRequest = (new StartSimulationRequest())->rules();
-        foreach ($rulesFromRequest as $key => $value) {
-            $rules[$key] = explode('|', str_replace('required|', '', $value));
-            $rules[$key][0] = (int)str_replace('min:', '', $rules[$key][0]);
-            $rules[$key][1] = (int)str_replace('max:', '', $rules[$key][1]);
-        }
-        return $rules;
-    }
-
 }

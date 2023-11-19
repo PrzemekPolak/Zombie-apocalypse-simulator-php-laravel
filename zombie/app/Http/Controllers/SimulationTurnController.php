@@ -4,18 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Application\Service\SimulationEndingService;
 use App\Application\Service\SimulationRunningService;
-use App\Application\SimulationTurns;
-use App\Models\Human;
-use App\Models\Zombie;
-use App\Services\SimulationTurnService;
+use App\Presentation\View\DashboardView;
+use App\Presentation\View\SimulationEndStatisticsView;
 
 class SimulationTurnController extends Controller
 {
     public function __construct(
-        private readonly SimulationTurnService    $service,
-        private readonly SimulationTurns          $simulationTurns,
-        private readonly SimulationRunningService $simulationRunningService,
-        private readonly SimulationEndingService  $simulationEndingService,
+        private readonly SimulationRunningService    $simulationRunningService,
+        private readonly SimulationEndingService     $simulationEndingService,
+        private readonly DashboardView               $dashboardView,
+        private readonly SimulationEndStatisticsView $simulationEndStatisticsView,
     )
     {
     }
@@ -24,7 +22,7 @@ class SimulationTurnController extends Controller
     {
         $this->simulationRunningService->runSimulation();
         if ($this->simulationEndingService->checkIfSimulationShouldEnd()) {
-            return view('simulation.end', $this->service->getSimulationEndStatistics());
+            return view('simulation.end', $this->simulationEndStatisticsView->create());
         } else {
             return response()->redirectTo('/dashboard');
         }
@@ -33,19 +31,11 @@ class SimulationTurnController extends Controller
 
     public function getStatisticsView()
     {
-        return view('simulation.end', $this->service->getSimulationEndStatistics());
+        return view('simulation.end', $this->simulationEndStatisticsView->create());
     }
 
     public function index()
     {
-        $leftPanelData = $this->service->getFrontendDataForDashboard();
-        return view('simulation.dashboard',
-            [
-                'leftPanelData' => $leftPanelData,
-                'simulationStillOngoing' => $this->simulationEndingService->checkIfSimulationShouldEnd() === false,
-                'currentTurn' => $this->simulationTurns->currentTurn(),
-                'randomHumans' => Human::alive()->inRandomOrder()->limit(3)->get(),
-                'randomZombies' => Zombie::stillWalking()->inRandomOrder()->limit(3)->get()
-            ]);
+        return view('simulation.dashboard', $this->dashboardView->create());
     }
 }

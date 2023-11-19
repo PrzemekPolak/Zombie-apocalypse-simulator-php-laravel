@@ -20,6 +20,10 @@ class SimulationEndingService
 
     public function checkIfSimulationShouldEnd(): bool
     {
+        if ($this->simulationDidntStartYet()) {
+            return false;
+        }
+
         return !empty($this->getReasonsWhySimulationIsFinished());
     }
 
@@ -39,5 +43,10 @@ class SimulationEndingService
             $endReasons[] = 'Wynaleziono szczepionkę';
         }
         return $endReasons;
+    }
+
+    private function simulationDidntStartYet(): bool
+    {
+        return empty($this->simulationTurns->all());
     }
 }

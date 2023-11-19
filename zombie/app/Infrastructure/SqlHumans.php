@@ -72,6 +72,11 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(ModelHuman::alive()->where('last_eat_at', '<=', $turn)->get()->toArray());
     }
 
+    public function allWithHealth(string $health): array
+    {
+        return $this->mapToDomainHumansArray(ModelHuman::where('health', $health)->get()->toArray());
+    }
+
     /** @return Human[] */
     private function mapToDomainHumansArray(array $dbArray): array
     {

@@ -91,4 +91,15 @@ class InMemoryHumans implements Humans
         }
         return $result;
     }
+
+    public function allWithHealth(string $health): array
+    {
+        $result = [];
+        foreach ($this->humans as $human) {
+            if ($human->health === $health) {
+                $result[] = $human;
+            }
+        }
+        return $result;
+    }
 }

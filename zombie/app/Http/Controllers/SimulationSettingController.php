@@ -6,16 +6,18 @@ use App\Application\Service\SimulationRunningService;
 use App\Http\Requests\StartSimulationRequest;
 use App\Models\SimulationSetting;
 use App\Models\SimulationTurn;
+use App\Presentation\View\SimulationEndStatisticsView;
+use App\Presentation\View\SimulationSettingsView;
 use App\Services\SimulationSettingService;
-use App\Services\SimulationTurnService;
 use Illuminate\Http\Request;
 
 class SimulationSettingController extends Controller
 {
 
     public function __construct(
-        private readonly SimulationTurnService    $simulationTurnService,
-        private readonly SimulationRunningService $simulationRunningService,
+        private readonly SimulationRunningService    $simulationRunningService,
+        private readonly SimulationEndStatisticsView $simulationEndStatisticsView,
+        private readonly SimulationSettingsView      $simulationSettingsView,
     )
     {
         $this->service = new SimulationSettingService();
@@ -32,7 +34,7 @@ class SimulationSettingController extends Controller
 
         if ($request->shouldLoop === 'on') {
             $this->simulationRunningService->runWholeSimulationOnServer();
-            return view('simulation.end', $this->simulationTurnService->getSimulationEndStatistics());
+            return view('simulation.end', $this->simulationEndStatisticsView->create());
         } else {
             return response()->redirectTo('/dashboard');
         }
@@ -46,12 +48,6 @@ class SimulationSettingController extends Controller
 
     public function index(Request $request)
     {
-        $settings = SimulationSetting::all();
-        return view('simulation.settings',
-            [
-                'settings' => $settings,
-                'rules' => $this->service->prepareRulesForFrontend(),
-                'simulationOngoing' => SimulationTurn::simulationIsOngoing()
-            ]);
+        return view('simulation.settings', $this->simulationSettingsView->create());
     }
 }

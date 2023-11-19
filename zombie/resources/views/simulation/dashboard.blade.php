@@ -20,8 +20,8 @@
                             <div>
                                 <div>{{$data->name}}</div>
                                 <div>Wiek: {{$data->age}}</div>
-                                <div>Zawód: {{$data->profession}}</div>
-                                <div>Ostatni posiłek: {{ $currentTurn - $data->last_eat_at }} tura temu</div>
+                                <div>Zawód: {{$data->professionName()}}</div>
+                                <div>Ostatni posiłek: {{ $currentTurn - $data->lastEatAt }} tura temu</div>
                                 <div>Stan zdrowia: {{$data->health}}</div>
                             </div>
                         @endforeach
@@ -38,7 +38,7 @@
                             <div>
                                 <div>{{$data->name}}</div>
                                 <div>Wiek: {{$data->age}}</div>
-                                <div>Były zawód: {{$data->profession}}</div>
+                                <div>Były zawód: {{$data->professionName()}}</div>
                                 <div>Stan zdrowia: {{$data->health}}</div>
                             </div>
                         @endforeach

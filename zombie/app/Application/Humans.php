@@ -29,4 +29,7 @@ interface Humans
 
     /** @return Human[] */
     public function whoLastAteAt(int $turn): array;
+
+    /** @return Human[] */
+    public function allWithHealth(string $health): array;
 }
