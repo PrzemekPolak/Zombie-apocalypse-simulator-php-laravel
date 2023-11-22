@@ -46,12 +46,12 @@
                 </div>
 
             </div>
-            <form id="nextTurnForm" method="POST" action="{{route('turn.create')}}"
-                  {{$simulationStillOngoing ? 'class=center-child' : 'class=hidden'}}
+            <div onclick="nextTurn()"
+                 {{$simulationStillOngoing ? 'class=center-child' : 'class=hidden'}}
                   style="margin-bottom: 0;">
                 @csrf
                 <x-standard-button label="Następna tura"/>
-            </form>
+            </div>
             <a {{$simulationStillOngoing ? 'class=hidden' : 'class=center-child'}} href="{{  asset ('/statistics')}}">
                 <button>Symulacja zakończona - wyświetl statystyki</button>
             </a>
@@ -60,11 +60,6 @@
 </x-main-layout>
 
 <script>
-    document.getElementById('nextTurnForm').addEventListener(
-        "submit",
-        () => loadingNow(true),
-    );
-
     function changeHumans() {
         let parent = document.getElementById("humans-container")
         parent.innerHTML = 'Ładuję...';
@@ -108,6 +103,14 @@
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    function nextTurn() {
+        loadingNow(true)
+        axios.post('api/simulation_turn')
+            .then(
+                () => window.location = "{{ url('/dashboard') }}"
+            )
     }
 </script>
 
