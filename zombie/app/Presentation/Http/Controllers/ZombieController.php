@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Presentation\Http\Controllers;
 
 use App\Models\Zombie;
+use App\Presentation\Http\Controller;
 use Illuminate\Http\Request;
 
 class ZombieController extends Controller

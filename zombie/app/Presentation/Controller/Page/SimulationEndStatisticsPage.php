@@ -2,7 +2,7 @@
 
 namespace App\Presentation\Controller\Page;
 
-use App\Http\Controllers\Controller;
+use App\Presentation\Http\Controller;
 use App\Presentation\View\SimulationEndStatisticsView;
 use Illuminate\View\View;
 

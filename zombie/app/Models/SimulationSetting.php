@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Requests\StartSimulationRequest;
+use App\Presentation\Requests\StartSimulationRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

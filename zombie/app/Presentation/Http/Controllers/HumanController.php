@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Presentation\Http\Controllers;
 
 use App\Models\Human;
+use App\Presentation\Http\Controller;
 use Illuminate\Http\Request;
 
 class HumanController extends Controller

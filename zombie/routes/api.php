@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\HumanController;
-use App\Http\Controllers\ZombieController;
 use App\Presentation\Controller\Action\ClearSimulationAction;
 use App\Presentation\Controller\Action\ExecuteTurnAction;
 use App\Presentation\Controller\Action\RunWholeSimulationAction;
 use App\Presentation\Controller\Action\SimulationSetupAction;
+use App\Presentation\Http\Controllers\HumanController;
+use App\Presentation\Http\Controllers\ZombieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

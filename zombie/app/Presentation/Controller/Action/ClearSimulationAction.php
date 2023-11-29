@@ -2,7 +2,7 @@
 
 namespace App\Presentation\Controller\Action;
 
-use App\Http\Controllers\Controller;
+use App\Presentation\Http\Controller;
 use App\Services\SimulationSettingService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

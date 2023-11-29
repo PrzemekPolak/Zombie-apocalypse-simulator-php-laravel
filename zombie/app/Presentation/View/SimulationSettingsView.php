@@ -4,7 +4,7 @@ namespace App\Presentation\View;
 
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
-use App\Http\Requests\StartSimulationRequest;
+use App\Presentation\Requests\StartSimulationRequest;
 
 class SimulationSettingsView
 {

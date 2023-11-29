@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Action;
 
 use App\Application\Service\SimulationRunningService;
-use App\Http\Controllers\Controller;
+use App\Presentation\Http\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RunWholeSimulationAction extends Controller
