@@ -2,21 +2,21 @@
 
 namespace App\Presentation\Controller\Action;
 
-use App\Application\Service\SimulationRunningService;
 use App\Http\Controllers\Controller;
+use App\Services\SimulationSettingService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ExecuteTurnAction extends Controller
+class ClearSimulationAction extends Controller
 {
     public function __construct(
-        private readonly SimulationRunningService $simulationRunningService,
+        private readonly SimulationSettingService $simulationSettingService,
     )
     {
     }
 
     public function __invoke(): JsonResponse
     {
-        $this->simulationRunningService->runSimulation();
+        $this->simulationSettingService->clearSimulationTables();
 
         return new JsonResponse();
     }

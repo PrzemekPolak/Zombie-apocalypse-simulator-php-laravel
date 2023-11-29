@@ -1,6 +1,6 @@
 <x-main-layout title="Ustawienia">
     <div>
-        <form id="settingsForm" method="POST" action="{{route('settings.update')}}" class="flex-column gap-16">
+        <form id="settingsForm" class="flex-column gap-16">
             @csrf
             @foreach($settings as $data)
                 <x-slider-input
@@ -20,7 +20,7 @@
                 <label for="shouldLoop"> Czy powinno przeprowadzić całą symulację w pętli na serwerze i przekierować do
                     statystyk po jej zakończeniu (przy dużych ilościach osób zajmie dużo czasu)</label>
             </div>
-            <button class="settings-form-button">Potwierdź ustawienia i przejdź do symulacji</button>
+            <button class="settings-form-button" onclick="send()">Potwierdź ustawienia i przejdź do symulacji</button>
         </form>
         <div {{$simulationOngoing ? 'class=center-child' : 'class=hidden'}}>
             <button onclick="resetSettings()">Resetuj symulacje</button>
@@ -29,12 +29,6 @@
 </x-main-layout>
 
 <script>
-
-    document.getElementById('settingsForm').addEventListener(
-        "submit",
-        () => loadingNow(true),
-    );
-
     function resetSettings() {
         loadingNow(true)
         axios.post('{{route('simulation.delete')}}', {})
@@ -46,5 +40,21 @@
             .catch(function (error) {
                 console.log(error);
             })
+    }
+
+    function send() {
+        loadingNow(true)
+
+        axios.post('{{route('settings.update')}}', new FormData(document.getElementById('settingsForm')))
+            .then(
+                () => {
+                    if (document.getElementById('shouldLoop').checked) {
+                        axios.post('api/whole_simulation')
+                            .then(
+                                () => window.location = "{{ url('/statistics') }}"
+                            )
+                    } else window.location = "{{ url('/dashboard') }}"
+                }
+            )
     }
 </script>
