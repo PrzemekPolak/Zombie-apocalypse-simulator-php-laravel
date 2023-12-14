@@ -38,7 +38,7 @@
                             <div>
                                 <div>{{$data->name}}</div>
                                 <div>Wiek: {{$data->age}}</div>
-                                <div>Były zawód: {{$data->professionName()}}</div>
+                                <div>Były zawód: {{$data->profession}}</div>
                                 <div>Stan zdrowia: {{$data->health}}</div>
                             </div>
                         @endforeach
@@ -48,7 +48,7 @@
             </div>
             <div onclick="nextTurn()"
                  {{$simulationStillOngoing ? 'class=center-child' : 'class=hidden'}}
-                  style="margin-bottom: 0;">
+                 style="margin-bottom: 0;">
                 @csrf
                 <x-standard-button label="Następna tura"/>
             </div>

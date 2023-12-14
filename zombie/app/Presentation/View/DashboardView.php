@@ -8,6 +8,7 @@ use App\Application\Service\SimulationEndingService;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
 use App\Domain\Human;
+use App\Domain\Zombie;
 
 class DashboardView
 {
@@ -33,7 +34,10 @@ class DashboardView
                 static fn(Human $human) => HumanView::fromDto($human, $currentTurn),
                 $this->humans->getRandomHumans(3)
             ),
-            'randomZombies' => $this->zombies->getRandomZombies(3),
+            'randomZombies' => array_map(
+                static fn(Zombie $zombie) => ZombieView::fromDto($zombie),
+                $this->zombies->getRandomZombies(3)
+            ),
         ];
     }
 

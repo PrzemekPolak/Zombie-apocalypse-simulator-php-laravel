@@ -43,6 +43,11 @@ class Zombie
         return $this->profession->name;
     }
 
+    public function professionTranslatedName(): string
+    {
+        return $this->profession->translatedName();
+    }
+
     public function getsKilled(): void
     {
         $this->health = 'dead';
