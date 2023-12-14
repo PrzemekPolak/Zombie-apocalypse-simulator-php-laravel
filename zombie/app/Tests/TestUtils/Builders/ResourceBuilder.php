@@ -9,7 +9,6 @@ class ResourceBuilder
     public function __construct(
         public string $type,
         public int    $quantity,
-        public int    $productionMultiplier,
     )
     {
     }
@@ -19,7 +18,6 @@ class ResourceBuilder
         return new self(
             'weapon',
             100,
-            1
         );
     }
 
@@ -28,7 +26,6 @@ class ResourceBuilder
         return new self(
             $type,
             $this->quantity,
-            $this->productionMultiplier,
         );
     }
 
@@ -37,25 +34,14 @@ class ResourceBuilder
         return new self(
             $this->type,
             $quantity,
-            $this->productionMultiplier,
-        );
-    }
-
-    public function withProductionMultiplier(int $productionMultiplier): self
-    {
-        return new self(
-            $this->type,
-            $this->quantity,
-            $productionMultiplier,
         );
     }
 
     public function build(): Resource
     {
-        return new Resource(
+        return Resource::create(
             $this->type,
             $this->quantity,
-            $this->productionMultiplier,
         );
     }
 }

@@ -4,7 +4,7 @@ namespace App\Domain;
 
 class Resource
 {
-    public function __construct(
+    private function __construct(
         public readonly string $type,
         private int            $quantity,
         public readonly int    $productionMultiplier,
@@ -46,5 +46,10 @@ class Resource
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->quantity > 0;
     }
 }

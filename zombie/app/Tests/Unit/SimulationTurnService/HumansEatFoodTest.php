@@ -90,7 +90,7 @@ class HumansEatFoodTest extends MyTestCase
     private function systemHasFood(int $quantity = 123): void
     {
         $this->system()->hasResources(
-            aFoodResource()->withQuantity($quantity)->build()
+            aResource()->withType('food')->withQuantity($quantity)->build()
         );
     }
 

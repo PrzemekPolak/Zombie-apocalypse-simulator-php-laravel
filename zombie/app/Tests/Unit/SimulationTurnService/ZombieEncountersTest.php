@@ -14,7 +14,7 @@ class ZombieEncountersTest extends MyTestCase
         parent::setUp();
 
         $this->system()->hasResources(
-            aWeaponResource()->withQuantity(100)->build(),
+            aResource()->withType('weapon')->withQuantity(100)->build(),
         );
         $this->system()->hasSimulationTurns(
             aSimulationTurn()->withTurnNumber(1)->build(),

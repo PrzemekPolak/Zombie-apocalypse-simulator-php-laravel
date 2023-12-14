@@ -2,6 +2,8 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\ProfessionType;
+
 class Human
 {
     public function __construct(
@@ -80,7 +82,7 @@ class Human
         return $this->profession->translatedName();
     }
 
-    public function professionType(): string
+    public function professionType(): ProfessionType
     {
         return $this->profession->type;
     }

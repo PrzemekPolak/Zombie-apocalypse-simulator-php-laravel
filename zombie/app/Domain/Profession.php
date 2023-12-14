@@ -2,11 +2,13 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\ProfessionType;
+
 class Profession
 {
     private function __construct(
-        public readonly string $name,
-        public readonly string $type,
+        public readonly string         $name,
+        public readonly ProfessionType $type,
     )
     {
     }
@@ -15,19 +17,19 @@ class Profession
         string $name,
     ): self
     {
-        $type = 'none';
+        $type = ProfessionType::None;
 
         if (in_array($name, ['doctor', 'nurse'])) {
-            $type = 'health';
+            $type = ProfessionType::Health;
         }
         if (in_array($name, ['farmer', 'hunter'])) {
-            $type = 'food';
+            $type = ProfessionType::Food;
         }
         if (in_array($name, ['engineer', 'mechanic'])) {
-            $type = 'weapon';
+            $type = ProfessionType::Weapon;
         }
         if (in_array($name, ['soldier', 'police'])) {
-            $type = 'fighting';
+            $type = ProfessionType::Fighting;
         }
 
         return new self(

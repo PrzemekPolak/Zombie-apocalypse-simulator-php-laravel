@@ -29,9 +29,9 @@ class EndpointsAreWorkingCorrectlyTest extends MyTestCase
             aSimulationSetting()->withEvent('immuneChance')->withChance(10)->build(),
         );
         $this->system()->hasResources(
-            aFoodResource()->withQuantity(100)->build(),
-            aHealthResource()->withQuantity(100)->build(),
-            aWeaponResource()->withQuantity(100)->build(),
+            aResource()->withType('food')->withQuantity(100)->build(),
+            aResource()->withType('health')->withQuantity(100)->build(),
+            aResource()->withType('weapon')->withQuantity(100)->build(),
         );
         $this->system()->hasHumans(
             aHuman()->build(),

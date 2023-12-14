@@ -10,8 +10,11 @@ use App\Application\Service\TurnAction;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\Enum\ProfessionType;
+use App\Domain\Human;
 use App\Domain\HumanBite;
 use App\Domain\HumanInjury;
+use App\Domain\Zombie;
 use App\Services\ProbabilityService;
 
 class ZombieEncounters implements TurnAction
@@ -31,55 +34,69 @@ class ZombieEncounters implements TurnAction
 
     public function execute(): void
     {
-        $defaultChanceForBite = $this->simulationSettings->getEventChance('chanceForBite');
-        $humanIsImmuneChance = $this->simulationSettings->getEventChance('immuneChance');
-        $turn = $this->simulationTurns->currentTurn();
-        $weapons = $this->resources->getByType('weapon');
-
         $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
         $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
+        $weapons = $this->resources->getByType('weapon');
 
-        $encounterNumber = min(count($humans), count($zombies));
-        for ($i = 0; $i < $encounterNumber; $i++) {
-            $human = $humans[$i];
-            $zombie = $zombies[$i];
-
-            $chanceForBite = $defaultChanceForBite;
-            //Scenarios for encounters
-            if ($weapons->getQuantity() > 0) {
+        for ($i = 0; $i < min(count($humans), count($zombies)); $i++) {
+            if ($weapons->isAvailable()) {
                 $weapons->consume();
-                $chanceForBite -= 20;
             }
 
-            if ('fighting' === $human->professionType()) {
-                $chanceForBite -= 10;
-            }
-            if ($this->probabilityService->willItHappen($chanceForBite)) {
-                if ($this->probabilityService->willItHappen($humanIsImmuneChance)) {
-                    $human->getsInjured('zombie bite');
-                    $this->humanInjuries->save([new HumanInjury(
-                        $human->id,
-                        $turn,
-                        'zombie bite',
-                    )]);
-                } else {
-                    $human->becomeInfected();
-                    $this->humanBites->save([new HumanBite(
-                        $human->id,
-                        $zombie->id,
-                        $turn,
-                    )]);
-                }
+            if ($this->probabilityService->willItHappen($this->chanceForBite($humans[$i], $weapons->isAvailable()))) {
+                $this->humanGetsBitten($humans[$i], $zombies[$i]);
             } else {
-                $zombie->getsKilled();
+                $zombies[$i]->getsKilled();
             }
         }
     }
 
     private function timesEventOccurred(): int
     {
-        $humanCount = $this->humans->countAlive();
-        $event = $this->simulationSettings->getEventChance('encounterChance');
-        return floor($event * $humanCount / 100);
+        return floor($this->simulationSettings->getEventChance('encounterChance') * $this->humans->countAlive() / 100);
+    }
+
+    private function chanceForBite(Human $human, bool $weaponIsAvailable): int
+    {
+        $result = $this->simulationSettings->getEventChance('chanceForBite');
+
+        if ($weaponIsAvailable) {
+            $result -= 20;
+        }
+
+        if (ProfessionType::Fighting === $human->professionType()) {
+            $result -= 10;
+        }
+
+        return $result;
+    }
+
+    private function humanGetsBitten(Human $human, Zombie $zombie): void
+    {
+        if ($this->probabilityService->willItHappen($this->simulationSettings->getEventChance('immuneChance'))) {
+            $this->immuneHumanGetsBitten($human);
+        } else {
+            $this->notImmuneHumanGetsBitten($human, $zombie);
+        }
+    }
+
+    private function immuneHumanGetsBitten(Human $human): void
+    {
+        $human->getsInjured('zombie bite');
+        $this->humanInjuries->save([new HumanInjury(
+            $human->id,
+            $this->simulationTurns->currentTurn(),
+            'zombie bite',
+        )]);
+    }
+
+    private function notImmuneHumanGetsBitten(Human $human, Zombie $zombie): void
+    {
+        $human->becomeInfected();
+        $this->humanBites->save([new HumanBite(
+            $human->id,
+            $zombie->id,
+            $this->simulationTurns->currentTurn(),
+        )]);
     }
 }

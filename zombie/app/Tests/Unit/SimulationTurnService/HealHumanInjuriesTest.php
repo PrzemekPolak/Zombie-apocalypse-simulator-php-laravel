@@ -20,7 +20,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aHealthResource()->withQuantity(100)->build(),
+            aResource()->withType('health')->withQuantity(100)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -40,7 +40,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aHealthResource()->withQuantity(100)->build(),
+            aResource()->withType('health')->withQuantity(100)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -60,7 +60,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aHealthResource()->withQuantity(0)->build(),
+            aResource()->withType('health')->withQuantity(0)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -72,7 +72,7 @@ class HealHumanInjuriesTest extends MyTestCase
     public function humanConsumesHealthResourceDuringHealing(): void
     {
         $human = aHuman()->withInjury()->build();
-        $healthResources = aHealthResource()->withQuantity(1)->build();
+        $healthResources = aResource()->withType('health')->withQuantity(1)->build();
 
         $fakeProbabilityService = $this->createStub(ProbabilityService::class);
         $fakeProbabilityService->method('willItHappen')->willReturn(true);

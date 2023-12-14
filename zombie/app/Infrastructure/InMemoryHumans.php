@@ -43,7 +43,7 @@ class InMemoryHumans implements Humans
     {
         $count = 0;
         foreach ($this->humans as $human) {
-            if ($human->professionType() === $resourceType && $human->isAlive()) {
+            if ($human->professionType()->value === $resourceType && $human->isAlive()) {
                 $count += 1;
             }
         }

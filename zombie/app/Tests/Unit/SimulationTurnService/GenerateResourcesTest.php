@@ -66,9 +66,9 @@ class GenerateResourcesTest extends MyTestCase
     private function currentlyThereAreNoResources(): void
     {
         $this->system()->hasResources(
-            aFoodResource()->withQuantity(0)->build(),
-            aHealthResource()->withQuantity(0)->build(),
-            aWeaponResource()->withQuantity(0)->build(),
+            aResource()->withType('food')->withQuantity(0)->build(),
+            aResource()->withType('health')->withQuantity(0)->build(),
+            aResource()->withType('weapon')->withQuantity(0)->build(),
         );
     }
 }
