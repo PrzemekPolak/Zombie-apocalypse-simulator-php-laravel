@@ -75,6 +75,11 @@ class Human
         return $this->profession->name;
     }
 
+    public function professionTranslatedName(): string
+    {
+        return $this->profession->translatedName();
+    }
+
     public function professionType(): string
     {
         return $this->profession->type;

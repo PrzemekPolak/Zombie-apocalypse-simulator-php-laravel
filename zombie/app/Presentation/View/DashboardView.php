@@ -7,6 +7,7 @@ use App\Application\Resources;
 use App\Application\Service\SimulationEndingService;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\Human;
 
 class DashboardView
 {
@@ -22,11 +23,16 @@ class DashboardView
 
     public function create(): array
     {
+        $currentTurn = $this->simulationTurns->currentTurn();
+
         return [
             'leftPanelData' => $this->leftPanelData(),
             'simulationStillOngoing' => $this->simulationEndingService->checkIfSimulationShouldEnd() === false,
             'currentTurn' => $this->simulationTurns->currentTurn(),
-            'randomHumans' => $this->humans->getRandomHumans(3),
+            'randomHumans' => array_map(
+                static fn(Human $human) => HumanView::fromDto($human, $currentTurn),
+                $this->humans->getRandomHumans(3)
+            ),
             'randomZombies' => $this->zombies->getRandomZombies(3),
         ];
     }

@@ -16,13 +16,13 @@
                         <div class="big-text">Ludzie:</div>
                     </div>
                     <div id='humans-container' class="dashboard-examples-each-container">
-                        @foreach($randomHumans as $data)
+                        @foreach($randomHumans as $human)
                             <div>
-                                <div>{{$data->name}}</div>
-                                <div>Wiek: {{$data->age}}</div>
-                                <div>Zawód: {{$data->professionName()}}</div>
-                                <div>Ostatni posiłek: {{ $currentTurn - $data->lastEatAt }} tura temu</div>
-                                <div>Stan zdrowia: {{$data->health}}</div>
+                                <div>{{$human->name}}</div>
+                                <div>Wiek: {{$human->age}}</div>
+                                <div>Zawód: {{$human->profession}}</div>
+                                <div>Ostatni posiłek: {{$human->lastEatAt}} tura temu</div>
+                                <div>Stan zdrowia: {{$human->health}}</div>
                             </div>
                         @endforeach
                     </div>
@@ -73,7 +73,7 @@
                 <div>${data.name}</div>
                 <div>Wiek: ${data.age}</div>
                 <div>Zawód: ${data.profession}</div>
-                <div>Ostatni posiłek: ${data.last_eat_at} turn temu</div>
+                <div>Ostatni posiłek: ${data.lastEatAt} turn temu</div>
                 <div>Stan zdrowia: ${data.health}</div>`
                     parent.append(newDiv)
                 })
