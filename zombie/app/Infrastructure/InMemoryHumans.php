@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Humans;
+use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 
 class InMemoryHumans implements Humans
@@ -39,11 +40,11 @@ class InMemoryHumans implements Humans
         }
     }
 
-    public function getNumberOfResourceProducers(string $resourceType): int
+    public function getNumberOfResourceProducers(ResourceType $resourceType): int
     {
         $count = 0;
         foreach ($this->humans as $human) {
-            if ($human->professionType()->value === $resourceType && $human->isAlive()) {
+            if ($human->professionType()->value === $resourceType->value && $human->isAlive()) {
                 $count += 1;
             }
         }

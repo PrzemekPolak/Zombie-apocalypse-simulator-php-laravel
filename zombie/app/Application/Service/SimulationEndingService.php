@@ -6,6 +6,7 @@ use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\Enum\ResourceType;
 
 class SimulationEndingService
 {
@@ -36,7 +37,7 @@ class SimulationEndingService
         if (count($this->zombies->stillWalking()) <= 0) {
             $endReasons[] = 'Zombie wygineły';
         }
-        if ($this->resources->getByType('food')->getQuantity() <= 0) {
+        if (false === $this->resources->getByType(ResourceType::Food)->isAvailable()) {
             $endReasons[] = 'Jedzenie się skończyło';
         }
         if ($this->simulationTurns->currentTurn() >= 20) {

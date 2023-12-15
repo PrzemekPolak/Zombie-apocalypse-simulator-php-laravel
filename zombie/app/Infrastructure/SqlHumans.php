@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Humans;
+use App\Domain\Enum\ResourceType;
 use App\Models\Human as ModelHuman;
 use App\Domain\Human;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +43,9 @@ class SqlHumans implements Humans
         });
     }
 
-    public function getNumberOfResourceProducers(string $resourceType): int
+    public function getNumberOfResourceProducers(ResourceType $resourceType): int
     {
-        return ModelHuman::getNumberOfResourceProducers($resourceType);
+        return ModelHuman::getNumberOfResourceProducers($resourceType->value);
     }
 
     public function injured(): array

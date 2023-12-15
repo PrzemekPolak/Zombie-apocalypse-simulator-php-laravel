@@ -2,34 +2,36 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\ResourceType;
+
 class Resource
 {
     private function __construct(
-        public readonly string $type,
-        private int            $quantity,
-        public readonly int    $productionMultiplier,
+        public readonly ResourceType $type,
+        private int                  $quantity,
+        public readonly int          $productionMultiplier,
     )
     {
     }
 
     public static function create(
-        string $type,
-        int    $quantity,
+        ResourceType $type,
+        int          $quantity,
     ): self
     {
         return new self(
             $type,
             $quantity,
-            $type === 'food' ? 2 : 1,
+            $type->equals(ResourceType::Food) ? 2 : 1,
         );
     }
 
     public static function fromArray(array $resource): self
     {
         return new self(
-            $resource['type'],
+            ResourceType::from($resource['type']),
             $resource['quantity'],
-            $resource['type'] === 'food' ? 2 : 1,
+            ResourceType::from($resource['type'])->equals(ResourceType::Food) ? 2 : 1,
         );
     }
 

@@ -7,6 +7,7 @@ use App\Application\Resources;
 use App\Application\Service\SimulationEndingService;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
+use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 use App\Domain\Zombie;
 
@@ -47,9 +48,9 @@ class DashboardView
             ['label' => 'Obecna tura', 'value' => $this->simulationTurns->currentTurn(), 'icon' => 'clock-solid.svg'],
             ['label' => 'Żywi ludzie', 'value' => $this->humans->countAlive(), 'icon' => 'person-solid.svg'],
             ['label' => 'Zombie', 'value' => count($this->zombies->stillWalking()), 'icon' => 'biohazard-solid.svg'],
-            ['label' => 'Jedzenie', 'value' => $this->resources->getByType('food')->getQuantity(), 'icon' => 'utensils-solid.svg'],
-            ['label' => 'Lekarstwa', 'value' => $this->resources->getByType('health')->getQuantity(), 'icon' => 'briefcase-medical-solid.svg'],
-            ['label' => 'Broń', 'value' => $this->resources->getByType('weapon')->getQuantity(), 'icon' => 'gun-solid.svg'],
+            ['label' => 'Jedzenie', 'value' => $this->resources->getByType(ResourceType::Food)->getQuantity(), 'icon' => 'utensils-solid.svg'],
+            ['label' => 'Lekarstwa', 'value' => $this->resources->getByType(ResourceType::Health)->getQuantity(), 'icon' => 'briefcase-medical-solid.svg'],
+            ['label' => 'Broń', 'value' => $this->resources->getByType(ResourceType::Weapon)->getQuantity(), 'icon' => 'gun-solid.svg'],
         ];
     }
 }

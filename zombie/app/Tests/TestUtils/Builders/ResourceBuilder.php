@@ -2,13 +2,14 @@
 
 namespace App\Tests\TestUtils\Builders;
 
+use App\Domain\Enum\ResourceType;
 use App\Domain\Resource;
 
 class ResourceBuilder
 {
     public function __construct(
-        public string $type,
-        public int    $quantity,
+        public ResourceType $type,
+        public int          $quantity,
     )
     {
     }
@@ -16,12 +17,12 @@ class ResourceBuilder
     public static function default(): self
     {
         return new self(
-            'weapon',
+            ResourceType::Weapon,
             100,
         );
     }
 
-    public function withType(string $type): self
+    public function withType(ResourceType $type): self
     {
         return new self(
             $type,

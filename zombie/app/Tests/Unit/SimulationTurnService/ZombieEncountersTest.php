@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\ZombieEncounters;
+use App\Domain\Enum\ResourceType;
 use App\Domain\HumanBite;
 use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
@@ -14,7 +15,7 @@ class ZombieEncountersTest extends MyTestCase
         parent::setUp();
 
         $this->system()->hasResources(
-            aResource()->withType('weapon')->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Weapon)->withQuantity(100)->build(),
         );
         $this->system()->hasSimulationTurns(
             aSimulationTurn()->withTurnNumber(1)->build(),

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Acceptance;
 
+use App\Domain\Enum\ResourceType;
 use App\Tests\MyTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,9 +30,9 @@ class EndpointsAreWorkingCorrectlyTest extends MyTestCase
             aSimulationSetting()->withEvent('immuneChance')->withChance(10)->build(),
         );
         $this->system()->hasResources(
-            aResource()->withType('food')->withQuantity(100)->build(),
-            aResource()->withType('health')->withQuantity(100)->build(),
-            aResource()->withType('weapon')->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Food)->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Health)->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Weapon)->withQuantity(100)->build(),
         );
         $this->system()->hasHumans(
             aHuman()->build(),

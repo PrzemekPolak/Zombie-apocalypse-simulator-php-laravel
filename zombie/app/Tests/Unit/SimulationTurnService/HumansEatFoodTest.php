@@ -3,6 +3,7 @@
 namespace App\Tests\Unit\SimulationTurnService;
 
 use App\Application\Service\TurnActions\HumansEatFood;
+use App\Domain\Enum\ResourceType;
 use App\Tests\MyTestCase;
 
 class HumansEatFoodTest extends MyTestCase
@@ -90,13 +91,13 @@ class HumansEatFoodTest extends MyTestCase
     private function systemHasFood(int $quantity = 123): void
     {
         $this->system()->hasResources(
-            aResource()->withType('food')->withQuantity($quantity)->build()
+            aResource()->withType(ResourceType::Food)->withQuantity($quantity)->build()
         );
     }
 
     private function foodQuantityInSystem(): int
     {
-        return $this->system()->resources()->getByType('food')->getQuantity();
+        return $this->system()->resources()->getByType(ResourceType::Food)->getQuantity();
     }
 
     private function turnHumanLastAteAt(): int

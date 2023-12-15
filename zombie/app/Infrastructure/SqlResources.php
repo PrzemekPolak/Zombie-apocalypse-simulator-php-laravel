@@ -3,15 +3,16 @@
 namespace App\Infrastructure;
 
 use App\Application\Resources;
+use App\Domain\Enum\ResourceType;
 use App\Domain\Resource;
 use App\Models\Resource as ModelResource;
 use Illuminate\Support\Facades\DB;
 
 class SqlResources implements Resources
 {
-    public function getByType(string $type): Resource
+    public function getByType(ResourceType $type): Resource
     {
-        return Resource::fromArray(ModelResource::where('type', $type)->first()->toArray());
+        return Resource::fromArray(ModelResource::where('type', $type->value)->first()->toArray());
     }
 
     public function save(array $resources): void
@@ -20,10 +21,10 @@ class SqlResources implements Resources
             foreach ($resources as $resource) {
                 ModelResource::updateOrCreate(
                     [
-                        'type' => $resource->type
+                        'type' => $resource->type->value
                     ],
                     [
-                        'type' => $resource->type,
+                        'type' => $resource->type->value,
                         'quantity' => $resource->getQuantity(),
                     ]
                 );

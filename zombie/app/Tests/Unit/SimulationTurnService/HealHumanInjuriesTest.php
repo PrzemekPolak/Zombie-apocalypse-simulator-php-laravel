@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\HealHumanInjuries;
+use App\Domain\Enum\ResourceType;
 use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
 
@@ -20,7 +21,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aResource()->withType('health')->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Health)->withQuantity(100)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -40,7 +41,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aResource()->withType('health')->withQuantity(100)->build(),
+            aResource()->withType(ResourceType::Health)->withQuantity(100)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -60,7 +61,7 @@ class HealHumanInjuriesTest extends MyTestCase
             $human
         );
         $this->system()->hasResources(
-            aResource()->withType('health')->withQuantity(0)->build(),
+            aResource()->withType(ResourceType::Health)->withQuantity(0)->build(),
         );
 
         $this->healHumanInjuriesActionWith($fakeProbabilityService);
@@ -72,7 +73,7 @@ class HealHumanInjuriesTest extends MyTestCase
     public function humanConsumesHealthResourceDuringHealing(): void
     {
         $human = aHuman()->withInjury()->build();
-        $healthResources = aResource()->withType('health')->withQuantity(1)->build();
+        $healthResources = aResource()->withType(ResourceType::Health)->withQuantity(1)->build();
 
         $fakeProbabilityService = $this->createStub(ProbabilityService::class);
         $fakeProbabilityService->method('willItHappen')->willReturn(true);

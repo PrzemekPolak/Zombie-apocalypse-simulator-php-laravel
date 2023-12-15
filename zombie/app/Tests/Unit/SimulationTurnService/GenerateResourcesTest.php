@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\GenerateResources;
+use App\Domain\Enum\ResourceType;
 use App\Tests\MyTestCase;
 
 class GenerateResourcesTest extends MyTestCase
@@ -40,7 +41,7 @@ class GenerateResourcesTest extends MyTestCase
 
         $this->generateResources();
 
-        assertThat($this->resourceQuantityInSystem('food'), is(equalTo(0)));
+        assertThat($this->resourceQuantityInSystem(ResourceType::Food), is(equalTo(0)));
     }
 
     private function generateResources(): void
@@ -53,12 +54,12 @@ class GenerateResourcesTest extends MyTestCase
 
     private function assertResourcesAreGeneratedInRightQuantity(): void
     {
-        assertThat($this->resourceQuantityInSystem('food'), is(equalTo(2)));
-        assertThat($this->resourceQuantityInSystem('health'), is(equalTo(1)));
-        assertThat($this->resourceQuantityInSystem('weapon'), is(equalTo(1)));
+        assertThat($this->resourceQuantityInSystem(ResourceType::Food), is(equalTo(2)));
+        assertThat($this->resourceQuantityInSystem(ResourceType::Health), is(equalTo(1)));
+        assertThat($this->resourceQuantityInSystem(ResourceType::Weapon), is(equalTo(1)));
     }
 
-    private function resourceQuantityInSystem(string $type): int
+    private function resourceQuantityInSystem(ResourceType $type): int
     {
         return $this->system()->resources()->getByType($type)->getQuantity();
     }
@@ -66,9 +67,9 @@ class GenerateResourcesTest extends MyTestCase
     private function currentlyThereAreNoResources(): void
     {
         $this->system()->hasResources(
-            aResource()->withType('food')->withQuantity(0)->build(),
-            aResource()->withType('health')->withQuantity(0)->build(),
-            aResource()->withType('weapon')->withQuantity(0)->build(),
+            aResource()->withType(ResourceType::Food)->withQuantity(0)->build(),
+            aResource()->withType(ResourceType::Health)->withQuantity(0)->build(),
+            aResource()->withType(ResourceType::Weapon)->withQuantity(0)->build(),
         );
     }
 }

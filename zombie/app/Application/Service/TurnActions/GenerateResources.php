@@ -5,6 +5,7 @@ namespace App\Application\Service\TurnActions;
 use App\Application\Humans;
 use App\Application\Resources;
 use App\Application\Service\TurnAction;
+use App\Domain\Enum\ResourceType;
 
 class GenerateResources implements TurnAction
 {
@@ -17,7 +18,7 @@ class GenerateResources implements TurnAction
 
     public function execute(): void
     {
-        $resourcesTypes = ['health', 'food', 'weapon'];
+        $resourcesTypes = [ResourceType::Health, ResourceType::Food, ResourceType::Weapon];
 
         foreach ($resourcesTypes as $resourceType) {
             $resource = $this->resources->getByType($resourceType);

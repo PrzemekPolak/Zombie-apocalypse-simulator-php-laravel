@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 
 interface Humans
@@ -14,7 +15,7 @@ interface Humans
     /** @param $humans Human[] */
     public function save(array $humans): void;
 
-    public function getNumberOfResourceProducers(string $resourceType): int;
+    public function getNumberOfResourceProducers(ResourceType $resourceType): int;
 
     /** @return Human[] */
     public function injured(): array;

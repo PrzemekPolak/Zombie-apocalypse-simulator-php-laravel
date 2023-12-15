@@ -11,6 +11,7 @@ use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
 use App\Domain\Enum\ProfessionType;
+use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 use App\Domain\HumanBite;
 use App\Domain\HumanInjury;
@@ -36,7 +37,7 @@ class ZombieEncounters implements TurnAction
     {
         $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
         $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
-        $weapons = $this->resources->getByType('weapon');
+        $weapons = $this->resources->getByType(ResourceType::Weapon);
 
         for ($i = 0; $i < min(count($humans), count($zombies)); $i++) {
             if ($weapons->isAvailable()) {

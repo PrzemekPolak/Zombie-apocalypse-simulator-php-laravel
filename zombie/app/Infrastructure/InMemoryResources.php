@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Resources;
+use App\Domain\Enum\ResourceType;
 use App\Domain\Resource;
 
 class InMemoryResources implements Resources
@@ -10,15 +11,15 @@ class InMemoryResources implements Resources
     /** @var Resource[] $resources */
     private array $resources = [];
 
-    public function getByType(string $type): Resource
+    public function getByType(ResourceType $type): Resource
     {
-        return $this->resources[$type];
+        return $this->resources[$type->value];
     }
 
     public function save(array $resources): void
     {
         foreach ($resources as $resource) {
-            $this->resources[$resource->type] = $resource;
+            $this->resources[$resource->type->value] = $resource;
         }
     }
 
