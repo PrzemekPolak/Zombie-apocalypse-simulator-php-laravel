@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\CheckWhoTurnsIntoZombie;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Human;
 use App\Domain\Zombie;
 use App\Tests\MyTestCase;
@@ -29,7 +30,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
         $this->checkWhoTurnsIntoZombie();
 
-        assertThat($human->health, is(equalTo('turned')));
+        assertThat($human->health, is(equalTo(HealthStatus::Turned)));
     }
 
     /** @test */
@@ -46,7 +47,7 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
 
         $this->checkWhoTurnsIntoZombie();
 
-        assertThat($human->health, is(equalTo('healthy')));
+        assertThat($human->health, is(equalTo(HealthStatus::Healthy)));
     }
 
     /** @test */
@@ -92,6 +93,6 @@ class CheckWhoTurnsIntoZombieTest extends MyTestCase
         assertThat($actual->name, is(equalTo($expected->name)));
         assertThat($actual->age, is(equalTo($expected->age)));
         assertThat($actual->professionName(), is(equalTo($expected->professionName())));
-        assertThat($actual->health, is(equalTo('infected')));
+        assertThat($actual->health, is(equalTo(HealthStatus::Turned)));
     }
 }

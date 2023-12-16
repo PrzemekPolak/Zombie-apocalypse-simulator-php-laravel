@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Humans;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Models\Human as ModelHuman;
 use App\Domain\Human;
@@ -34,7 +35,7 @@ class SqlHumans implements Humans
                         'name' => $human->name,
                         'age' => $human->age,
                         'profession' => $human->professionName(),
-                        'health' => $human->health,
+                        'health' => $human->health->value,
                         'last_eat_at' => $human->lastEatAt,
                         'death_cause' => $human->getDeathCause(),
                     ]
@@ -50,7 +51,7 @@ class SqlHumans implements Humans
 
     public function injured(): array
     {
-        return $this->mapToDomainHumansArray(ModelHuman::where('health', 'injured')->get()->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::where('health', HealthStatus::Injured->value)->get()->toArray());
     }
 
     public function getRandomHumans(int $count): array
@@ -73,9 +74,9 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(ModelHuman::alive()->where('last_eat_at', '<=', $turn)->get()->toArray());
     }
 
-    public function allWithHealth(string $health): array
+    public function allWithHealth(HealthStatus $health): array
     {
-        return $this->mapToDomainHumansArray(ModelHuman::where('health', $health)->get()->toArray());
+        return $this->mapToDomainHumansArray(ModelHuman::where('health', $health->value)->get()->toArray());
     }
 
     /** @return Human[] */

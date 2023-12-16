@@ -21,7 +21,7 @@ class HumanView
         return new self(
             $human->name,
             $human->age,
-            $human->health,
+            $human->health->value,
             $human->professionTranslatedName(),
             $currentTurn - $human->lastEatAt,
         );

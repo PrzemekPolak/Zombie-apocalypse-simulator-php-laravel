@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\ZombieEncounters;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Domain\HumanBite;
 use App\Services\ProbabilityService;
@@ -116,7 +117,7 @@ class ZombieEncountersTest extends MyTestCase
     private function allZombiesAreDead(): bool
     {
         foreach ($this->system()->zombies()->all() as $zombie) {
-            if ('dead' !== $zombie->health) {
+            if (HealthStatus::Dead !== $zombie->health) {
                 return false;
             }
         }
@@ -126,7 +127,7 @@ class ZombieEncountersTest extends MyTestCase
     private function allHumansAreInfected(): bool
     {
         foreach ($this->system()->humans()->all() as $human) {
-            if ('infected' !== $human->health) {
+            if (HealthStatus::Infected !== $human->health) {
                 return false;
             }
         }

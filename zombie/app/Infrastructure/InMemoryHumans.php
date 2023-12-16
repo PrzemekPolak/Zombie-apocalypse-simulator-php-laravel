@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Humans;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 
@@ -93,7 +94,7 @@ class InMemoryHumans implements Humans
         return $result;
     }
 
-    public function allWithHealth(string $health): array
+    public function allWithHealth(HealthStatus $health): array
     {
         $result = [];
         foreach ($this->humans as $human) {

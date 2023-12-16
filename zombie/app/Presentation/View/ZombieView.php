@@ -20,7 +20,7 @@ class ZombieView
         return new self(
             $zombie->name,
             $zombie->age,
-            $zombie->health,
+            $zombie->health->value,
             $zombie->professionTranslatedName(),
         );
     }

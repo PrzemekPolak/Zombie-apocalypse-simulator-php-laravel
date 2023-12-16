@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\CheckWhoDiedFromStarvation;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Human;
 use App\Tests\MyTestCase;
 
@@ -46,14 +47,14 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
 
         $this->checkWhoDiedFromStarvation();
 
-        assertThat($humanWhoDidntEat->health, is(equalTo('dead')));
+        assertThat($humanWhoDidntEat->health, is(equalTo(HealthStatus::Dead)));
         assertThat($humanWhoDidntEat->getDeathCause(), is(equalTo('starvation')));
     }
 
     /** @test */
     public function turnedPeopleCanNoLongerDieFromStarvation(): void
     {
-        $turnedHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth('turned')->build();
+        $turnedHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth(HealthStatus::Turned)->build();
 
         $this->system()->hasHumans(
             $turnedHuman,
@@ -61,14 +62,14 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
 
         $this->checkWhoDiedFromStarvation();
 
-        assertThat($turnedHuman->health, is(equalTo('turned')));
+        assertThat($turnedHuman->health, is(equalTo(HealthStatus::Turned)));
         assertThat($turnedHuman->getDeathCause(), is(not(equalTo('starvation'))));
     }
 
     /** @test */
     public function deadPeopleCanNoLongerDieFromStarvation(): void
     {
-        $deadHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth('dead')->build();
+        $deadHuman = aHuman()->lastAteAt(self::CURRENT_TURN - 3)->withHealth(HealthStatus::Dead)->build();
 
         $this->system()->hasHumans(
             $deadHuman,
@@ -76,7 +77,7 @@ class CheckWhoDiedFromStarvationTest extends MyTestCase
 
         $this->checkWhoDiedFromStarvation();
 
-        assertThat($deadHuman->health, is(equalTo('dead')));
+        assertThat($deadHuman->health, is(equalTo(HealthStatus::Dead)));
         assertThat($deadHuman->getDeathCause(), is(not(equalTo('starvation'))));
     }
 

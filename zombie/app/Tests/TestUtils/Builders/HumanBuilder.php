@@ -2,19 +2,20 @@
 
 namespace App\Tests\TestUtils\Builders;
 
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Human;
 use App\Domain\Profession;
 
 class HumanBuilder
 {
     public function __construct(
-        public int        $id,
-        public string     $name,
-        public int        $age,
-        public Profession $profession,
-        public string     $health,
-        public int        $lastEatAt,
-        public ?string    $deathCause,
+        public int          $id,
+        public string       $name,
+        public int          $age,
+        public Profession   $profession,
+        public HealthStatus $health,
+        public int          $lastEatAt,
+        public ?string      $deathCause,
     )
     {
     }
@@ -26,7 +27,7 @@ class HumanBuilder
             'Name',
             mt_rand(1, 100),
             Profession::create('musician'),
-            'healthy',
+            HealthStatus::Healthy,
             0,
             null,
         );
@@ -52,13 +53,13 @@ class HumanBuilder
             $this->name,
             $this->age,
             $this->profession,
-            'injured',
+            HealthStatus::Injured,
             $this->lastEatAt,
             $this->deathCause,
         );
     }
 
-    public function withHealth(string $healthStatus): self
+    public function withHealth(HealthStatus $healthStatus): self
     {
         return new self(
             $this->id,

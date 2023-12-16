@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\CheckWhoBleedOut;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Human;
 use App\Tests\MyTestCase;
 
@@ -18,7 +19,7 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->checkWhoBleedOut();
 
-        assertThat($humanWithInjury->health, is(equalTo('dead')));
+        assertThat($humanWithInjury->health, is(equalTo(HealthStatus::Dead)));
         assertThat($humanWithInjury->getDeathCause(), is(equalTo($injuryCause)));
     }
 
@@ -31,31 +32,31 @@ class CheckWhoBleedOutTest extends MyTestCase
 
         $this->checkWhoBleedOut();
 
-        assertThat($healthyHuman->health, is(equalTo('healthy')));
+        assertThat($healthyHuman->health, is(equalTo(HealthStatus::Healthy)));
     }
 
     /** @test */
     public function infectedHumanDoesntBleedOutAfterTwoTurns(): void
     {
-        $infectedHuman = aHuman()->withHealth('infected')->build();
+        $infectedHuman = aHuman()->withHealth(HealthStatus::Infected)->build();
 
         $this->systemHasHumanInjuredTwoTurnsAgo($infectedHuman);
 
         $this->checkWhoBleedOut();
 
-        assertThat($infectedHuman->health, is(equalTo('infected')));
+        assertThat($infectedHuman->health, is(equalTo(HealthStatus::Infected)));
     }
 
     /** @test */
     public function turnedHumanDoesntBleedOutAfterTwoTurns(): void
     {
-        $turnedHuman = aHuman()->withHealth('turned')->build();
+        $turnedHuman = aHuman()->withHealth(HealthStatus::Turned)->build();
 
         $this->systemHasHumanInjuredTwoTurnsAgo($turnedHuman);
 
         $this->checkWhoBleedOut();
 
-        assertThat($turnedHuman->health, is(equalTo('turned')));
+        assertThat($turnedHuman->health, is(equalTo(HealthStatus::Turned)));
     }
 
     private function checkWhoBleedOut(): void

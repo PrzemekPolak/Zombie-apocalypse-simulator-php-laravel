@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\GenerateResources;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Tests\MyTestCase;
 
@@ -34,8 +35,8 @@ class GenerateResourcesTest extends MyTestCase
         $foodProducingProfession = 'farmer';
 
         $this->system()->hasHumans(
-            aHuman()->withHealth('dead')->withProfession($foodProducingProfession)->build(),
-            aHuman()->withHealth('turned')->withProfession($foodProducingProfession)->build(),
+            aHuman()->withHealth(HealthStatus::Dead)->withProfession($foodProducingProfession)->build(),
+            aHuman()->withHealth(HealthStatus::Turned)->withProfession($foodProducingProfession)->build(),
         );
         $this->currentlyThereAreNoResources();
 

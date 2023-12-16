@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Domain\Human;
 
@@ -32,5 +33,5 @@ interface Humans
     public function whoLastAteAt(int $turn): array;
 
     /** @return Human[] */
-    public function allWithHealth(string $health): array;
+    public function allWithHealth(HealthStatus $health): array;
 }

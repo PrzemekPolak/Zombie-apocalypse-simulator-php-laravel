@@ -3,6 +3,7 @@
 namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\GenerateHumanNonBiteInjuries;
+use App\Domain\Enum\HealthStatus;
 use App\Tests\MyTestCase;
 
 class HumanNonBiteInjuriesTest extends MyTestCase
@@ -15,7 +16,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->generateHumanNonBiteInjuries();
 
-        assertThat($this->humanHealth(), is(equalTo('injured')));
+        assertThat($this->humanHealth(), is(equalTo(HealthStatus::Injured)));
     }
 
     /** @test */
@@ -29,7 +30,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->generateHumanNonBiteInjuries();
 
-        assertThat($this->humanHealth(), is(equalTo('dead')));
+        assertThat($this->humanHealth(), is(equalTo(HealthStatus::Dead)));
     }
 
     /** @test */
@@ -38,12 +39,12 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         $this->humanWillAlwaysGetInjured();
         $this->systemHasTurn();
         $this->system()->hasHumans(
-            aHuman()->withHealth('infected')->build(),
+            aHuman()->withHealth(HealthStatus::Infected)->build(),
         );
 
         $this->generateHumanNonBiteInjuries();
 
-        assertThat($this->humanHealth(), is(equalTo('dead')));
+        assertThat($this->humanHealth(), is(equalTo(HealthStatus::Dead)));
     }
 
     /** @test */
@@ -52,7 +53,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         $this->humanWillAlwaysGetInjured();
         $this->systemHasTurn();
         $this->system()->hasHumans(
-            aHuman()->withHealth('dead')->build(),
+            aHuman()->withHealth(HealthStatus::Dead)->build(),
         );
 
         $this->generateHumanNonBiteInjuries();
@@ -66,7 +67,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         $this->humanWillAlwaysGetInjured();
         $this->systemHasTurn();
         $this->system()->hasHumans(
-            aHuman()->withHealth('turned')->build(),
+            aHuman()->withHealth(HealthStatus::Turned)->build(),
         );
 
         $this->generateHumanNonBiteInjuries();
@@ -101,7 +102,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
 
         $this->generateHumanNonBiteInjuries();
 
-        assertThat($this->humanHealth(), is(equalTo('healthy')));
+        assertThat($this->humanHealth(), is(equalTo(HealthStatus::Healthy)));
     }
 
     private function generateHumanNonBiteInjuries(): void
@@ -114,7 +115,7 @@ class HumanNonBiteInjuriesTest extends MyTestCase
         ))->execute();
     }
 
-    private function humanHealth(): string
+    private function humanHealth(): HealthStatus
     {
         return array_slice($this->system()->humans()->all(), 0, 1)[0]->health;
     }

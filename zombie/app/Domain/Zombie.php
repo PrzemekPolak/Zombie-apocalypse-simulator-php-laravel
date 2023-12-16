@@ -2,6 +2,8 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\HealthStatus;
+
 class Zombie
 {
     public function __construct(
@@ -9,7 +11,7 @@ class Zombie
         public readonly string      $name,
         public readonly int         $age,
         private readonly Profession $profession,
-        public string               $health,
+        public HealthStatus         $health,
     )
     {
     }
@@ -23,7 +25,7 @@ class Zombie
             Profession::create(
                 $human->professionName(),
             ),
-            'infected'
+            HealthStatus::Turned
         );
     }
 
@@ -34,7 +36,7 @@ class Zombie
             $zombie['name'],
             $zombie['age'],
             Profession::create($zombie['profession']),
-            $zombie['health'],
+            HealthStatus::from($zombie['health']),
         );
     }
 
@@ -50,6 +52,6 @@ class Zombie
 
     public function getsKilled(): void
     {
-        $this->health = 'dead';
+        $this->health = HealthStatus::Dead;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\Zombies;
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Zombie;
 
 class InMemoryZombies implements Zombies
@@ -21,7 +22,7 @@ class InMemoryZombies implements Zombies
     {
         $result = [];
         foreach ($this->zombies as $zombie) {
-            if ('dead' !== $zombie->health) {
+            if (HealthStatus::Dead !== $zombie->health) {
                 $result[] = $zombie;
             }
         }

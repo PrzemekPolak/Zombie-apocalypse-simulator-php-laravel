@@ -2,6 +2,7 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ProfessionType;
 
 class Human
@@ -11,7 +12,7 @@ class Human
         public readonly string      $name,
         public readonly int         $age,
         private readonly Profession $profession,
-        public string               $health,
+        public HealthStatus         $health,
         public int                  $lastEatAt,
         private ?string             $deathCause,
     )
@@ -19,13 +20,13 @@ class Human
     }
 
     public static function create(
-        int     $id,
-        string  $name,
-        int     $age,
-        string  $profession,
-        string  $health,
-        int     $lastEatAt,
-        ?string $deathCause,
+        int          $id,
+        string       $name,
+        int          $age,
+        string       $profession,
+        HealthStatus $health,
+        int          $lastEatAt,
+        ?string      $deathCause,
     ): self
     {
         return new self(
@@ -46,7 +47,7 @@ class Human
             $human['name'],
             $human['age'],
             Profession::create($human['profession']),
-            $human['health'],
+            HealthStatus::from($human['health']),
             $human['last_eat_at'],
             $human['death_cause'],
         );
@@ -59,7 +60,7 @@ class Human
 
     public function getsHealthy(): void
     {
-        $this->health = 'healthy';
+        $this->health = HealthStatus::Healthy;
     }
 
     public function getsInjured(string $injury): void
@@ -68,7 +69,7 @@ class Human
             $this->die($injury);
         }
         if ($this->isHealthy()) {
-            $this->health = 'injured';
+            $this->health = HealthStatus::Injured;
         }
     }
 
@@ -89,22 +90,22 @@ class Human
 
     public function isHealthy(): bool
     {
-        return $this->health === 'healthy';
+        return $this->health->equals(HealthStatus::Healthy);
     }
 
     public function isNotHealthy(): bool
     {
-        return $this->health === 'infected' || $this->isInjured();
+        return $this->health->equals(HealthStatus::Infected) || $this->isInjured();
     }
 
     public function isInjured(): bool
     {
-        return $this->health === 'injured';
+        return $this->health->equals(HealthStatus::Injured);
     }
 
     public function die(string $reason): void
     {
-        $this->health = 'dead';
+        $this->health = HealthStatus::Dead;
         $this->deathCause = $reason;
     }
 
@@ -115,18 +116,18 @@ class Human
 
     public function isAlive(): bool
     {
-        if ('healthy' === $this->health || 'injured' === $this->health || 'infected' === $this->health) {
+        if ($this->isHealthy() || $this->isInjured() || $this->health->equals(HealthStatus::Infected)) {
             return true;
         } else return false;
     }
 
     public function becomeZombie(): void
     {
-        $this->health = 'turned';
+        $this->health = HealthStatus::Turned;
     }
 
     public function becomeInfected(): void
     {
-        $this->health = 'infected';
+        $this->health = HealthStatus::Infected;
     }
 }
