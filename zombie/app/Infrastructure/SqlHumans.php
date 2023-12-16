@@ -17,11 +17,6 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(ModelHuman::alive()->get()->toArray());
     }
 
-    public function countAlive(): int
-    {
-        return ModelHuman::alive()->count();
-    }
-
     /** @param $humans Human[] */
     public function save(array $humans): void
     {
@@ -47,11 +42,6 @@ class SqlHumans implements Humans
     public function getNumberOfResourceProducers(ResourceType $resourceType): int
     {
         return ModelHuman::getNumberOfResourceProducers($resourceType->value);
-    }
-
-    public function injured(): array
-    {
-        return $this->mapToDomainHumansArray(ModelHuman::where('health', HealthStatus::Injured->value)->get()->toArray());
     }
 
     public function getRandomHumans(int $count): array

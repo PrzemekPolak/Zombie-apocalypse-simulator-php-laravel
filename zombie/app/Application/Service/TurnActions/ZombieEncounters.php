@@ -54,7 +54,7 @@ class ZombieEncounters implements TurnAction
 
     private function timesEventOccurred(): int
     {
-        return floor($this->simulationSettings->getEventChance('encounterChance') * $this->humans->countAlive() / 100);
+        return floor($this->simulationSettings->getEventChance('encounterChance') * count($this->humans->allAlive()) / 100);
     }
 
     private function chanceForBite(Human $human, bool $weaponIsAvailable): int

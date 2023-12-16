@@ -23,17 +23,6 @@ class InMemoryHumans implements Humans
         return $result;
     }
 
-    public function countAlive(): int
-    {
-        $count = 0;
-        foreach ($this->humans as $human) {
-            if ($human->isAlive()) {
-                $count += 1;
-            }
-        }
-        return $count;
-    }
-
     public function save(array $humans): void
     {
         foreach ($humans as $human) {
@@ -50,17 +39,6 @@ class InMemoryHumans implements Humans
             }
         }
         return $count;
-    }
-
-    public function injured(): array
-    {
-        $result = [];
-        foreach ($this->humans as $human) {
-            if ($human->isInjured()) {
-                $result[] = $human;
-            }
-        }
-        return $result;
     }
 
     public function getRandomHumans(int $count): array

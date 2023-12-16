@@ -46,7 +46,7 @@ class DashboardView
     {
         return [
             ['label' => 'Obecna tura', 'value' => $this->simulationTurns->currentTurn(), 'icon' => 'clock-solid.svg'],
-            ['label' => 'Żywi ludzie', 'value' => $this->humans->countAlive(), 'icon' => 'person-solid.svg'],
+            ['label' => 'Żywi ludzie', 'value' => count($this->humans->allAlive()), 'icon' => 'person-solid.svg'],
             ['label' => 'Zombie', 'value' => count($this->zombies->stillWalking()), 'icon' => 'biohazard-solid.svg'],
             ['label' => 'Jedzenie', 'value' => $this->resources->getByType(ResourceType::Food)->getQuantity(), 'icon' => 'utensils-solid.svg'],
             ['label' => 'Lekarstwa', 'value' => $this->resources->getByType(ResourceType::Health)->getQuantity(), 'icon' => 'briefcase-medical-solid.svg'],

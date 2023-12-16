@@ -22,8 +22,7 @@ class GenerateHumanNonBiteInjuries implements TurnAction
 
     public function execute(): void
     {
-        $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
-        foreach ($humans as $human) {
+        foreach ($this->humans->getRandomHumans($this->timesEventOccurred()) as $human) {
             $injury = $this->chooseInjuryCause();
             $human->getsInjured($injury);
             $this->humanInjuries->save([new HumanInjury(
@@ -36,9 +35,7 @@ class GenerateHumanNonBiteInjuries implements TurnAction
 
     private function timesEventOccurred(): int
     {
-        $humanCount = $this->humans->countAlive();
-        $event = $this->simulationSettings->getEventChance('injuryChance');
-        return floor($event * $humanCount / 100);
+        return floor($this->simulationSettings->getEventChance('injuryChance') * count($this->humans->allAlive()) / 100);
     }
 
     private function chooseInjuryCause(): string
@@ -55,6 +52,6 @@ class GenerateHumanNonBiteInjuries implements TurnAction
             "Bumped head on a low-hanging zombie-themed piñata",
             "Stubbed toe on a hidden zombie action figure",
         ];
-        return $injuryCauses[array_rand($injuryCauses, 1)];
+        return $injuryCauses[array_rand($injuryCauses)];
     }
 }

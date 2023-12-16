@@ -30,7 +30,7 @@ class SimulationEndStatisticsView
             'reasonForEnding' => implode(' ', $this->simulationEndingService->getReasonsWhySimulationIsFinished()),
             'zombieNumber' => count($this->zombies->stillWalking()),
             'deadZombies' => count($this->zombies->all()) - count($this->zombies->stillWalking()),
-            'humanNumber' => $this->humans->countAlive(),
+            'humanNumber' => count($this->humans->allAlive()),
             'deadHumans' => count($this->humans->allWithHealth(HealthStatus::Dead)),
             'turnedHumans' => count($this->humans->allWithHealth(HealthStatus::Turned)),
             'allBites' => count($this->humanBites->all()),

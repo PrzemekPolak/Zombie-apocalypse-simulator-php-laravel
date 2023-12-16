@@ -31,7 +31,7 @@ class SimulationEndingService
     public function getReasonsWhySimulationIsFinished(): array
     {
         $endReasons = [];
-        if ($this->humans->countAlive() <= 0) {
+        if (count($this->humans->allAlive()) <= 0) {
             $endReasons[] = 'Ludzie wygineli';
         }
         if (count($this->zombies->stillWalking()) <= 0) {

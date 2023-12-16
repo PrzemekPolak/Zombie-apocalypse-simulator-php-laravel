@@ -20,13 +20,12 @@ class HumansEatFood implements TurnAction
 
     public function execute(): void
     {
-        $humans = $this->humans->allAlive();
         $food = $this->resources->getByType(ResourceType::Food);
 
-        for ($i = 0; $i < count($humans); $i++) {
+        foreach ($this->humans->allAlive() as $human) {
             if ($food->getQuantity() > 0) {
                 $food->consume();
-                $humans[$i]->ateFood($this->simulationTurns->currentTurn());
+                $human->ateFood($this->simulationTurns->currentTurn());
             }
         }
     }
