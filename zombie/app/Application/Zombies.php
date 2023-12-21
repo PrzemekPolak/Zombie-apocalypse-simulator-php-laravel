@@ -16,5 +16,5 @@ interface Zombies
     public function all(): array;
 
     /** @return Zombie[] */
-    public function getRandomZombies(int $count = 1, bool $returnAllStillWalking = false): array;
+    public function getNumberOfRandomStillWalkingZombies(int $count): array;
 }

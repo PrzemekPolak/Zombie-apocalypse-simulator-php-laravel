@@ -34,9 +34,9 @@ class InMemoryZombies implements Zombies
         return $this->zombies;
     }
 
-    public function getRandomZombies(int $count = 1, bool $returnAllStillWalking = false): array
+    public function getNumberOfRandomStillWalkingZombies(int $count): array
     {
         shuffle($this->zombies);
-        return array_slice($this->zombies, 0, $returnAllStillWalking ? count($this->zombies) : $count);
+        return array_slice($this->stillWalking(), 0, $count);
     }
 }

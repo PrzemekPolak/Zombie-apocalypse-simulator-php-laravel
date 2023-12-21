@@ -37,7 +37,7 @@ class DashboardView
             ),
             'randomZombies' => array_map(
                 static fn(Zombie $zombie) => ZombieView::fromDto($zombie),
-                $this->zombies->getRandomZombies(3)
+                $this->zombies->getNumberOfRandomStillWalkingZombies(3)
             ),
         ];
     }

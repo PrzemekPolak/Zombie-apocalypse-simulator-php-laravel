@@ -36,7 +36,8 @@ class ZombieEncounters implements TurnAction
     public function execute(): void
     {
         $humans = $this->humans->getRandomHumans($this->timesEventOccurred());
-        $zombies = $this->zombies->getRandomZombies(returnAllStillWalking: true);
+        $zombies = $this->zombies->stillWalking();
+        shuffle($zombies);
         $weapons = $this->resources->getByType(ResourceType::Weapon);
 
         for ($i = 0; $i < min(count($humans), count($zombies)); $i++) {
