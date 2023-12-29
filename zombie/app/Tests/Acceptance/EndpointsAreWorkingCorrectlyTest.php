@@ -4,6 +4,7 @@ namespace App\Tests\Acceptance;
 
 use App\Domain\Enum\ResourceType;
 use App\Tests\MyTestCase;
+use App\Tests\TestUtils\Builders\ExampleRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class EndpointsAreWorkingCorrectlyTest extends MyTestCase
@@ -13,9 +14,9 @@ class EndpointsAreWorkingCorrectlyTest extends MyTestCase
     {
         $this->populateWithPreliminaryData();
 
-        $response = $this->json('POST', '/api/simulation_turn');
+        $this->systemReceivesRequest(ExampleRequest::executeTurn());
 
-        assertThat($response->getStatusCode(), is(equalTo(Response::HTTP_OK)));
+        assertThat($this->responseStatusCode(), is(equalTo(Response::HTTP_OK)));
     }
 
     private function populateWithPreliminaryData(): void
