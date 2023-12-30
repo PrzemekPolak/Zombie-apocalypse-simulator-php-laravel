@@ -27,4 +27,9 @@ class InMemoryResources implements Resources
     {
         return $this->resources;
     }
+
+    public function removeAll(): void
+    {
+        $this->resources = [];
+    }
 }

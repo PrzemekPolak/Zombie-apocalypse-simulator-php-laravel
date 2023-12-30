@@ -38,6 +38,11 @@ class SqlHumanInjuries implements HumanInjuries
         return $this->mapToDomainHumanInjuriesArray(ModelHumanInjury::all()->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelHumanInjury::truncate();
+    }
+
     /** @return HumanInjury[] */
     private function mapToDomainHumanInjuriesArray(array $dbArray): array
     {

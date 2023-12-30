@@ -39,4 +39,9 @@ class InMemoryZombies implements Zombies
         shuffle($this->zombies);
         return array_slice($this->stillWalking(), 0, $count);
     }
+
+    public function removeAll(): void
+    {
+        $this->zombies = [];
+    }
 }

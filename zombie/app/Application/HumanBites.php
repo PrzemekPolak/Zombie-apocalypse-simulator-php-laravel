@@ -14,4 +14,6 @@ interface HumanBites
 
     /** @return HumanBite[] */
     public function all(): array;
+
+    public function removeAll(): void;
 }

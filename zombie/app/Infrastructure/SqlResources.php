@@ -37,6 +37,11 @@ class SqlResources implements Resources
         return $this->mapToDomainResourcesArray(ModelResource::all()->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelResource::truncate();
+    }
+
     /** @return Resource[] */
     private function mapToDomainResourcesArray(array $dbArray): array
     {

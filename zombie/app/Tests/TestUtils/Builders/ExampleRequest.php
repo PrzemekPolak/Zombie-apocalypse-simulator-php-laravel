@@ -33,4 +33,13 @@ class ExampleRequest
             ],
         ];
     }
+
+    public static function clearSimulationTables(): array
+    {
+        return [
+            'method' => 'POST',
+            'uri' => '/api/clearSimulation',
+            'content' => [],
+        ];
+    }
 }

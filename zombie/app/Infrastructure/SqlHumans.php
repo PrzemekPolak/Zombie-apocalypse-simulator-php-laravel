@@ -69,6 +69,11 @@ class SqlHumans implements Humans
         return $this->mapToDomainHumansArray(ModelHuman::where('health', $health->value)->get()->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelHuman::truncate();
+    }
+
     /** @return Human[] */
     private function mapToDomainHumansArray(array $dbArray): array
     {

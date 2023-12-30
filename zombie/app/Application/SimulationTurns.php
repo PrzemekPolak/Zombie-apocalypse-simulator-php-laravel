@@ -15,4 +15,6 @@ interface SimulationTurns
 
     /** @return SimulationTurn[] */
     public function all(): array;
+
+    public function removeAll(): void;
 }

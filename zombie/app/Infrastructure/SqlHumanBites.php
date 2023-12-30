@@ -39,6 +39,11 @@ class SqlHumanBites implements HumanBites
         return $this->mapToDomainHumanBitesArray(ModelHumanBite::all()->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelHumanBite::truncate();
+    }
+
     /** @return HumanBite[] */
     private function mapToDomainHumanBitesArray(array $dbArray): array
     {

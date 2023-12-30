@@ -14,4 +14,6 @@ interface HumanInjuries
 
     /** @return HumanInjury[] */
     public function all(): array;
+
+    public function removeAll(): void;
 }

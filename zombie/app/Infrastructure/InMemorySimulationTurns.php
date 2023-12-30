@@ -36,4 +36,9 @@ class InMemorySimulationTurns implements SimulationTurns
     {
         return $this->simulationTurns;
     }
+
+    public function removeAll(): void
+    {
+        $this->simulationTurns = [];
+    }
 }

@@ -44,6 +44,11 @@ class SqlZombies implements Zombies
         return $this->mapToDomainZombiesArray(ModelZombie::stillWalking()->inRandomOrder()->get()->take($count)->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelZombie::truncate();
+    }
+
     /** @return Zombie[] */
     private function mapToDomainZombiesArray(array $dbArray): array
     {

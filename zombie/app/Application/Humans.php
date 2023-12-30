@@ -29,4 +29,6 @@ interface Humans
 
     /** @return Human[] */
     public function whoLastAteAt(int $turn): array;
+
+    public function removeAll(): void;
 }

@@ -14,4 +14,6 @@ interface Resources
 
     /** @return Resource[] */
     public function all(): array;
+
+    public function removeAll(): void;
 }

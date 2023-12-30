@@ -32,4 +32,9 @@ class InMemoryHumanInjuries implements HumanInjuries
     {
         return $this->humanInjuries;
     }
+
+    public function removeAll(): void
+    {
+        $this->humanInjuries = [];
+    }
 }

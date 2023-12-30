@@ -32,4 +32,9 @@ class InMemoryHumanBites implements HumanBites
     {
         return $this->humanBites;
     }
+
+    public function removeAll(): void
+    {
+        $this->humanBites = [];
+    }
 }

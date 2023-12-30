@@ -2,21 +2,22 @@
 
 namespace App\Presentation\Controller\Action;
 
+use App\Application\Command\ClearSimulationTablesCommand;
+use App\Application\CommandBus;
 use App\Presentation\Http\Controller;
-use App\Services\SimulationSettingService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClearSimulationAction extends Controller
 {
     public function __construct(
-        private readonly SimulationSettingService $simulationSettingService,
+        private readonly CommandBus $commandBus,
     )
     {
     }
 
     public function __invoke(): JsonResponse
     {
-        $this->simulationSettingService->clearSimulationTables();
+        $this->commandBus->dispatch(new ClearSimulationTablesCommand());
 
         return new JsonResponse();
     }

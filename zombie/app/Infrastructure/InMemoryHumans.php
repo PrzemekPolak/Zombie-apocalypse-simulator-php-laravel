@@ -82,4 +82,9 @@ class InMemoryHumans implements Humans
         }
         return $result;
     }
+
+    public function removeAll(): void
+    {
+        $this->humans = [];
+    }
 }

@@ -40,6 +40,11 @@ class SqlSimulationTurns implements SimulationTurns
         return $this->mapToDomainSimulationTurnsArray(ModelSimulationTurn::all()->toArray());
     }
 
+    public function removeAll(): void
+    {
+        ModelSimulationTurn::truncate();
+    }
+
     /** @return SimulationTurn[] */
     private function mapToDomainSimulationTurnsArray(array $dbArray): array
     {
