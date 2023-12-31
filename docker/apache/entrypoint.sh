@@ -24,7 +24,7 @@ php artisan key:generate;
 
 echo "migrating db and seeding";
 php artisan migrate:fresh;
-php artisan db:seed --class SimulationSettingSeeder;
+php artisan app:set-up-application-data;
 
 if [ -f /var/www/html/package.json ]; then
     if [ -d /var/www/html/node_modules ]; then
