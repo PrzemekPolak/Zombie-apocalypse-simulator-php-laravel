@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\SimulationSettings;
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
 
 class InMemorySimulationSettings implements SimulationSettings
@@ -10,15 +11,15 @@ class InMemorySimulationSettings implements SimulationSettings
     /** @var SimulationSetting[] $simulationSettings */
     private array $simulationSettings = [];
 
-    public function getEventChance(string $eventName): int
+    public function getEventChance(SimulationSettingName $eventName): int
     {
-        return $this->simulationSettings[$eventName]->chance;
+        return $this->simulationSettings[$eventName->value]->chance;
     }
 
     public function save(array $simulationSettings): void
     {
         foreach ($simulationSettings as $simulationSetting) {
-            $this->simulationSettings[$simulationSetting->event] = $simulationSetting;
+            $this->simulationSettings[$simulationSetting->event->value] = $simulationSetting;
         }
     }
 

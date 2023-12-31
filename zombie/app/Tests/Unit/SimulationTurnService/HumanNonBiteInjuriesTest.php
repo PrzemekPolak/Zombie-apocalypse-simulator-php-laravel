@@ -4,6 +4,7 @@ namespace SimulationTurnService;
 
 use App\Application\Service\TurnActions\GenerateHumanNonBiteInjuries;
 use App\Domain\Enum\HealthStatus;
+use App\Domain\Enum\SimulationSettingName;
 use App\Tests\MyTestCase;
 
 class HumanNonBiteInjuriesTest extends MyTestCase
@@ -128,14 +129,14 @@ class HumanNonBiteInjuriesTest extends MyTestCase
     private function humanWillAlwaysGetInjured(): void
     {
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('injuryChance')->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::InjuryChance)->withChance(100)->build(),
         );
     }
 
     private function humanWillNeverGetInjured(): void
     {
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('injuryChance')->withChance(0)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::InjuryChance)->withChance(0)->build(),
         );
     }
 

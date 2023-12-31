@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Application\SimulationSettings;
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
 use App\Models\SimulationSetting as ModelSimulationSetting;
 use Illuminate\Support\Facades\DB;
@@ -10,9 +11,9 @@ use Illuminate\Support\Facades\DB;
 class SqlSimulationSettings implements SimulationSettings
 {
 
-    public function getEventChance(string $eventName): int
+    public function getEventChance(SimulationSettingName $eventName): int
     {
-        return ModelSimulationSetting::getEventChance($eventName);
+        return ModelSimulationSetting::getEventChance($eventName->value);
     }
 
     public function save(array $simulationSettings): void
@@ -24,7 +25,7 @@ class SqlSimulationSettings implements SimulationSettings
                         'event' => $simulationSetting->event
                     ],
                     [
-                        'event' => $simulationSetting->event,
+                        'event' => $simulationSetting->event->value,
                         'chance' => $simulationSetting->chance,
                         'description' => $simulationSetting->description,
                     ]

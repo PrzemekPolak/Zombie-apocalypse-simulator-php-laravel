@@ -3,6 +3,7 @@
 namespace App\Tests\Acceptance;
 
 use App\Domain\Enum\ResourceType;
+use App\Domain\Enum\SimulationSettingName;
 use App\Tests\MyTestCase;
 use App\Tests\TestUtils\Builders\ExampleRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,10 +47,10 @@ class EndpointsAreWorkingCorrectlyTest extends MyTestCase
             aSimulationTurn()->withTurnNumber(1)->build(),
         );
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('chanceForBite')->withChance(50)->build(),
-            aSimulationSetting()->withEvent('injuryChance')->withChance(50)->build(),
-            aSimulationSetting()->withEvent('encounterChance')->withChance(50)->build(),
-            aSimulationSetting()->withEvent('immuneChance')->withChance(10)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->withChance(50)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::InjuryChance)->withChance(50)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->withChance(50)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->withChance(10)->build(),
         );
         $this->system()->hasResources(
             aResource()->withType(ResourceType::Food)->withQuantity(100)->build(),

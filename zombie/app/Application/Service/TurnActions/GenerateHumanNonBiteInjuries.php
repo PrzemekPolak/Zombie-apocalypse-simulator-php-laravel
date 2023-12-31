@@ -7,6 +7,7 @@ use App\Application\Humans;
 use App\Application\Service\TurnAction;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\HumanInjury;
 
 class GenerateHumanNonBiteInjuries implements TurnAction
@@ -35,7 +36,7 @@ class GenerateHumanNonBiteInjuries implements TurnAction
 
     private function timesEventOccurred(): int
     {
-        return floor($this->simulationSettings->getEventChance('injuryChance') * count($this->humans->allAlive()) / 100);
+        return floor($this->simulationSettings->getEventChance(SimulationSettingName::InjuryChance) * count($this->humans->allAlive()) / 100);
     }
 
     private function chooseInjuryCause(): string

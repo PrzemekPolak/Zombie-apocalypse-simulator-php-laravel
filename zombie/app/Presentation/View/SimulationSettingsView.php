@@ -4,6 +4,7 @@ namespace App\Presentation\View;
 
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
+use App\Domain\SimulationSetting;
 use App\Presentation\Requests\StartSimulationRequest;
 
 class SimulationSettingsView
@@ -18,7 +19,10 @@ class SimulationSettingsView
     public function create(): array
     {
         return [
-            'settings' => $this->simulationSettings->all(),
+            'settings' => array_map(
+                static fn(SimulationSetting $simulationSetting) => SimulationSettingView::fromDto($simulationSetting),
+                $this->simulationSettings->all()
+            ),
             'rules' => $this->prepareRulesForFrontend(),
             'simulationOngoing' => false === empty($this->simulationTurns->all()),
         ];

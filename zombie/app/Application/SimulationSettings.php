@@ -2,11 +2,12 @@
 
 namespace App\Application;
 
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
 
 interface SimulationSettings
 {
-    public function getEventChance(string $eventName): int;
+    public function getEventChance(SimulationSettingName $eventName): int;
 
     /** @param SimulationSetting[] $simulationSettings */
     public function save(array $simulationSettings): void;

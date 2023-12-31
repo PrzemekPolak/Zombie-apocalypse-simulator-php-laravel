@@ -3,6 +3,7 @@
 namespace App\Presentation\Command;
 
 use App\Application\SimulationSettings;
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
 use Illuminate\Console\Command;
 
@@ -37,22 +38,22 @@ class SetUpApplicationData extends Command
     {
         return [
             [
-                'event' => 'encounterChance',
+                'event' => SimulationSettingName::EncounterChance->value,
                 'chance' => 40,
                 'description' => 'Szansa, że dojdzie do walki z zombie',
             ],
             [
-                'event' => 'chanceForBite',
+                'event' => SimulationSettingName::ChanceForBite->value,
                 'chance' => 80,
                 'description' => 'Podstawowa szansa, że człowiek zostanie ugryziony przez zombie podczas walki',
             ],
             [
-                'event' => 'injuryChance',
+                'event' => SimulationSettingName::InjuryChance->value,
                 'chance' => 5,
                 'description' => 'Szansa na przypadkowe zranienie się przez człowieka',
             ],
             [
-                'event' => 'immuneChance',
+                'event' => SimulationSettingName::ImmuneChance->value,
                 'chance' => 10,
                 'description' => 'Szansa że człowiek nie zostanie zarażony w przypadku ugryzienia',
             ],

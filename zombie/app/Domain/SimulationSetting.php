@@ -2,12 +2,14 @@
 
 namespace App\Domain;
 
+use App\Domain\Enum\SimulationSettingName;
+
 class SimulationSetting
 {
     public function __construct(
-        public readonly string $event,
-        public readonly int    $chance,
-        public readonly string $description,
+        public readonly SimulationSettingName $event,
+        public readonly int                   $chance,
+        public readonly string                $description,
     )
     {
     }
@@ -15,7 +17,7 @@ class SimulationSetting
     public static function fromArray(array $simulationSetting): self
     {
         return new self(
-            $simulationSetting['event'],
+            SimulationSettingName::from($simulationSetting['event']),
             $simulationSetting['chance'],
             $simulationSetting['description'],
         );

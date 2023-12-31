@@ -5,6 +5,7 @@ namespace SimulationTurnService;
 use App\Application\Service\TurnActions\ZombieEncounters;
 use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\HumanBite;
 use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
@@ -27,9 +28,9 @@ class ZombieEncountersTest extends MyTestCase
     public function zombieAlwaysGetsKilledWhenItFailsToBiteHuman(): void
     {
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('chanceForBite')->withChance(0)->build(),
-            aSimulationSetting()->withEvent('encounterChance')->withChance(100)->build(),
-            aSimulationSetting()->withEvent('immuneChance')->withChance(0)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->withChance(0)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->withChance(0)->build(),
         );
         $this->systemHasHumansAndZombies();
 
@@ -42,9 +43,9 @@ class ZombieEncountersTest extends MyTestCase
     public function humanAlwaysGetsBittenWhenChanceForBiteIsCertain(): void
     {
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('chanceForBite')->withChance(200)->build(),
-            aSimulationSetting()->withEvent('encounterChance')->withChance(100)->build(),
-            aSimulationSetting()->withEvent('immuneChance')->withChance(0)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->withChance(200)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->withChance(0)->build(),
         );
         $this->systemHasHumansAndZombies();
 
@@ -66,9 +67,9 @@ class ZombieEncountersTest extends MyTestCase
         );
 
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('chanceForBite')->withChance(200)->build(),
-            aSimulationSetting()->withEvent('encounterChance')->withChance(100)->build(),
-            aSimulationSetting()->withEvent('immuneChance')->withChance(0)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->withChance(200)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->withChance(0)->build(),
         );
         $this->system()->hasSimulationTurns(
             aSimulationTurn()->withTurnNumber($turn)->build(),
@@ -89,9 +90,9 @@ class ZombieEncountersTest extends MyTestCase
     public function immuneHumansDontGetInfected(): void
     {
         $this->system()->hasSimulationSettings(
-            aSimulationSetting()->withEvent('chanceForBite')->withChance(200)->build(),
-            aSimulationSetting()->withEvent('encounterChance')->withChance(100)->build(),
-            aSimulationSetting()->withEvent('immuneChance')->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->withChance(200)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->withChance(100)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->withChance(100)->build(),
         );
         $this->systemHasHumansAndZombies();
 

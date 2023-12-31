@@ -2,14 +2,15 @@
 
 namespace App\Tests\TestUtils\Builders;
 
+use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
 
 class SimulationSettingBuilder
 {
     public function __construct(
-        public string $event,
-        public int    $chance,
-        public string $description,
+        public SimulationSettingName $event,
+        public int                   $chance,
+        public string                $description,
     )
     {
     }
@@ -17,13 +18,13 @@ class SimulationSettingBuilder
     public static function default(): self
     {
         return new self(
-            'injuryChance',
+            SimulationSettingName::InjuryChance,
             100,
             'Default description',
         );
     }
 
-    public function withEvent(string $event): self
+    public function withEvent(SimulationSettingName $event): self
     {
         return new self(
             $event,
