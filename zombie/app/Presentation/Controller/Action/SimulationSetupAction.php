@@ -3,9 +3,9 @@
 namespace App\Presentation\Controller\Action;
 
 use App\Application\Command\PopulateDbWithInitialDataCommand;
+use App\Application\Command\UpdateChancesOfSimulationSettingsCommand;
 use App\Application\CommandBus;
 use App\Application\SimulationTurns;
-use App\Models\SimulationSetting;
 use App\Presentation\Http\Controller;
 use App\Presentation\Requests\StartSimulationRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +21,7 @@ class SimulationSetupAction extends Controller
 
     public function __invoke(StartSimulationRequest $request): JsonResponse
     {
-        SimulationSetting::updateAllSettings($request);
+        $this->commandBus->dispatch(new UpdateChancesOfSimulationSettingsCommand($request->toArray()));
 
         if ($this->startingNewSimulation()) {
             $this->commandBus->dispatch(new PopulateDbWithInitialDataCommand(

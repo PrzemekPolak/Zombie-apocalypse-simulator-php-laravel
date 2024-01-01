@@ -22,11 +22,11 @@ class SqlSimulationSettings implements SimulationSettings
             foreach ($simulationSettings as $simulationSetting) {
                 ModelSimulationSetting::updateOrCreate(
                     [
-                        'event' => $simulationSetting->event
+                        'event' => $simulationSetting->settingName()
                     ],
                     [
-                        'event' => $simulationSetting->event->value,
-                        'chance' => $simulationSetting->chance,
+                        'event' => $simulationSetting->settingName(),
+                        'chance' => $simulationSetting->chance(),
                         'description' => $simulationSetting->description,
                     ]
                 );

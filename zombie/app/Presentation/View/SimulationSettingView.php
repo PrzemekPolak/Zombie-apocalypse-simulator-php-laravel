@@ -17,8 +17,8 @@ class SimulationSettingView
     public static function fromDto(SimulationSetting $simulationSetting): self
     {
         return new self(
-            $simulationSetting->event->value,
-            $simulationSetting->chance,
+            $simulationSetting->settingName(),
+            $simulationSetting->chance(),
             $simulationSetting->description,
         );
     }

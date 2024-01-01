@@ -13,13 +13,13 @@ class InMemorySimulationSettings implements SimulationSettings
 
     public function getEventChance(SimulationSettingName $eventName): int
     {
-        return $this->simulationSettings[$eventName->value]->chance;
+        return $this->simulationSettings[$eventName->value]->chance();
     }
 
     public function save(array $simulationSettings): void
     {
         foreach ($simulationSettings as $simulationSetting) {
-            $this->simulationSettings[$simulationSetting->event->value] = $simulationSetting;
+            $this->simulationSettings[$simulationSetting->settingName()] = $simulationSetting;
         }
     }
 

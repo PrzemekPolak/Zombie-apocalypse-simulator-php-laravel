@@ -3,6 +3,7 @@
 namespace App\Tests\Acceptance;
 
 use App\Domain\Enum\ResourceType;
+use App\Domain\Enum\SimulationSettingName;
 use App\Tests\MyTestCase;
 use App\Tests\TestUtils\Builders\ExampleRequest;
 
@@ -32,5 +33,23 @@ class SimulationSetupAcceptanceTest extends MyTestCase
 
         assertThat(count($this->system()->humans()->all()), is(equalTo(0)));
         assertThat(count($this->system()->zombies()->all()), is(equalTo(0)));
+    }
+
+    /** @test */
+    public function userCanChangeSimulationSettingsChances(): void
+    {
+        $this->system()->hasSimulationSettings(
+            aSimulationSetting()->withEvent(SimulationSettingName::EncounterChance)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ChanceForBite)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::InjuryChance)->build(),
+            aSimulationSetting()->withEvent(SimulationSettingName::ImmuneChance)->build(),
+        );
+
+        $this->systemReceivesRequest(ExampleRequest::setupSimulationWithEventChances(60, 60, 20, 20));
+
+        assertThat($this->system()->simulationSettings()->getEventChance(SimulationSettingName::EncounterChance), is(equalTo(60)));
+        assertThat($this->system()->simulationSettings()->getEventChance(SimulationSettingName::ChanceForBite), is(equalTo(60)));
+        assertThat($this->system()->simulationSettings()->getEventChance(SimulationSettingName::InjuryChance), is(equalTo(20)));
+        assertThat($this->system()->simulationSettings()->getEventChance(SimulationSettingName::ImmuneChance), is(equalTo(20)));
     }
 }
