@@ -4,7 +4,7 @@ namespace App\Infrastructure;
 
 use App\Application\Zombies;
 use App\Domain\Zombie;
-use App\Models\Zombie as ModelZombie;
+use App\Infrastructure\Models\Zombie as ModelZombie;
 use Illuminate\Support\Facades\DB;
 
 class SqlZombies implements Zombies

@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Action;
 
 use App\Application\Service\SimulationRunningService;
-use App\Presentation\Http\Controller;
+use App\Presentation\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExecuteTurnAction extends Controller

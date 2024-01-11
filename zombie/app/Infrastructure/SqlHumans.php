@@ -5,8 +5,8 @@ namespace App\Infrastructure;
 use App\Application\Humans;
 use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
-use App\Models\Human as ModelHuman;
 use App\Domain\Human;
+use App\Infrastructure\Models\Human as ModelHuman;
 use Illuminate\Support\Facades\DB;
 
 class SqlHumans implements Humans

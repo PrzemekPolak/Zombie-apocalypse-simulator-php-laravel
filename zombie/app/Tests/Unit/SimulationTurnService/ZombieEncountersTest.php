@@ -2,12 +2,12 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\ProbabilityService;
 use App\Application\Service\TurnActions\ZombieEncounters;
 use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
 use App\Domain\Enum\SimulationSettingName;
 use App\Domain\HumanBite;
-use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
 
 class ZombieEncountersTest extends MyTestCase

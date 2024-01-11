@@ -18,7 +18,7 @@ use App\Infrastructure\InMemorySimulationRunningService;
 use App\Infrastructure\InMemorySimulationSettings;
 use App\Infrastructure\InMemorySimulationTurns;
 use App\Infrastructure\InMemoryZombies;
-use App\Tests\SyntacticSugar\System;
+use App\Tests\TestUtils\SyntacticSugar\System;
 use Tests\TestCase;
 
 class MyTestCase extends TestCase

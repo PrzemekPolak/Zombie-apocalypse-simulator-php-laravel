@@ -5,7 +5,7 @@ namespace App\Infrastructure;
 use App\Application\SimulationSettings;
 use App\Domain\Enum\SimulationSettingName;
 use App\Domain\SimulationSetting;
-use App\Models\SimulationSetting as ModelSimulationSetting;
+use App\Infrastructure\Models\SimulationSetting as ModelSimulationSetting;
 use Illuminate\Support\Facades\DB;
 
 class SqlSimulationSettings implements SimulationSettings

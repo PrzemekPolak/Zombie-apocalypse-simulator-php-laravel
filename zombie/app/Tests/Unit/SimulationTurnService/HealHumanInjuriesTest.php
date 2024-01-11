@@ -2,9 +2,9 @@
 
 namespace SimulationTurnService;
 
+use App\Application\Service\ProbabilityService;
 use App\Application\Service\TurnActions\HealHumanInjuries;
 use App\Domain\Enum\ResourceType;
-use App\Services\ProbabilityService;
 use App\Tests\MyTestCase;
 
 class HealHumanInjuriesTest extends MyTestCase

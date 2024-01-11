@@ -4,10 +4,10 @@ namespace App\Application\Service\TurnActions;
 
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\ProbabilityService;
 use App\Application\Service\TurnAction;
 use App\Domain\Enum\HealthStatus;
 use App\Domain\Enum\ResourceType;
-use App\Services\ProbabilityService;
 
 class HealHumanInjuries implements TurnAction
 {

@@ -6,8 +6,8 @@ use App\Application\Command\PopulateDbWithInitialDataCommand;
 use App\Application\Command\UpdateChancesOfSimulationSettingsCommand;
 use App\Application\CommandBus;
 use App\Application\SimulationTurns;
-use App\Presentation\Http\Controller;
-use App\Presentation\Requests\StartSimulationRequest;
+use App\Presentation\Controller\Controller;
+use App\Presentation\Request\StartSimulationRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SimulationSetupAction extends Controller

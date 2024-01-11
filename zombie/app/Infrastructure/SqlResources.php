@@ -5,7 +5,7 @@ namespace App\Infrastructure;
 use App\Application\Resources;
 use App\Domain\Enum\ResourceType;
 use App\Domain\Resource;
-use App\Models\Resource as ModelResource;
+use App\Infrastructure\Models\Resource as ModelResource;
 use Illuminate\Support\Facades\DB;
 
 class SqlResources implements Resources

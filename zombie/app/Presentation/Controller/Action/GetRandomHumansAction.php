@@ -5,7 +5,7 @@ namespace App\Presentation\Controller\Action;
 use App\Application\Humans;
 use App\Application\SimulationTurns;
 use App\Domain\Human;
-use App\Presentation\Http\Controller;
+use App\Presentation\Controller\Controller;
 use App\Presentation\View\HumanView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

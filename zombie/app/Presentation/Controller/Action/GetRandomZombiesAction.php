@@ -4,7 +4,7 @@ namespace App\Presentation\Controller\Action;
 
 use App\Application\Zombies;
 use App\Domain\Zombie;
-use App\Presentation\Http\Controller;
+use App\Presentation\Controller\Controller;
 use App\Presentation\View\ZombieView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

@@ -6,6 +6,7 @@ use App\Application\HumanBites;
 use App\Application\HumanInjuries;
 use App\Application\Humans;
 use App\Application\Resources;
+use App\Application\Service\ProbabilityService;
 use App\Application\Service\SimulationEndingService;
 use App\Application\Service\SimulationRunningService;
 use App\Application\Service\TurnAction;
@@ -20,7 +21,6 @@ use App\Application\Service\TurnActions\ZombieEncounters;
 use App\Application\SimulationSettings;
 use App\Application\SimulationTurns;
 use App\Application\Zombies;
-use App\Services\ProbabilityService;
 
 class InMemorySimulationRunningService implements SimulationRunningService
 {

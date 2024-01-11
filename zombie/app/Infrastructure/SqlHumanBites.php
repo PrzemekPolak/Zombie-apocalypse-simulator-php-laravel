@@ -4,7 +4,7 @@ namespace App\Infrastructure;
 
 use App\Application\HumanBites;
 use App\Domain\HumanBite;
-use App\Models\HumanBite as ModelHumanBite;
+use App\Infrastructure\Models\HumanBite as ModelHumanBite;
 use Illuminate\Support\Facades\DB;
 
 class SqlHumanBites implements HumanBites

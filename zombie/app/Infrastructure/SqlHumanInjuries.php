@@ -4,7 +4,7 @@ namespace App\Infrastructure;
 
 use App\Application\HumanInjuries;
 use App\Domain\HumanInjury;
-use App\Models\HumanInjury as ModelHumanInjury;
+use App\Infrastructure\Models\HumanInjury as ModelHumanInjury;
 use Illuminate\Support\Facades\DB;
 
 class SqlHumanInjuries implements HumanInjuries

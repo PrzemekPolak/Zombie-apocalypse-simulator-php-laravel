@@ -3,8 +3,8 @@
 namespace App\Infrastructure;
 
 use App\Application\SimulationTurns;
-use App\Models\SimulationTurn as ModelSimulationTurn;
 use App\Domain\SimulationTurn;
+use App\Infrastructure\Models\SimulationTurn as ModelSimulationTurn;
 use Illuminate\Support\Facades\DB;
 
 class SqlSimulationTurns implements SimulationTurns
