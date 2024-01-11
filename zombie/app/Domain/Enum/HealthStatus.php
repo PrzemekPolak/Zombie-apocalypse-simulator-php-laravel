@@ -14,4 +14,20 @@ enum HealthStatus: string
     {
         return $this->value === $healthStatus->value;
     }
+
+    public function translatedValue(): string
+    {
+        return $this->translations()[$this->value];
+    }
+
+    private function translations(): array
+    {
+        return [
+            'healthy' => 'Zdrowy',
+            'injured' => 'Ranny',
+            'infected' => 'Zarażony',
+            'turned' => 'Stał się zombie',
+            'dead' => 'Martwy',
+        ];
+    }
 }

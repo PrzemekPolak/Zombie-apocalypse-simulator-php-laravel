@@ -76,7 +76,7 @@ class InMemoryHumans implements Humans
     {
         $result = [];
         foreach ($this->humans as $human) {
-            if ($human->health === $health) {
+            if ($human->health->equals($health)) {
                 $result[] = $human;
             }
         }
