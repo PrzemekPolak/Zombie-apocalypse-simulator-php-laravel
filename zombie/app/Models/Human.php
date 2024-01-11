@@ -19,17 +19,6 @@ class Human extends Model
         'death_cause',
     ];
 
-    public function isImmuneToBite(): bool
-    {
-        $immuneChance = SimulationSetting::getEventChance('immuneChance');
-        return rand(0, 99) < $immuneChance;
-    }
-
-    public function killZombie(Zombie $zombie): void
-    {
-        $zombie->die();
-    }
-
     public function scopeAlive(Builder $query)
     {
         $query->whereNotIn('health', ['dead', 'turned']);
@@ -48,30 +37,5 @@ class Human extends Model
                 return $q->whereIn('profession', ['engineer', 'mechanic']);
             })
             ->whereIn('health', ['healthy', 'infected'])->count();
-    }
-
-//    public function getHealthAttribute($value): string
-//    {
-//        $translation = ['injured' => 'Ranny',
-//            'healthy' => 'Zdrowy',
-//            'infected' => 'Zarażony',
-//            'dead' => 'Martwy',
-//            'turned' => 'Stał się zombie'];
-//        return $translation[$value];
-//    }
-
-    public function die(string $deathCause): void
-    {
-        $this->update(['health' => 'dead', 'death_cause' => $deathCause]);
-    }
-
-    public function setHealth(string $health): void
-    {
-        $this->update(['health' => $health]);
-    }
-
-    public function isNotHealthy(): bool
-    {
-        return 'injured' === $this->health || 'infected' === $this->health;
     }
 }

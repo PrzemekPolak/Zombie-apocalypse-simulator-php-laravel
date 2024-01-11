@@ -12,21 +12,4 @@ class SimulationTurn extends Model
     protected $fillable = [
         'status'
     ];
-
-    public static function currentTurn(): int
-    {
-        return self::all()->sortByDesc('id')->first()->id;
-    }
-
-    public static function createNewTurn(string $status = 'active'): void
-    {
-        $turn = new self;
-        $turn->status = $status;
-        $turn->save();
-    }
-
-    public static function simulationIsOngoing(): bool
-    {
-        return self::first() !== null;
-    }
 }

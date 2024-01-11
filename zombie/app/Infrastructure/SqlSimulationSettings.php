@@ -13,7 +13,7 @@ class SqlSimulationSettings implements SimulationSettings
 
     public function getEventChance(SimulationSettingName $eventName): int
     {
-        return ModelSimulationSetting::getEventChance($eventName->value);
+        return ModelSimulationSetting::where('event', $eventName->value)->first()->chance;
     }
 
     public function save(array $simulationSettings): void

@@ -13,19 +13,4 @@ class Resource extends Model
         'type',
         'quantity'
     ];
-
-    public static function setResourceQuantity(string $type, int $quantity): void
-    {
-        self::updateOrCreate(
-            ['type' => $type],
-            [
-                'type' => $type,
-                'quantity' => $quantity,
-            ]);
-    }
-
-    public static function getResourceQuantity(string $type): int
-    {
-        return self::where('type', $type)->first()->quantity;
-    }
 }

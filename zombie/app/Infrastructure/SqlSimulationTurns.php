@@ -11,12 +11,14 @@ class SqlSimulationTurns implements SimulationTurns
 {
     public function currentTurn(): int
     {
-        return ModelSimulationTurn::currentTurn();
+        return ModelSimulationTurn::all()->sortByDesc('id')->first()->id;
     }
 
     public function createNewTurn(string $status = 'active'): void
     {
-        ModelSimulationTurn::createNewTurn();
+        $turn = new ModelSimulationTurn();
+        $turn->status = $status;
+        $turn->save();
     }
 
     public function save(array $simulationTurns): void

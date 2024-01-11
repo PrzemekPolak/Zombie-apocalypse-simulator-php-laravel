@@ -14,14 +14,4 @@ class HumanBite extends Model
         'zombie_id',
         'turn_id'
     ];
-
-    public static function add(int $humanId, int $zombieId, int $turnId): void
-    {
-        $humanBite = new self;
-        $humanBite->human_id = $humanId;
-        $humanBite->zombie_id = $zombieId;
-        $humanBite->turn_id = $turnId;
-        $humanBite->save();
-    }
-
 }
